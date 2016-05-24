@@ -1,0 +1,45 @@
+//
+// Created by jakub on 5/24/16.
+//
+
+#include <stdexcept>
+#include "program.h"
+
+Program::Program(){
+
+}
+
+Program::Program(VertexShader &vertexShader, FragmentShader &fragmentShader) {
+    linkShaders(vertexShader, fragmentShader);
+}
+
+Program::~Program() {
+
+}
+
+void Program::linkShaders(VertexShader &vertexShader,
+                          FragmentShader &fragmentShader) {
+    id = glCreateProgram();
+
+    glAttachShader(id, vertexShader.getKey());
+    glAttachShader(id, fragmentShader.getKey());
+    glLinkProgram(id);
+
+    GLint success;
+    GLchar infoLog[512];
+    glGetProgramiv(id, GL_LINK_STATUS, &success);
+    if(!success) {
+        glGetProgramInfoLog(id, 512, NULL, infoLog);
+        std::string infoLogStr = infoLog;
+        throw new std::invalid_argument("ERROR::PROGRAM::COMPILATION_FAILED\n"
+        + infoLogStr);
+    }
+
+    vertexShader.deleteShader();
+    fragmentShader.deleteShader();
+}
+
+
+void Program::use() const{
+    glUseProgram(id);
+}
