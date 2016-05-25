@@ -6,7 +6,9 @@
 #include <stdexcept>
 #include "shader.h"
 
-Shader::Shader(const GLchar* shaderSource){
+using namespace std;
+
+Shader::Shader(string shaderSource){
     this->shaderSource = shaderSource;
 }
 
@@ -16,8 +18,9 @@ Shader::~Shader() {
 
 void Shader::compile() {
     id = createShader();
-
-    glShaderSource(id, 1, &shaderSource, NULL);
+    const GLchar* rawData = shaderSource.c_str();
+    
+    glShaderSource(id, 1, &(rawData), NULL);
     glCompileShader(id);
 
     // Check status;
@@ -28,6 +31,7 @@ void Shader::compile() {
     {
         glGetShaderInfoLog(id, 512, NULL, infoLog);
         std::string infoLogStr = infoLog;
+        std::cout << infoLogStr << std::endl;
         throw new std::invalid_argument("ERROR::SHADER::COMPILATION_FAILED\n"
                                         + infoLogStr);
     }

@@ -13,9 +13,6 @@
 class VAO {
 private:
     GLuint id;
-
-    const GLuint DATA_PER_VERTEX = 3;
-    const GLuint STRIDE = DATA_PER_VERTEX * sizeof(GLfloat);
 public:
 
     VAO();

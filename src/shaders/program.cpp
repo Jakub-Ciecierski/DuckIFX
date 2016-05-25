@@ -3,6 +3,7 @@
 //
 
 #include <stdexcept>
+#include <iostream>
 #include "program.h"
 
 Program::Program(){
@@ -31,6 +32,7 @@ void Program::linkShaders(VertexShader &vertexShader,
     if(!success) {
         glGetProgramInfoLog(id, 512, NULL, infoLog);
         std::string infoLogStr = infoLog;
+        std::cout << infoLogStr << std::endl;
         throw new std::invalid_argument("ERROR::PROGRAM::COMPILATION_FAILED\n"
         + infoLogStr);
     }
@@ -42,4 +44,8 @@ void Program::linkShaders(VertexShader &vertexShader,
 
 void Program::use() const{
     glUseProgram(id);
+}
+
+GLuint Program::getID() const{
+    return id;
 }

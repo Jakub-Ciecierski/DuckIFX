@@ -5,15 +5,13 @@
 #ifndef DUCK_SHADER_H
 #define DUCK_SHADER_H
 
+#include <string>
 #include <GL/glew.h>
 
-/*
- * compile function has to be called before using shader
- */
 class Shader {
 private:
     GLuint id;
-    const GLchar*shaderSource;
+    std::string shaderSource;
 
 protected:
     /*
@@ -23,9 +21,12 @@ protected:
 
 public:
 
-    Shader(const GLchar* vertexShaderSource);
+    Shader(std::string vertexShaderSource);
     virtual ~Shader();
 
+    /*
+     * compile function has to be called before using shader
+     */
     void compile();
 
     /*

@@ -4,7 +4,9 @@
 
 #include "fragment_shader.h"
 
-FragmentShader::FragmentShader(const GLchar* shaderSource) :
+using namespace std;
+
+FragmentShader::FragmentShader(string shaderSource) :
         Shader(shaderSource){
 
 }

@@ -14,7 +14,7 @@ protected:
     virtual GLuint createShader();
 
 public:
-    FragmentShader(const GLchar* shaderSource);
+    FragmentShader(std::string shaderSource);
 
     ~FragmentShader();
 

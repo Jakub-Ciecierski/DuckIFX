@@ -9,6 +9,7 @@
 #include "shaders/program.h"
 #include "buffers/vbo.h"
 #include "buffers/vao.h"
+#include "mesh_data.h"
 
 #include <GL/gl.h>
 #include <vector>
@@ -18,16 +19,33 @@ private:
     std::vector<GLfloat> vertices;
     std::vector<GLuint> indices;
 
+    std::vector<Texture> textures;
+
     VAO* vao;
     VBO* vbo;
     EBO* ebo;
 
+    /*
+     * Copy contructor/operator=
+     */
+    void copy(const Mesh& other);
+
     void initBuffers();
+
+    /*
+     * Binds all textures during draw operation
+     */
+    void bindTextures();
 public:
 
     Mesh();
     Mesh(std::vector<GLfloat>& vertices,
          std::vector <GLuint>& indices);
+
+    Mesh(std::vector<GLfloat>& vertices,
+         std::vector <GLuint>& indices,
+         std::vector<Texture>& textures);
+
     Mesh(const Mesh& mesh);
 
     ~Mesh();

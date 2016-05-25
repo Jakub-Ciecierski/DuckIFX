@@ -2,10 +2,18 @@
 // Created by jakub on 5/24/16.
 //
 
+#include <string>
+#include <fstream>
+#include <sstream>
+#include <iostream>
+
 #include <GL/glew.h>
 #include <shaders/vertex_shader.h>
 #include <shaders/fragment_shader.h>
+#include <stdexcept>
 #include "shader_loader.h"
+
+using namespace std;
 
 ShaderLoader::ShaderLoader(){
 
@@ -16,7 +24,7 @@ ShaderLoader::~ShaderLoader() {
 }
 
 VertexShader ShaderLoader::LoadDefaultVertexShader() {
-    const GLchar* vertexShaderSource = "#version 330 core\n"
+    string vertexShaderSource = "#version 330 core\n"
             "layout (location = 0) in vec3 position;\n"
             "void main()\n"
             "{\n"
@@ -27,7 +35,7 @@ VertexShader ShaderLoader::LoadDefaultVertexShader() {
 }
 
 FragmentShader ShaderLoader::LoadDefaultFragmentShader() {
-    const GLchar* fragmentShaderSource = "#version 330 core\n"
+    string fragmentShaderSource = "#version 330 core\n"
             "out vec4 color;\n"
             "void main()\n"
             "{\n"
@@ -35,4 +43,47 @@ FragmentShader ShaderLoader::LoadDefaultFragmentShader() {
             "}\n\0";
 
     return FragmentShader(fragmentShaderSource);
+}
+
+VertexShader ShaderLoader::loadVertexShader(const GLchar *path) {
+    std::string shaderCode = getShaderCode(path);
+    VertexShader vertexShader(shaderCode.c_str());
+
+    return vertexShader;
+}
+
+FragmentShader ShaderLoader::loadFragmentShader(const GLchar *path) {
+    std::string shaderCode = getShaderCode(path);
+
+    FragmentShader fragmentShader(shaderCode.c_str());
+
+    return fragmentShader;
+}
+
+
+std::string ShaderLoader::getShaderCode(const GLchar *path) {
+    std::string code;
+    std::ifstream shaderFile;
+    shaderFile.exceptions (std::ifstream::badbit);
+    try{
+        shaderFile.open(path);
+        if(!shaderFile.is_open()){
+            std::string info = "No such file: " + std::string(path);
+            throw std::invalid_argument(info);
+        }
+
+        std::stringstream shaderStream;
+        shaderStream << shaderFile.rdbuf();
+        shaderFile.close();
+        code = shaderStream.str();
+    }
+    catch (std::ifstream::failure e){
+        std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
+    }
+    if(code.empty()){
+        std::string info = "Empty file: " + std::string(path);
+        throw std::invalid_argument(info);
+    }
+
+    return code;
 }

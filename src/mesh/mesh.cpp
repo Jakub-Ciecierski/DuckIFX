@@ -5,6 +5,7 @@
 #include <iostream>
 #include "mesh.h"
 
+
 using namespace std;
 
 Mesh::Mesh(){
@@ -17,11 +18,15 @@ Mesh::Mesh(vector <GLfloat>& vertices,
     initBuffers();
 }
 
-Mesh::Mesh(const Mesh& mesh){
-    vertices = mesh.vertices;
-    indices = mesh.indices;
-
+Mesh::Mesh(vector<GLfloat>& vertices,
+           vector <GLuint>& indices,
+           vector<Texture>& textures) :
+        vertices(vertices), indices(indices), textures(textures){
     initBuffers();
+}
+
+Mesh::Mesh(const Mesh& mesh){
+    copy(mesh);
 }
 
 Mesh::~Mesh() {
@@ -29,6 +34,14 @@ Mesh::~Mesh() {
 
     delete vbo;
     delete ebo;
+}
+
+void Mesh::copy(const Mesh& other){
+    vertices = other.vertices;
+    indices = other.indices;
+    textures = other.textures;
+
+    initBuffers();
 }
 
 void Mesh::initBuffers(){
@@ -40,14 +53,20 @@ void Mesh::initBuffers(){
     vao->bindBuffers(*vbo, *ebo);
 }
 
+void Mesh::bindTextures(){
+    glBindTexture(textures[0].type, textures[0].id);
+}
+
 const std::vector<GLfloat> Mesh::getVertices() const{
     return this->vertices;
 }
 
 void Mesh::draw(const Program& program){
     program.use();
+    this->bindTextures();
 
     vao->bind();
+
 
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 
@@ -55,9 +74,7 @@ void Mesh::draw(const Program& program){
 }
 
 Mesh& Mesh::operator=(const Mesh& other){
-    vertices = other.vertices;
-    indices = other.indices;
-    initBuffers();
+    copy(other);
 
     return *this;
 }

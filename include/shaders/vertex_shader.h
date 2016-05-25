@@ -15,7 +15,7 @@ protected:
 
 public:
 
-    VertexShader(const GLchar* shaderSource);
+    VertexShader(std::string shaderSource);
 
     ~VertexShader();
 

@@ -8,6 +8,9 @@
 #include "fragment_shader.h"
 #include "vertex_shader.h"
 
+/*
+ * This class encapsulates all shaders and is used to draw Meshes
+ */
 class Program {
 private:
     GLuint id;
@@ -21,6 +24,8 @@ public:
     ~Program();
 
     void use() const;
+
+    GLuint getID() const;
 };
 
 

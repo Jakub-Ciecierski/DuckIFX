@@ -4,7 +4,9 @@
 
 #include "vertex_shader.h"
 
-VertexShader::VertexShader(const GLchar* shaderSource) :
+using namespace std;
+
+VertexShader::VertexShader(string shaderSource) :
         Shader(shaderSource){
 
 }

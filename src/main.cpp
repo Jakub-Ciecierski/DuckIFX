@@ -7,6 +7,7 @@
 #include <meshes/mesh.h>
 #include <meshes/mesh_loader.h>
 #include <shaders/loaders/shader_loader.h>
+#include <cmath>
 #include "window.h"
 
 using namespace std;
@@ -35,7 +36,6 @@ void key_callback(GLFWwindow* window, int key,
                   int scancode, int action, int mode);
 
 void mainLoop();
-
 // ------------------------------
 
 int main() {
@@ -86,10 +86,25 @@ void initExampleMeshes(){
     mesh = MeshLoader::LoadTriangle();
     mesh1 = MeshLoader::LoadSqaure();
 }
-
+/*
 void initShaders(){
     FragmentShader fragmentShader = ShaderLoader::LoadDefaultFragmentShader();
     VertexShader vertexShader = ShaderLoader::LoadDefaultVertexShader();
+
+    fragmentShader.compile();
+    vertexShader.compile();
+
+    program = new Program(vertexShader, fragmentShader);
+}
+*/
+
+void initShaders(){
+    ShaderLoader shaderLoader;
+
+    VertexShader vertexShader =
+            shaderLoader.loadVertexShader("res/shaders/tex_vert.glsl");
+    FragmentShader fragmentShader =
+            shaderLoader.loadFragmentShader("res/shaders/tex_frag.glsl");
 
     fragmentShader.compile();
     vertexShader.compile();
@@ -118,7 +133,6 @@ void mainLoop(){
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        mesh.draw(*program);
         mesh1.draw(*program);
 
         glfwSwapBuffers(window->getHandle());

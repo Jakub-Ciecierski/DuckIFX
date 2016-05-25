@@ -11,11 +11,15 @@
 class ShaderLoader {
 private:
 
+    std::string getShaderCode(const GLchar* path);
 public:
 
     ShaderLoader();
 
     ~ShaderLoader();
+
+    VertexShader loadVertexShader(const GLchar* path);
+    FragmentShader loadFragmentShader(const GLchar* path);
 
     static VertexShader LoadDefaultVertexShader();
     static FragmentShader LoadDefaultFragmentShader();

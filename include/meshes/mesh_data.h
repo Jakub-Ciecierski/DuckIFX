@@ -12,12 +12,16 @@
 struct Vertex{
     glm::vec3 Position;
     glm::vec3 Normal;
-    glm::vec3 TexCoords;
+    glm::vec2 TexCoords;
 };
 
 struct Texture{
     GLuint id;
-    std::string type;
+    GLenum type;
+
+    Texture(){}
+    Texture(GLuint id,
+            GLenum type) : id(id), type(type){}
 };
 
 #endif //DUCK_MESH_DATA_H
