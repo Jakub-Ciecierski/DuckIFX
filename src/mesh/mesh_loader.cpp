@@ -24,8 +24,10 @@ Mesh MeshLoader::LoadTriangle() {
     vector<GLuint> indices = { 0, 1, 2 };
 
     TextureLoader textureLoader;
-    Texture texture = textureLoader.LoadContainer();
-    std::vector<Texture> textures = {texture};
+    Texture texture1 = textureLoader.LoadContainer();
+    Texture texture2 = textureLoader.LoadAwesomeFace();
+
+    std::vector<Texture> textures = {texture1, texture2};
 
     return Mesh(vertices, indices, textures);
 }
@@ -42,8 +44,10 @@ Mesh MeshLoader::LoadSqaure(){
             1, 2, 3
     };
     TextureLoader textureLoader;
-    Texture texture = textureLoader.LoadContainer();
-    std::vector<Texture> textures = {texture};
+    Texture texture1 = textureLoader.LoadContainer();
+    Texture texture2 = textureLoader.LoadAwesomeFace();
+
+    std::vector<Texture> textures = {texture1, texture2};
 
     return Mesh(vertices, indices, textures);
 }

@@ -57,3 +57,10 @@ Texture TextureLoader::LoadContainer() {
 
     return texture;
 }
+
+Texture TextureLoader::LoadAwesomeFace() {
+    GLuint id = loadFromFile("res/textures/awesomeface.png");
+    Texture texture = contructTexture(id, GL_TEXTURE_2D);
+
+    return texture;
+}

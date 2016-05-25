@@ -26,6 +26,11 @@ private:
     EBO* ebo;
 
     /*
+     * Checks for errors in the Mesh class and throws exceptions;
+     */
+    void checkError();
+
+    /*
      * Copy contructor/operator=
      */
     void copy(const Mesh& other);
@@ -35,7 +40,7 @@ private:
     /*
      * Binds all textures during draw operation
      */
-    void bindTextures();
+    void bindTextures(const Program& program);
 public:
 
     Mesh();

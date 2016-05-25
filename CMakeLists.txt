@@ -34,8 +34,7 @@ include_directories(${INC_DIRS} res/)
 
 # SOURCES AUTOMATIC SEARCH
 file(GLOB_RECURSE SRC_FILES src/*.cpp)
-set(SOURCE_FILES src/mesh/mesh_loader.cpp src/mesh/mesh_loader.cpp
-        include/meshes/mesh_loader.h src/buffers/vbo.cpp include/buffers/vbo.h src/shaders/program.cpp include/shaders/program.h src/shaders/vertex_shader.cpp include/shaders/vertex_shader.h src/shaders/fragment_shader.cpp include/shaders/fragment_shader.h src/shaders/loaders/shader_loader.cpp include/shaders/loaders/shader_loader.h src/shaders/shader.cpp include/shaders/shader.h src/buffers/vao.cpp include/buffers/vao.h src/buffers/ebo.cpp include/buffers/ebo.h src/textures/texture_loader.cpp include/textures/texture_loader.h src/textures/texture_buffer.cpp include/textures/texture_buffer.h)
+set(SOURCE_FILES)
 
 add_executable(duck ${SOURCE_FILES} ${SRC_FILES} res)
 
@@ -60,7 +59,7 @@ link_directories(dependencies/soil/lib)
 include_directories(
         dependencies/glfw-3.1.2/include
         dependencies/glm/include
-        dependencies/soil/src)
+        dependencies/SOIL/src)
 
 target_link_libraries(duck glfw SOIL
         ${GLFW_LIBRARIES})

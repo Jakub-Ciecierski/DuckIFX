@@ -24,4 +24,12 @@ struct Texture{
             GLenum type) : id(id), type(type){}
 };
 
+// Maximum number of textures
+extern const int MAX_TEX_COUNT;
+
+/*
+ * This names must correspond to texture samplers names in fragment shader
+ */
+extern const std::string TEX_UNI_NAMES[];
+
 #endif //DUCK_MESH_DATA_H

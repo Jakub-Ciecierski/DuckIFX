@@ -7,7 +7,6 @@
 
 
 #include <meshes/mesh_data.h>
-#include "texture_buffer.h"
 
 /*
  * Class loads textures saved in resource files
@@ -24,6 +23,7 @@ public:
     ~TextureLoader();
 
     Texture LoadContainer();
+    Texture LoadAwesomeFace();
 };
 
 
