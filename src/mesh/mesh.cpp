@@ -73,10 +73,6 @@ void Mesh::bindTextures(const Program& program){
     }
 }
 
-const std::vector<GLfloat> Mesh::getVertices() const{
-    return this->vertices;
-}
-
 void Mesh::draw(const Program& program){
     program.use();
     this->bindTextures(program);

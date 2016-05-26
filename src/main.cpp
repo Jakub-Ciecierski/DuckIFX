@@ -4,10 +4,11 @@
 #include <GLFW/glfw3.h>
 
 #include <stdexcept>
-#include <meshes/mesh.h>
-#include <meshes/mesh_loader.h>
 #include <shaders/loaders/shader_loader.h>
 #include <cmath>
+#include <shaders/program.h>
+#include <render_object.h>
+#include <render_object_loader.h>
 #include "window.h"
 
 using namespace std;
@@ -15,11 +16,18 @@ using namespace std;
 // ------------------------------
 
 ifc::Window* window;
-Mesh mesh;
-Mesh mesh1;
+
+
+RenderObjectLoader* renderObjectLoader;
+RenderObject* squareObject;
+RenderObject* triangleObject;
+
 Program* program;
 
 // ------------------------------
+MeshLoader meshLoader;
+Mesh sqaureMesh;
+Mesh triangleMesh;
 
 void initContext();
 void initRenderContext();
@@ -83,20 +91,11 @@ void initScene(){
 }
 
 void initExampleMeshes(){
-    mesh = MeshLoader::LoadTriangle();
-    mesh1 = MeshLoader::LoadSqaure();
-}
-/*
-void initShaders(){
-    FragmentShader fragmentShader = ShaderLoader::LoadDefaultFragmentShader();
-    VertexShader vertexShader = ShaderLoader::LoadDefaultVertexShader();
+    renderObjectLoader = new RenderObjectLoader();
 
-    fragmentShader.compile();
-    vertexShader.compile();
-
-    program = new Program(vertexShader, fragmentShader);
+    squareObject = renderObjectLoader->loadSqaureObject();
+    triangleObject = renderObjectLoader->loadTriangleObject();
 }
-*/
 
 void initShaders(){
     ShaderLoader shaderLoader;
@@ -115,6 +114,10 @@ void initShaders(){
 void releaseResources(){
     delete window;
     delete program;
+
+    delete renderObjectLoader;
+    delete squareObject;
+    delete triangleObject;
 }
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
@@ -126,6 +129,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 }
 
 void mainLoop(){
+    float x = 0.01;
     while(!window->shouldClose())
     {
         window->update();
@@ -133,7 +137,11 @@ void mainLoop(){
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        mesh1.draw(*program);
+        triangleObject->update();
+        squareObject->update();
+
+        squareObject->render(*program);
+        triangleObject->render(*program);
 
         glfwSwapBuffers(window->getHandle());
     }

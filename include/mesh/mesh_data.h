@@ -32,4 +32,8 @@ extern const int MAX_TEX_COUNT;
  */
 extern const std::string TEX_UNI_NAMES[];
 
+extern const std::string MODEL_MATRIX_NAME;
+extern const std::string VIEW_MATRIX_NAME;
+extern const std::string PROJECTION_MATRIX_NAME;
+
 #endif //DUCK_MESH_DATA_H

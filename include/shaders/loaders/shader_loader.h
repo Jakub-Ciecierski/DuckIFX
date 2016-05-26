@@ -5,8 +5,9 @@
 #ifndef DUCK_SHADER_LOADER_H
 #define DUCK_SHADER_LOADER_H
 
-
 #include <shaders/shader.h>
+#include <shaders/fragment_shader.h>
+#include <shaders/vertex_shader.h>
 
 class ShaderLoader {
 private:

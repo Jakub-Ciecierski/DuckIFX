@@ -6,7 +6,7 @@
 #define DUCK_TEXTURE_LOADER_H
 
 
-#include <meshes/mesh_data.h>
+#include <mesh/mesh_data.h>
 
 /*
  * Class loads textures saved in resource files

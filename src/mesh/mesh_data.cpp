@@ -16,3 +16,7 @@ const std::string TEX_UNI_NAMES[MAX_TEX_COUNT] = {
         "tex9", "tex10", "tex11", "tex12",
         "tex13", "tex14", "tex15", "tex16",
 };
+
+const std::string MODEL_MATRIX_NAME = "ModelMatrix";
+const std::string VIEW_MATRIX_NAME = "ViewMatrix";
+const std::string PROJECTION_MATRIX_NAME = "ProjMatrix";

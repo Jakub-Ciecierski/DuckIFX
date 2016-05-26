@@ -55,8 +55,6 @@ public:
 
     ~Mesh();
 
-    const std::vector<GLfloat> getVertices() const;
-
     void draw(const Program& program);
 
     Mesh& operator=(const Mesh& other);
