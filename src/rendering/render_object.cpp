@@ -60,6 +60,10 @@ void RenderObject::rotate(const glm::vec3 &rotate) {
     this->rotation += rotate;
 }
 
+Mesh *RenderObject::getMesh() {
+    return mesh;
+}
+
 void RenderObject::scale(const glm::vec3 &scale) {
     this->scaleFactor = scale;
 }

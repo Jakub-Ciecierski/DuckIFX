@@ -26,10 +26,17 @@ Mesh::Mesh(vector<GLfloat>& vertices,
         vertices(vertices), indices(indices), textures(textures){
     checkError();
     initBuffers();
-
-    objectColor = glm::vec3(1.0f, 0.5f, 0.31f);
 }
 
+Mesh::Mesh(vector<GLfloat>& vertices,
+           vector <GLuint>& indices,
+           vector<Texture>& textures,
+           Material material) :
+        vertices(vertices), indices(indices), textures(textures),
+        material(material){
+    checkError();
+    initBuffers();
+}
 Mesh::Mesh(const Mesh& mesh){
     copy(mesh);
 }
@@ -53,8 +60,7 @@ void Mesh::copy(const Mesh& other){
     vertices = other.vertices;
     indices = other.indices;
     textures = other.textures;
-
-    objectColor = other.objectColor;
+    material = other.material;
 
     initBuffers();
 }
@@ -78,10 +84,32 @@ void Mesh::bindTextures(const Program& program){
 }
 
 void Mesh::bindColor(const Program& program){
-    // Color
-    GLint objectColorLoc = glGetUniformLocation(program.getID(),
-                                                OBJECT_COLOR_NAME.c_str());
-    glUniform3f(objectColorLoc, objectColor.x, objectColor.y, objectColor.z);
+    GLint matAmbientLoc  = glGetUniformLocation(program.getID(),
+                                                MATERIAL_AMBIENT_NAME.c_str());
+    GLint matDiffuseLoc  = glGetUniformLocation(program.getID(),
+                                                MATERIAL_DIFFUSE_NAME.c_str());
+    GLint matSpecularLoc = glGetUniformLocation(program.getID(),
+                                                MATERIAL_SPECULAR_NAME.c_str());
+    GLint matShineLoc = glGetUniformLocation(program.getID(),
+                                             MATERIAL_SHININESS_NAME.c_str());
+
+    glUniform3f(matAmbientLoc,
+                material.ambient.x,
+                material.ambient.y,
+                material.ambient.z);
+    glUniform3f(matDiffuseLoc,
+                material.diffuse.x,
+                material.diffuse.y,
+                material.diffuse.z);
+    glUniform3f(matSpecularLoc,
+                material.specular.x,
+                material.specular.y,
+                material.specular.z);
+    glUniform1f(matShineLoc, material.shininess);
+}
+
+void Mesh::setMaterial(const Material& material){
+    this->material = material;
 }
 
 void Mesh::draw(const Program& program){

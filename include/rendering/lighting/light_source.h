@@ -12,6 +12,8 @@
  */
 class LightSource {
 private:
+    Light light;
+
     RenderObject *renderObject;
 
     glm::vec3 position;
@@ -31,6 +33,8 @@ public:
 
     void setColor(const glm::vec3& color);
     void setPosition(const glm::vec3& position);
+    void setLight(const Light& light);
+
     const glm::vec3& getPosition();
 
     void use(const Program& program);

@@ -24,11 +24,24 @@ struct Texture{
             GLenum type) : id(id), type(type){}
 };
 
+struct Material{
+    glm::vec3 ambient;
+    glm::vec3 diffuse;
+    glm::vec3 specular;
+    float shininess;
+};
+
+struct Light{
+    glm::vec3 ambient;
+    glm::vec3 diffuse;
+    glm::vec3 specular;
+};
+
 // Maximum number of textures
 extern const int MAX_TEX_COUNT;
 
 /*
- * This names must correspond to texture samplers names in fragment shader
+ * These names must correspond to texture samplers names in fragment shader
  */
 extern const std::string TEX_UNI_NAMES[];
 
@@ -36,9 +49,16 @@ extern const std::string MODEL_MATRIX_NAME;
 extern const std::string VIEW_MATRIX_NAME;
 extern const std::string PROJECTION_MATRIX_NAME;
 
-extern const std::string LIGHT_POSITION_NAME;
-extern const std::string OBJECT_COLOR_NAME;
-extern const std::string LIGHT_COLOR_NAME;
 extern const std::string VIEW_POSITION_NAME;
+
+extern const std::string MATERIAL_AMBIENT_NAME;
+extern const std::string MATERIAL_DIFFUSE_NAME;
+extern const std::string MATERIAL_SPECULAR_NAME;
+extern const std::string MATERIAL_SHININESS_NAME;
+
+extern const std::string LIGHT_POSITION_NAME;
+extern const std::string LIGHT_AMBIENT_NAME;
+extern const std::string LIGHT_DIFFUSE_NAME;
+extern const std::string LIGHT_SPECULAR_NAME;
 
 #endif //DUCK_MESH_DATA_H

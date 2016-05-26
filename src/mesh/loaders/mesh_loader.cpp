@@ -147,7 +147,16 @@ Mesh MeshLoader::LoadCube(){
 
     std::vector<Texture> textures = {texture1, texture2};
 
-    return Mesh(vertices, indices, textures);
+    Mesh mesh(vertices, indices, textures);
+
+    Material material;
+    material.ambient = glm::vec3(1.0f, 0.5f, 0.31f);
+    material.diffuse = glm::vec3(1.0f, 0.5f, 0.31f);
+    material.specular = glm::vec3(0.5f, 0.5f, 0.5f);
+    material.shininess = 32.0f;
+    mesh.setMaterial(material);
+
+    return mesh;
 }
 
 

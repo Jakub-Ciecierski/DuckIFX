@@ -53,6 +53,8 @@ public:
 
     const glm::vec3& getPosition();
 
+    Mesh* getMesh();
+
     void render(const Program& program);
     void update();
 };

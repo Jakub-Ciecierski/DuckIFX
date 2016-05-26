@@ -40,6 +40,10 @@ void LightSource::setPosition(const glm::vec3 &position) {
     }
 }
 
+void LightSource::setLight(const Light& light){
+    this->light = light;
+}
+
 const glm::vec3 &LightSource::getPosition() {
     if(followObject && renderObject != NULL){
         return renderObject->getPosition();
@@ -50,17 +54,26 @@ const glm::vec3 &LightSource::getPosition() {
 
 void LightSource::use(const Program& program) {
     program.use();
+
     const glm::vec3& pos = getPosition();
     // Light Position
     GLint lightPosLoc = glGetUniformLocation(program.getID(),
                                              LIGHT_POSITION_NAME.c_str());
     glUniform3f(lightPosLoc, pos.x, pos.y, pos.z);
 
-    // Light Color
-    GLint lightColorLoc =
-            glGetUniformLocation(program.getID(), LIGHT_COLOR_NAME.c_str());
-    glUniform3f(lightColorLoc,
-                lightColor.x, lightColor.y, lightColor.z);
+    GLint lightAmbientLoc  = glGetUniformLocation(program.getID(),
+                                                  LIGHT_AMBIENT_NAME.c_str());
+    GLint lightDiffuseLoc  = glGetUniformLocation(program.getID(),
+                                                  LIGHT_DIFFUSE_NAME.c_str());
+    GLint lightSpecularLoc = glGetUniformLocation(program.getID(),
+                                                  LIGHT_SPECULAR_NAME.c_str());
+
+    glUniform3f(lightAmbientLoc,
+                light.ambient.x, light.ambient.y, light.ambient.z);
+    glUniform3f(lightDiffuseLoc,
+                light.diffuse.x, light.diffuse.y, light.diffuse.z);
+    glUniform3f(lightSpecularLoc,
+                light.specular.x, light.specular.y, light.specular.z);
 }
 
 void LightSource::render(const Program &program) {

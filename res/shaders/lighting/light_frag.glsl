@@ -10,8 +10,6 @@ uniform vec3 viewPos;
 uniform vec3 lightPos;
 uniform vec3 lightColor;
 
-uniform vec3 objectColor;
-
 void main()
 {
     vec3 norm = normalize(Normal);
@@ -34,7 +32,7 @@ void main()
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), shininess);
     vec3 specular = specularStrength * spec * lightColor;
 
-    vec3 result = (ambient + diffuse + specular) * objectColor;
+    vec3 result = (ambient + diffuse + specular);
 
     color = vec4(result, 1.0f);
 

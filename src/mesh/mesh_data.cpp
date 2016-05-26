@@ -21,7 +21,14 @@ const std::string MODEL_MATRIX_NAME = "ModelMatrix";
 const std::string VIEW_MATRIX_NAME = "ViewMatrix";
 const std::string PROJECTION_MATRIX_NAME = "ProjectionMatrix";
 
-const std::string LIGHT_POSITION_NAME = "lightPos";
-const std::string OBJECT_COLOR_NAME = "objectColor";
-const std::string LIGHT_COLOR_NAME = "lightColor";
 const std::string VIEW_POSITION_NAME = "viewPos";
+
+const std::string MATERIAL_AMBIENT_NAME = "material.ambient";
+const std::string MATERIAL_DIFFUSE_NAME = "material.diffuse";
+const std::string MATERIAL_SPECULAR_NAME = "material.specular";
+const std::string MATERIAL_SHININESS_NAME = "material.shininess";
+
+const std::string LIGHT_POSITION_NAME = "light.position";
+const std::string LIGHT_AMBIENT_NAME = "light.ambient";
+const std::string LIGHT_DIFFUSE_NAME = "light.diffuse";
+const std::string LIGHT_SPECULAR_NAME = "light.specular";

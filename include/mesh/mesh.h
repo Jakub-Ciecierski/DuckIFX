@@ -21,7 +21,7 @@ private:
 
     std::vector<Texture> textures;
 
-    glm::vec3 objectColor;
+    Material material;
 
     VAO* vao;
     VBO* vbo;
@@ -54,9 +54,16 @@ public:
          std::vector <GLuint>& indices,
          std::vector<Texture>& textures);
 
+    Mesh(std::vector<GLfloat>& vertices,
+         std::vector <GLuint>& indices,
+         std::vector<Texture>& textures,
+         Material material);
+
     Mesh(const Mesh& mesh);
 
     ~Mesh();
+
+    void setMaterial(const Material& material);
 
     void draw(const Program& program);
 

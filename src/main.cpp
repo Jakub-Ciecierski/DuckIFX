@@ -124,6 +124,11 @@ void initExampleMeshes(){
     squareObjectLight = renderObjectLoader->loadLampObject();
 
     lightSource = new LightSource(squareObjectLight);
+    Light light;
+    light.ambient = glm::vec3(0.2f, 0.2f, 0.2f);
+    light.diffuse = glm::vec3(0.5f, 0.5f, 0.5f);
+    light.specular= glm::vec3(1.0f, 1.0f, 1.0f);
+    lightSource->setLight(light);
 
     squareObjectLight->scale(glm::vec3(0.3f, 0.3f, 0.3f));
     squareObjectLight->moveTo(glm::vec3(2.0f, 2.0f, 2.0f));
@@ -134,10 +139,10 @@ void initShaders(){
     ShaderLoader shaderLoader;
 
     VertexShader vertexShader =
-            shaderLoader.loadVertexShader("res/shaders/lighting/light_vert"
+            shaderLoader.loadVertexShader("res/shaders/lighting/mat_vert"
                                                   ".glsl");
     FragmentShader fragmentShader =
-            shaderLoader.loadFragmentShader("res/shaders/lighting/light_frag"
+            shaderLoader.loadFragmentShader("res/shaders/lighting/mat_frag"
                                                     ".glsl");
 
     vertexShader.compile();
@@ -209,11 +214,22 @@ void update(){
 
     static float a = 0;
 
-    //squareObjectLight->moveTo(glm::vec3(cos(a)*2, sin(a)*2, 0.0f));
-    a+=0.01f;
+    squareObjectLight->moveTo(glm::vec3(cos(a)*2, sin(a)*2, 0.0f));
+    a+=0.005f;
     if(a > 360) a = 0;
-    //lightSource->setFollowObject(false);
-    //lightSource->setPosition(camera->getPosition());
+
+    Material material;
+
+    glm::vec3 lightColor;
+    lightColor.x = sin(glfwGetTime() * 2.0f);
+    lightColor.y = sin(glfwGetTime() * 0.7f);
+    lightColor.z = sin(glfwGetTime() * 1.3f);
+
+    material.ambient = lightColor * glm::vec3(0.5f);
+    material.diffuse = lightColor * glm::vec3(0.5f);
+    material.specular = glm::vec3(0.5f, 0.5f, 0.5f);
+    material.shininess = 32.0f;
+    squareObject->getMesh()->setMaterial(material);
 }
 void render(){
     glClearColor(0.1f, 0.2f, 0.2f, 1.0f);
