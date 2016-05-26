@@ -15,8 +15,13 @@ struct Vertex{
     glm::vec2 TexCoords;
 };
 
+enum TextureTypes{
+    DIFFUSE, SPECULAR
+};
+
 struct Texture{
     GLuint id;
+    TextureTypes texType;
     GLenum type;
 
     Texture(){}
@@ -25,9 +30,6 @@ struct Texture{
 };
 
 struct Material{
-    glm::vec3 ambient;
-    glm::vec3 diffuse;
-    glm::vec3 specular;
     float shininess;
 };
 

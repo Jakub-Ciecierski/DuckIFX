@@ -23,6 +23,9 @@ public:
     ~TextureLoader();
 
     Texture LoadContainer();
+    Texture LoadContainerDiffuse();
+    Texture LoadContainerSpecular();
+
     Texture LoadAwesomeFace();
 };
 

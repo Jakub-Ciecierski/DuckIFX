@@ -217,19 +217,6 @@ void update(){
     squareObjectLight->moveTo(glm::vec3(cos(a)*2, sin(a)*2, 0.0f));
     a+=0.005f;
     if(a > 360) a = 0;
-
-    Material material;
-
-    glm::vec3 lightColor;
-    lightColor.x = sin(glfwGetTime() * 2.0f);
-    lightColor.y = sin(glfwGetTime() * 0.7f);
-    lightColor.z = sin(glfwGetTime() * 1.3f);
-
-    material.ambient = lightColor * glm::vec3(0.5f);
-    material.diffuse = lightColor * glm::vec3(0.5f);
-    material.specular = glm::vec3(0.5f, 0.5f, 0.5f);
-    material.shininess = 32.0f;
-    squareObject->getMesh()->setMaterial(material);
 }
 void render(){
     glClearColor(0.1f, 0.2f, 0.2f, 1.0f);

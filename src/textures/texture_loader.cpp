@@ -58,6 +58,22 @@ Texture TextureLoader::LoadContainer() {
     return texture;
 }
 
+Texture TextureLoader::LoadContainerDiffuse(){
+    GLuint id = loadFromFile("res/textures/container_diff.png");
+    Texture texture = contructTexture(id, GL_TEXTURE_2D);
+    texture.texType = TextureTypes::DIFFUSE;
+
+    return texture;
+}
+
+Texture TextureLoader::LoadContainerSpecular(){
+    GLuint id = loadFromFile("res/textures/container_specular.png");
+    Texture texture = contructTexture(id, GL_TEXTURE_2D);
+    texture.texType = TextureTypes::SPECULAR;
+
+    return texture;
+}
+
 Texture TextureLoader::LoadAwesomeFace() {
     GLuint id = loadFromFile("res/textures/awesomeface.png");
     Texture texture = contructTexture(id, GL_TEXTURE_2D);

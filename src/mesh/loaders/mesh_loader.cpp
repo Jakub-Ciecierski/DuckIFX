@@ -142,17 +142,14 @@ Mesh MeshLoader::LoadCube(){
             20, 21, 23,    21, 22, 23,        // top
     };
     TextureLoader textureLoader;
-    Texture texture1 = textureLoader.LoadContainer();
-    Texture texture2 = textureLoader.LoadAwesomeFace();
+    Texture textureDiffuse = textureLoader.LoadContainerDiffuse();
+    Texture textureSpecular = textureLoader.LoadContainerSpecular();
 
-    std::vector<Texture> textures = {texture1, texture2};
+    std::vector<Texture> textures = {textureDiffuse, textureSpecular};
 
     Mesh mesh(vertices, indices, textures);
 
     Material material;
-    material.ambient = glm::vec3(1.0f, 0.5f, 0.31f);
-    material.diffuse = glm::vec3(1.0f, 0.5f, 0.31f);
-    material.specular = glm::vec3(0.5f, 0.5f, 0.5f);
     material.shininess = 32.0f;
     mesh.setMaterial(material);
 
@@ -249,10 +246,8 @@ Mesh MeshLoader::LoadLamp(){
             20, 21, 23,    21, 22, 23,        // top
     };
     TextureLoader textureLoader;
-    Texture texture1 = textureLoader.LoadContainer();
-    Texture texture2 = textureLoader.LoadAwesomeFace();
 
-    std::vector<Texture> textures = {texture1, texture2};
+    std::vector<Texture> textures;
 
     return Mesh(vertices, indices, textures);
 }

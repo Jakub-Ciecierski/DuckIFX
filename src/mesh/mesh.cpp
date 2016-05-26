@@ -78,33 +78,24 @@ void Mesh::bindTextures(const Program& program){
     for(unsigned int i = 0; i < textures.size(); i++){
         glActiveTexture(GL_TEXTURE0 + i);
         glBindTexture(textures[i].type, textures[i].id);
-        glUniform1i(glGetUniformLocation(program.getID(),
-                                         TEX_UNI_NAMES[i].c_str()), i);
+        if(textures[i].texType == TextureTypes::DIFFUSE){
+            glUniform1i(glGetUniformLocation(program.getID(),
+                                             MATERIAL_DIFFUSE_NAME.c_str()),i);
+        }else if(textures[i].texType == TextureTypes::SPECULAR){
+            glUniform1i(glGetUniformLocation(program.getID(),
+                                             MATERIAL_SPECULAR_NAME.c_str()),i);
+        }else{
+            // TODO check proper naming convetion
+            glUniform1i(glGetUniformLocation(program.getID(),
+                                             TEX_UNI_NAMES[i].c_str()), i);
+        }
     }
 }
 
 void Mesh::bindColor(const Program& program){
-    GLint matAmbientLoc  = glGetUniformLocation(program.getID(),
-                                                MATERIAL_AMBIENT_NAME.c_str());
-    GLint matDiffuseLoc  = glGetUniformLocation(program.getID(),
-                                                MATERIAL_DIFFUSE_NAME.c_str());
-    GLint matSpecularLoc = glGetUniformLocation(program.getID(),
-                                                MATERIAL_SPECULAR_NAME.c_str());
     GLint matShineLoc = glGetUniformLocation(program.getID(),
                                              MATERIAL_SHININESS_NAME.c_str());
 
-    glUniform3f(matAmbientLoc,
-                material.ambient.x,
-                material.ambient.y,
-                material.ambient.z);
-    glUniform3f(matDiffuseLoc,
-                material.diffuse.x,
-                material.diffuse.y,
-                material.diffuse.z);
-    glUniform3f(matSpecularLoc,
-                material.specular.x,
-                material.specular.y,
-                material.specular.z);
     glUniform1f(matShineLoc, material.shininess);
 }
 
