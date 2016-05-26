@@ -2,7 +2,9 @@
 // Created by jakub on 5/26/16.
 //
 
-#include "light_source.h"
+#include <glm/detail/type_vec.hpp>
+#include <lighting/light_source.h>
+#include <iostream>
 
 LightSource::LightSource(){
     renderObject = NULL;
@@ -38,9 +40,23 @@ void LightSource::setPosition(const glm::vec3 &position) {
     }
 }
 
+const glm::vec3 &LightSource::getPosition() {
+    if(followObject && renderObject != NULL){
+        return renderObject->getPosition();
+    }else{
+        return this->position;
+    }
+}
+
 void LightSource::use(const Program& program) {
     program.use();
+    const glm::vec3& pos = getPosition();
+    // Light Position
+    GLint lightPosLoc = glGetUniformLocation(program.getID(),
+                                             LIGHT_POSITION_NAME.c_str());
+    glUniform3f(lightPosLoc, pos.x, pos.y, pos.z);
 
+    // Light Color
     GLint lightColorLoc =
             glGetUniformLocation(program.getID(), LIGHT_COLOR_NAME.c_str());
     glUniform3f(lightColorLoc,
@@ -52,4 +68,3 @@ void LightSource::render(const Program &program) {
 
     renderObject->render(program);
 }
-

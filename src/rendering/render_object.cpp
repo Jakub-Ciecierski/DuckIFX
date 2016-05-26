@@ -63,3 +63,7 @@ void RenderObject::rotate(const glm::vec3 &rotate) {
 void RenderObject::scale(const glm::vec3 &scale) {
     this->scaleFactor = scale;
 }
+
+const glm::vec3 &RenderObject::getPosition() {
+    return this->position;
+}

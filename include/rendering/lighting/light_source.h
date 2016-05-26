@@ -31,6 +31,7 @@ public:
 
     void setColor(const glm::vec3& color);
     void setPosition(const glm::vec3& position);
+    const glm::vec3& getPosition();
 
     void use(const Program& program);
     void render(const Program& program);

@@ -51,6 +51,8 @@ public:
 
     void scale(const glm::vec3& scale);
 
+    const glm::vec3& getPosition();
+
     void render(const Program& program);
     void update();
 };

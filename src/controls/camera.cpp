@@ -7,6 +7,7 @@
 #include <GL/glew.h>
 #include <glm/gtc/type_ptr.hpp>
 #include <mesh/mesh_data.h>
+#include <iostream>
 
 using namespace glm;
 
@@ -88,6 +89,10 @@ void Camera::bind(const Program &program) {
     glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(getProjectionMatrix()));
 }
 
+const glm::vec3 &Camera::getPosition() {
+    return this->position;
+}
+
 const glm::mat4 &Camera::getViewMatrix() {
     return this->ViewMatrix;
 }
@@ -95,4 +100,3 @@ const glm::mat4 &Camera::getViewMatrix() {
 const glm::mat4 &Camera::getProjectionMatrix() {
     return this->ProjectionMatrix;
 }
-
