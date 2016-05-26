@@ -1,10 +1,9 @@
 //
 // Created by jakub on 5/26/16.
 //
-
+#include "camera_controls.h"
 #include <GLFW/glfw3.h>
 #include <controls/keys.h>
-#include "camera_controls.h"
 
 CameraControls::CameraControls(Camera* camera,
                                float movementSpeed, float rotationSpeed) :

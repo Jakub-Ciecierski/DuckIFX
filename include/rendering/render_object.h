@@ -51,8 +51,6 @@ public:
 
     void scale(const glm::vec3& scale);
 
-    glm::mat4 getModelMatrix();
-
     void render(const Program& program);
     void update();
 };

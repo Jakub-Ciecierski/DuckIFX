@@ -11,6 +11,7 @@
 #include <render_object.h>
 #include <render_object_loader.h>
 #include <camera.h>
+#include <lighting/light_source.h>
 #include "camera_controls.h"
 #include "window.h"
 
@@ -28,8 +29,12 @@ CameraControls * controls;
 
 RenderObjectLoader* renderObjectLoader;
 RenderObject* squareObject;
+RenderObject* squareObjectLight;
+
+LightSource* lightSource;
 
 Program* program;
+Program* programLight;
 
 // ------------------------------
 
@@ -107,6 +112,8 @@ void initScene(){
     initExampleMeshes();
 
     camera = new Camera(&width, &height);
+    camera->moveTo(glm::vec3(-1.5f, 0.8f, 0.0f));
+
     controls = new CameraControls(camera);
 }
 
@@ -114,28 +121,52 @@ void initExampleMeshes(){
     renderObjectLoader = new RenderObjectLoader();
 
     squareObject = renderObjectLoader->loadCubeObject();
+    squareObjectLight = renderObjectLoader->loadLampObject();
+
+    lightSource = new LightSource(squareObjectLight);
+
+    squareObjectLight->scale(glm::vec3(0.3f, 0.3f, 0.3f));
+    squareObjectLight->moveTo(glm::vec3(2.0f, 2.0f, 2.0f));
 }
 
 void initShaders(){
     ShaderLoader shaderLoader;
 
     VertexShader vertexShader =
-            shaderLoader.loadVertexShader("res/shaders/tex_vert.glsl");
+            shaderLoader.loadVertexShader("res/shaders/lighting/light_vert"
+                                                  ".glsl");
     FragmentShader fragmentShader =
-            shaderLoader.loadFragmentShader("res/shaders/tex_frag.glsl");
+            shaderLoader.loadFragmentShader("res/shaders/lighting/light_frag"
+                                                    ".glsl");
 
-    fragmentShader.compile();
     vertexShader.compile();
+    fragmentShader.compile();
 
     program = new Program(vertexShader, fragmentShader);
+
+    VertexShader vertexShaderLight =
+            shaderLoader.loadVertexShader("res/shaders/lighting/light_src_vert"
+                                                  ".glsl");
+    FragmentShader fragmentShaderLight =
+            shaderLoader.loadFragmentShader
+                    ("res/shaders/lighting/light_src_frag"
+                                                    ".glsl");
+    vertexShaderLight.compile();
+    fragmentShaderLight.compile();
+
+    programLight = new Program(vertexShaderLight, fragmentShaderLight);
 }
 
 void releaseResources(){
     delete window;
     delete program;
+    delete programLight;
 
     delete renderObjectLoader;
     delete squareObject;
+    delete squareObjectLight;
+
+    delete lightSource;
 }
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
@@ -172,21 +203,19 @@ void update(){
     controls->doMovement();
     camera->update();
 
+    squareObjectLight->update();
     squareObject->update();
 }
 void render(){
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    GLint viewLoc = glGetUniformLocation(program->getID(),
-                                              VIEW_MATRIX_NAME.c_str());
-    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(camera->getViewMatrix()));
-
-    GLint projLoc = glGetUniformLocation(program->getID(),
-                                              PROJECTION_MATRIX_NAME.c_str());
-    glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(camera->getProjectionMatrix()));
-
+    camera->bind(*program);
+    lightSource->use(*program);
     squareObject->render(*program);
+
+    camera->bind(*programLight);
+    lightSource->render(*programLight);
 }
 
 void mainLoop(){

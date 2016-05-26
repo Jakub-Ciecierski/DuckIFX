@@ -6,7 +6,12 @@
 #define DUCK_CAMERA_H
 
 #include <glm/gtc/matrix_transform.hpp>
+#include <shaders/program.h>
 
+/*
+ * Camera represents the Projection and View Matrices.
+ * Uses Eulor angles (lookAt) FPS style.
+ */
 class Camera {
 private:
     glm::vec3 position;
@@ -48,6 +53,8 @@ public:
     void rotateTo(const glm::vec3& rotation);
 
     void update();
+
+    void bind(const Program &program);
 
     const glm::mat4& getViewMatrix();
     const glm::mat4& getProjectionMatrix();

@@ -22,6 +22,9 @@ void RenderObject::initVectors(){
 }
 
 void RenderObject::render(const Program& program){
+    program.use();
+
+    // Model
     GLint transformLoc = glGetUniformLocation(program.getID(),
                                               MODEL_MATRIX_NAME.c_str());
     glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(Model));

@@ -2,7 +2,11 @@
 // Created by jakub on 5/26/16.
 //
 
+
 #include "camera.h"
+#include <GL/glew.h>
+#include <glm/gtc/type_ptr.hpp>
+#include <mesh/mesh_data.h>
 
 using namespace glm;
 
@@ -72,6 +76,18 @@ void Camera::update() {
     ViewMatrix = glm::lookAt(position, position + direction, up);
 }
 
+void Camera::bind(const Program &program) {
+    program.use();
+
+    GLint viewLoc = glGetUniformLocation(program.getID(),
+                                         VIEW_MATRIX_NAME.c_str());
+    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(getViewMatrix()));
+
+    GLint projLoc = glGetUniformLocation(program.getID(),
+                                         PROJECTION_MATRIX_NAME.c_str());
+    glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(getProjectionMatrix()));
+}
+
 const glm::mat4 &Camera::getViewMatrix() {
     return this->ViewMatrix;
 }
@@ -79,3 +95,4 @@ const glm::mat4 &Camera::getViewMatrix() {
 const glm::mat4 &Camera::getProjectionMatrix() {
     return this->ProjectionMatrix;
 }
+

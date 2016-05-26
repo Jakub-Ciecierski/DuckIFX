@@ -18,7 +18,7 @@ public:
 
     Object(ObjectID id, std::string name);
 
-    ~Object();
+    virtual ~Object();
 
 };
 

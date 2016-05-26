@@ -26,6 +26,8 @@ Mesh::Mesh(vector<GLfloat>& vertices,
         vertices(vertices), indices(indices), textures(textures){
     checkError();
     initBuffers();
+
+    objectColor = glm::vec3(1.0f, 0.5f, 0.31f);
 }
 
 Mesh::Mesh(const Mesh& mesh){
@@ -52,6 +54,8 @@ void Mesh::copy(const Mesh& other){
     indices = other.indices;
     textures = other.textures;
 
+    objectColor = other.objectColor;
+
     initBuffers();
 }
 
@@ -73,9 +77,18 @@ void Mesh::bindTextures(const Program& program){
     }
 }
 
+void Mesh::bindColor(const Program& program){
+    // Color
+    GLint objectColorLoc = glGetUniformLocation(program.getID(),
+                                                OBJECT_COLOR_NAME.c_str());
+    glUniform3f(objectColorLoc, objectColor.x, objectColor.y, objectColor.z);
+}
+
 void Mesh::draw(const Program& program){
     program.use();
+
     this->bindTextures(program);
+    this->bindColor(program);
 
     vao->bind();
 

@@ -34,7 +34,7 @@ include_directories(${INC_DIRS} res/)
 
 # SOURCES AUTOMATIC SEARCH
 file(GLOB_RECURSE SRC_FILES src/*.cpp)
-set(SOURCE_FILES src/rendering/render_object.cpp include/rendering/render_object.h src/scene/scene.cpp include/scene/scene.h src/rendering/loaders/render_object_loader.cpp include/rendering/loaders/render_object_loader.h src/controls/camera.cpp include/controls/camera.h src/controls/camera_controls.cpp include/controls/camera_controls.h src/controls/keys.cpp include/controls/keys.h)
+set(SOURCE_FILES src/rendering/render_object.cpp include/rendering/render_object.h src/scene/scene.cpp include/scene/scene.h src/rendering/loaders/render_object_loader.cpp include/rendering/loaders/render_object_loader.h src/controls/camera.cpp include/controls/camera.h src/controls/camera_controls.cpp include/controls/camera_controls.h src/controls/keys.cpp include/controls/keys.h src/rendering/lighting/light_source.cpp include/rendering/lighting/light_source.h)
 
 add_executable(duck ${SOURCE_FILES} ${SRC_FILES} res)
 

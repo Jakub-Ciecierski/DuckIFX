@@ -21,6 +21,8 @@ private:
 
     std::vector<Texture> textures;
 
+    glm::vec3 objectColor;
+
     VAO* vao;
     VBO* vbo;
     EBO* ebo;
@@ -41,6 +43,7 @@ private:
      * Binds all textures during draw operation
      */
     void bindTextures(const Program& program);
+    void bindColor(const Program& program);
 public:
 
     Mesh();
