@@ -209,7 +209,7 @@ void update(){
 
     static float a = 0;
 
-    squareObjectLight->moveTo(glm::vec3(cos(a)*2, sin(a)*2, 0.0f));
+    //squareObjectLight->moveTo(glm::vec3(cos(a)*2, sin(a)*2, 0.0f));
     a+=0.01f;
     if(a > 360) a = 0;
     //lightSource->setFollowObject(false);
@@ -219,11 +219,12 @@ void render(){
     glClearColor(0.1f, 0.2f, 0.2f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    camera->bind(*program);
+    camera->use(*program);
     lightSource->use(*program);
+
     squareObject->render(*program);
 
-    camera->bind(*programLight);
+    camera->use(*programLight);
     lightSource->render(*programLight);
 }
 

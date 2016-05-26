@@ -39,5 +39,6 @@ extern const std::string PROJECTION_MATRIX_NAME;
 extern const std::string LIGHT_POSITION_NAME;
 extern const std::string OBJECT_COLOR_NAME;
 extern const std::string LIGHT_COLOR_NAME;
+extern const std::string VIEW_POSITION_NAME;
 
 #endif //DUCK_MESH_DATA_H

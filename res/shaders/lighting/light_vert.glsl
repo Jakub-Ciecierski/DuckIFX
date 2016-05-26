@@ -21,5 +21,7 @@ void main()
     // calculate the Ray between Fragment and Light position for each fragment
     FragPos = vec3(ModelMatrix * pos4);
 
-    Normal = normal;
+    // Multiply by the "Normal Matrix"
+    // TODO This should be calculatd on CPU and send as uniform mat4
+    Normal = mat3(transpose(inverse(ModelMatrix))) * normal;
 }

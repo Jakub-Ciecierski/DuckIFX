@@ -24,6 +24,15 @@ Camera::~Camera() {
 
 }
 
+void Camera::clampRotation(){
+    if(rotation.y < - 89){
+        rotation.y = -89;
+    }
+    if(rotation.y > 89){
+        rotation.y = 89;
+    }
+}
+
 void Camera::moveTo(const glm::vec3 &position) {
     this->position = position;
 }
@@ -54,10 +63,12 @@ void Camera::moveDown(float speedBoost) {
 
 void Camera::rotate(const glm::vec3 &rotation) {
     this->rotation += rotation;
+    clampRotation();
 }
 
 void Camera::rotateTo(const glm::vec3 &rotation) {
     this->rotation = rotation;
+    clampRotation();
 }
 
 void Camera::update() {
@@ -77,16 +88,23 @@ void Camera::update() {
     ViewMatrix = glm::lookAt(position, position + direction, up);
 }
 
-void Camera::bind(const Program &program) {
+void Camera::use(const Program &program) {
     program.use();
 
+    // View Matrix
     GLint viewLoc = glGetUniformLocation(program.getID(),
                                          VIEW_MATRIX_NAME.c_str());
     glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(getViewMatrix()));
 
+    // Projection Matrix
     GLint projLoc = glGetUniformLocation(program.getID(),
                                          PROJECTION_MATRIX_NAME.c_str());
     glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(getProjectionMatrix()));
+
+    // View Position
+    GLint viewPosLoc = glGetUniformLocation(program.getID(),
+                                            VIEW_POSITION_NAME.c_str());
+    glUniform3f(viewPosLoc, position.x, position.y, position.z);
 }
 
 const glm::vec3 &Camera::getPosition() {

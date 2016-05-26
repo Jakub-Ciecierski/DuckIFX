@@ -24,3 +24,4 @@ const std::string PROJECTION_MATRIX_NAME = "ProjectionMatrix";
 const std::string LIGHT_POSITION_NAME = "lightPos";
 const std::string OBJECT_COLOR_NAME = "objectColor";
 const std::string LIGHT_COLOR_NAME = "lightColor";
+const std::string VIEW_POSITION_NAME = "viewPos";

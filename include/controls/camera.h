@@ -40,6 +40,7 @@ public:
            float near = 0.1f, float far = 100.0f);
 
     ~Camera();
+    void clampRotation();
 
     void moveTo(const glm::vec3& position);
     void moveForward(float speedBoost);
@@ -54,7 +55,7 @@ public:
 
     void update();
 
-    void bind(const Program &program);
+    void use(const Program &program);
 
     const glm::vec3& getPosition();
     const glm::mat4& getViewMatrix();
