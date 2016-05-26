@@ -4,24 +4,24 @@
 
 #include <GLFW/glfw3.h>
 #include <controls/keys.h>
-#include "controls.h"
+#include "camera_controls.h"
 
-Controls::Controls(Camera* camera,
-                   float movementSpeed, float rotationSpeed) :
+CameraControls::CameraControls(Camera* camera,
+                               float movementSpeed, float rotationSpeed) :
         camera(camera),
         movementSpeed(movementSpeed), rotationSpeed(rotationSpeed){
     setMousePress(false);
 }
 
-Controls::~Controls() {
+CameraControls::~CameraControls() {
 
 }
 
-void Controls::setMousePress(bool value){
+void CameraControls::setMousePress(bool value){
     this->mousePressed = value;
 }
 
-bool Controls::doMovement() {
+bool CameraControls::doMovement() {
     float boost = movementSpeed;
     if(keys[GLFW_KEY_SPACE]){
         boost *= 3.0f;
@@ -42,12 +42,12 @@ bool Controls::doMovement() {
         camera->moveDown(boost);
 }
 
-void Controls::setPressedPosition(float x, float y){
+void CameraControls::setPressedPosition(float x, float y){
     mouselastX = x;
     mouselastY = y;
 }
 
-void Controls::onMouseAction(float xpos, float ypos){
+void CameraControls::onMouseAction(float xpos, float ypos){
     if(mousePressed) {
         GLfloat xoffset = xpos - mouselastX;
         GLfloat yoffset = mouselastY - ypos;
@@ -60,7 +60,7 @@ void Controls::onMouseAction(float xpos, float ypos){
     }
 }
 
-void Controls::onKeyboardAction(int action, int key){
+void CameraControls::onKeyboardAction(int action, int key){
     if(key >= 0 && key < 1024){
         if(action == GLFW_PRESS){
             keys[key] = true;

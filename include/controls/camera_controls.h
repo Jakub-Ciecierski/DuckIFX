@@ -8,7 +8,7 @@
 
 #include <camera.h>
 
-class Controls {
+class CameraControls {
 private:
     Camera* camera;
 
@@ -22,11 +22,11 @@ private:
 
 public:
 
-    Controls(Camera* camera,
-             float movementSpeed = 0.1f,
-             float rotationSpeed = 0.1f);
+    CameraControls(Camera* camera,
+                   float movementSpeed = 0.1f,
+                   float rotationSpeed = 0.1f);
 
-    ~Controls();
+    ~CameraControls();
 
     void setMousePress(bool value);
     bool doMovement();

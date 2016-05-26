@@ -11,7 +11,7 @@
 #include <render_object.h>
 #include <render_object_loader.h>
 #include <camera.h>
-#include <controls/controls.h>
+#include "camera_controls.h"
 #include "window.h"
 
 using namespace std;
@@ -24,11 +24,10 @@ int height;
 ifc::Window* window;
 
 Camera* camera;
-Controls* controls;
+CameraControls * controls;
 
 RenderObjectLoader* renderObjectLoader;
 RenderObject* squareObject;
-RenderObject* triangleObject;
 
 Program* program;
 
@@ -100,8 +99,6 @@ void initCallbacks(){
     glfwSetKeyCallback(window->getHandle(), key_callback);
     glfwSetCursorPosCallback(window->getHandle(), mouse_callback);
     glfwSetMouseButtonCallback(window->getHandle(), mouse_button_callback);
-
-
 }
 
 
@@ -110,7 +107,7 @@ void initScene(){
     initExampleMeshes();
 
     camera = new Camera(&width, &height);
-    controls = new Controls(camera);
+    controls = new CameraControls(camera);
 }
 
 void initExampleMeshes(){
