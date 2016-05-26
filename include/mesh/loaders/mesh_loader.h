@@ -18,6 +18,8 @@ public:
 
     static Mesh LoadTriangle();
     static Mesh LoadSqaure();
+    static Mesh LoadCube();
+
 };
 
 

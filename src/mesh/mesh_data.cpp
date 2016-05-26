@@ -19,4 +19,4 @@ const std::string TEX_UNI_NAMES[MAX_TEX_COUNT] = {
 
 const std::string MODEL_MATRIX_NAME = "ModelMatrix";
 const std::string VIEW_MATRIX_NAME = "ViewMatrix";
-const std::string PROJECTION_MATRIX_NAME = "ProjMatrix";
+const std::string PROJECTION_MATRIX_NAME = "ProjectionMatrix";

@@ -15,6 +15,7 @@ RenderObjectLoader::~RenderObjectLoader() {
 void RenderObjectLoader::initMeshes() {
     sqaureMesh = meshLoader.LoadSqaure();
     triangleMesh = meshLoader.LoadTriangle();
+    cubeMesh = meshLoader.LoadCube();
 }
 
 
@@ -32,3 +33,9 @@ RenderObject* RenderObjectLoader::loadTriangleObject() {
     return renderObject;
 }
 
+RenderObject *RenderObjectLoader::loadCubeObject() {
+    RenderObject* renderObject
+            = new RenderObject(ObjectID(0), "Cube", &cubeMesh);
+
+    return renderObject;
+}

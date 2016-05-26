@@ -3,7 +3,6 @@
 //
 
 #include "render_object.h"
-#include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
 using namespace glm;

@@ -18,6 +18,7 @@ private:
 
     Mesh sqaureMesh;
     Mesh triangleMesh;
+    Mesh cubeMesh;
 
     void initMeshes();
 
@@ -29,6 +30,7 @@ public:
 
     RenderObject* loadSqaureObject();
     RenderObject* loadTriangleObject();
+    RenderObject* loadCubeObject();
 };
 
 
