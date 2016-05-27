@@ -111,6 +111,10 @@ const glm::vec3 &Camera::getPosition() {
     return this->position;
 }
 
+const glm::vec3 &Camera::getDirection() {
+    return this->direction;
+}
+
 const glm::mat4 &Camera::getViewMatrix() {
     return this->ViewMatrix;
 }

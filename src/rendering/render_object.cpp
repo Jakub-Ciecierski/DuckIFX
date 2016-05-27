@@ -27,21 +27,21 @@ void RenderObject::render(const Program& program){
     // Model
     GLint transformLoc = glGetUniformLocation(program.getID(),
                                               MODEL_MATRIX_NAME.c_str());
-    glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(Model));
+    glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(ModelMatrix));
 
     mesh->draw(program);
 }
 
 void RenderObject::update(){
-    Model = mat4();
+    ModelMatrix = mat4();
 
-    Model = translate(Model, position);
+    ModelMatrix = translate(ModelMatrix, position);
 
-    Model = glm::rotate(Model, rotation.x, vec3(1.0f, 0.0f, 0.0f));
-    Model = glm::rotate(Model, rotation.y, vec3(0.0f, 1.0f, 0.0f));
-    Model = glm::rotate(Model, rotation.z, vec3(0.0f, 0.0f, 1.0f));
+    ModelMatrix = glm::rotate(ModelMatrix, rotation.x, vec3(1.0f, 0.0f, 0.0f));
+    ModelMatrix = glm::rotate(ModelMatrix, rotation.y, vec3(0.0f, 1.0f, 0.0f));
+    ModelMatrix = glm::rotate(ModelMatrix, rotation.z, vec3(0.0f, 0.0f, 1.0f));
 
-    Model = glm::scale(Model, scaleFactor);
+    ModelMatrix = glm::scale(ModelMatrix, scaleFactor);
 }
 
 void RenderObject::moveTo(const glm::vec3 &position) {

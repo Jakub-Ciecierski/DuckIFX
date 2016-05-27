@@ -9,13 +9,16 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <mesh/mesh.h>
 
+/*
+ * RenderObject is used to render Meshes.
+ */
 class RenderObject : public Object{
 private:
     glm::vec3 position;
     glm::vec3 rotation;
     glm::vec3 scaleFactor;
 
-    glm::mat4 Model;
+    glm::mat4 ModelMatrix;
 
     Mesh* mesh;
 
@@ -55,7 +58,14 @@ public:
 
     Mesh* getMesh();
 
+    /*
+     * Binds the Model matrix and draws Mesh
+     */
     void render(const Program& program);
+
+    /*
+     * Updates the Model Matrix
+     */
     void update();
 };
 

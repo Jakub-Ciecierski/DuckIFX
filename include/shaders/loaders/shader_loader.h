@@ -9,6 +9,9 @@
 #include <shaders/fragment_shader.h>
 #include <shaders/vertex_shader.h>
 
+/*
+ * Logic behind loading Shaders from files
+ */
 class ShaderLoader {
 private:
 

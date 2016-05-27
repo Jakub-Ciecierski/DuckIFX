@@ -9,6 +9,12 @@
 #include <GL/gl.h>
 #include <string>
 
+/**
+ * Provides all the data used by Meshes and Lights.
+ * Provides uniform global strings for shader binding.
+ * TODO Separate the Mesh, Light and shader data.
+ */
+
 struct Vertex{
     glm::vec3 Position;
     glm::vec3 Normal;
@@ -37,6 +43,15 @@ struct Light{
     glm::vec3 ambient;
     glm::vec3 diffuse;
     glm::vec3 specular;
+
+    // Attenuation
+    float constant;
+    float linear;
+    float quadratic;
+
+    // FlashLight cutOff angle, in degrees
+    float cutOff;
+    float outerCutOff;
 };
 
 // Maximum number of textures
@@ -59,8 +74,15 @@ extern const std::string MATERIAL_SPECULAR_NAME;
 extern const std::string MATERIAL_SHININESS_NAME;
 
 extern const std::string LIGHT_POSITION_NAME;
+extern const std::string LIGHT_DIRECTION_NAME;
 extern const std::string LIGHT_AMBIENT_NAME;
 extern const std::string LIGHT_DIFFUSE_NAME;
 extern const std::string LIGHT_SPECULAR_NAME;
 
+extern const std::string LIGHT_ATTENUATION_CONST_NAME;
+extern const std::string LIGHT_ATTENUATION_LINEAR_NAME;
+extern const std::string LIGHT_ATTENUATION_QUAD_NAME;
+
+extern const std::string LIGHT_FLASHLIGHT_CUTOFF_NAME;
+extern const std::string LIGHT_FLASHLIGHT_OUTER_CUTOFF_NAME;
 #endif //DUCK_MESH_DATA_H

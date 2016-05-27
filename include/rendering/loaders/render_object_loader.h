@@ -10,7 +10,8 @@
 #include <render_object.h>
 
 /*
- * Loads meshes using MeshLoader and creates render objects
+ * Loads meshes using MeshLoader and creates render objects.
+ * Must be created after rendering context is ready.
  */
 class RenderObjectLoader {
 private:

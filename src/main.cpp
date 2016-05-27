@@ -12,8 +12,11 @@
 #include <render_object_loader.h>
 #include <camera.h>
 #include <lighting/light_source.h>
+#include <lighting/light_global.h>
+#include <light_loader.h>
 #include "camera_controls.h"
 #include "window.h"
+#include "shaders/loaders/program_loader.h"
 
 using namespace std;
 
@@ -28,13 +31,21 @@ Camera* camera;
 CameraControls * controls;
 
 RenderObjectLoader* renderObjectLoader;
-RenderObject* squareObject;
 RenderObject* squareObjectLight;
 
-LightSource* lightSource;
+const int BOXES_COUNT = 10;
+RenderObject* boxes[BOXES_COUNT];
 
-Program* program;
-Program* programLight;
+LightLoader lightLoader;
+LightGlobal*lightGlobal;
+LightDirectional* lightDir;
+
+ProgramLoader programLoader;
+Program* programDirLight;
+Program* programFlashlight;
+Program* programGlobalLight;
+Program* programGlobalAttenuationLight;
+Program* programLamp;
 
 // ------------------------------
 
@@ -108,71 +119,75 @@ void initCallbacks(){
 
 
 void initScene(){
-    initShaders();
-    initExampleMeshes();
-
     camera = new Camera(&width, &height);
     camera->moveTo(glm::vec3(-1.5f, 0.8f, 0.0f));
 
     controls = new CameraControls(camera);
+
+    initShaders();
+    initExampleMeshes();
 }
 
 void initExampleMeshes(){
     renderObjectLoader = new RenderObjectLoader();
 
-    squareObject = renderObjectLoader->loadCubeObject();
     squareObjectLight = renderObjectLoader->loadLampObject();
 
-    lightSource = new LightSource(squareObjectLight);
-    Light light;
-    light.ambient = glm::vec3(0.2f, 0.2f, 0.2f);
-    light.diffuse = glm::vec3(0.5f, 0.5f, 0.5f);
-    light.specular= glm::vec3(1.0f, 1.0f, 1.0f);
-    lightSource->setLight(light);
+    lightGlobal = lightLoader.loadLightGlobal();
+    lightGlobal->setRenderObject(squareObjectLight);
+
+    lightDir = lightLoader.loadLightDirectional();
+    lightDir->setRenderObject(squareObjectLight);
+    lightDir->setCamera(camera);
 
     squareObjectLight->scale(glm::vec3(0.3f, 0.3f, 0.3f));
     squareObjectLight->moveTo(glm::vec3(2.0f, 2.0f, 2.0f));
     squareObjectLight->moveTo(glm::vec3(0.0f, 5.0f, 0.0f));
+
+    int MAX = 5;
+    float min = 2.5f;
+    for(int i = 0; i < BOXES_COUNT; i++){
+        float x =
+                static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/MAX));
+        float y =
+                static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/MAX));
+        float z =
+                static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/MAX));
+
+        boxes[i] = renderObjectLoader->loadCubeObject();
+        boxes[i]->moveTo(glm::vec3(x - min, y - min, z - min));
+    }
 }
 
 void initShaders(){
-    ShaderLoader shaderLoader;
+    programGlobalLight = programLoader.loadGlobalLightProgram();
+    programGlobalAttenuationLight
+            = programLoader.loadGlobalAttenuationLightProgram();
 
-    VertexShader vertexShader =
-            shaderLoader.loadVertexShader("res/shaders/lighting/mat_vert"
-                                                  ".glsl");
-    FragmentShader fragmentShader =
-            shaderLoader.loadFragmentShader("res/shaders/lighting/mat_frag"
-                                                    ".glsl");
+    programDirLight = programLoader.loadDirectionalLightProgram();
+    programFlashlight = programLoader.loadFlashlightProgram();
 
-    vertexShader.compile();
-    fragmentShader.compile();
-
-    program = new Program(vertexShader, fragmentShader);
-
-    VertexShader vertexShaderLight =
-            shaderLoader.loadVertexShader("res/shaders/lighting/light_src_vert"
-                                                  ".glsl");
-    FragmentShader fragmentShaderLight =
-            shaderLoader.loadFragmentShader
-                    ("res/shaders/lighting/light_src_frag"
-                                                    ".glsl");
-    vertexShaderLight.compile();
-    fragmentShaderLight.compile();
-
-    programLight = new Program(vertexShaderLight, fragmentShaderLight);
+    programLamp = programLoader.loadLampProgram();
 }
 
 void releaseResources(){
     delete window;
-    delete program;
-    delete programLight;
+
+    delete programGlobalLight;
+    delete programGlobalAttenuationLight;
+    delete programDirLight;
+    delete programFlashlight;
+    delete programLamp;
 
     delete renderObjectLoader;
-    delete squareObject;
     delete squareObjectLight;
 
-    delete lightSource;
+    delete lightDir;
+    delete lightGlobal;
+
+    for(int i = 0; i < BOXES_COUNT; i++){
+        delete boxes[i];
+    }
 }
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
@@ -209,26 +224,35 @@ void update(){
     controls->doMovement();
     camera->update();
 
+    for(int i = 0; i < BOXES_COUNT; i++){
+        boxes[i]->update();
+    }
     squareObjectLight->update();
-    squareObject->update();
 
+    // ------------------
     static float a = 0;
-
-    squareObjectLight->moveTo(glm::vec3(cos(a)*2, sin(a)*2, 0.0f));
+    float radius = 4.0f;
+    squareObjectLight->moveTo(glm::vec3(cos(a)*radius ,
+                                        sin(a)*radius , 0.0f));
     a+=0.005f;
     if(a > 360) a = 0;
+    // ------------------
+    //squareObjectLight->moveTo(camera->getPosition());
 }
 void render(){
     glClearColor(0.1f, 0.2f, 0.2f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    camera->use(*program);
-    lightSource->use(*program);
+    camera->use(*programFlashlight);
+    //lightGlobal->use(*programGlobalAttenuationLight);
+    lightDir->use(*programFlashlight);
 
-    squareObject->render(*program);
+    for(int i = 0; i < BOXES_COUNT; i++){
+        boxes[i]->render(*programFlashlight);
+    }
 
-    camera->use(*programLight);
-    lightSource->render(*programLight);
+    camera->use(*programLamp);
+    squareObjectLight->render(*programLamp);
 }
 
 void mainLoop(){

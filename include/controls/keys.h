@@ -5,6 +5,9 @@
 #ifndef DUCK_KEYS_H
 #define DUCK_KEYS_H
 
+/*
+ * The keys are used to store the input from the keyboard
+ */
 extern bool keys[];
 
 extern const int W_KEY;

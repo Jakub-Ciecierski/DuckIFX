@@ -23,12 +23,19 @@ const std::string PROJECTION_MATRIX_NAME = "ProjectionMatrix";
 
 const std::string VIEW_POSITION_NAME = "viewPos";
 
-const std::string MATERIAL_AMBIENT_NAME = "material.ambient";
 const std::string MATERIAL_DIFFUSE_NAME = "material.diffuse";
 const std::string MATERIAL_SPECULAR_NAME = "material.specular";
 const std::string MATERIAL_SHININESS_NAME = "material.shininess";
 
 const std::string LIGHT_POSITION_NAME = "light.position";
+const std::string LIGHT_DIRECTION_NAME = "light.direction";
 const std::string LIGHT_AMBIENT_NAME = "light.ambient";
 const std::string LIGHT_DIFFUSE_NAME = "light.diffuse";
 const std::string LIGHT_SPECULAR_NAME = "light.specular";
+
+const std::string LIGHT_ATTENUATION_CONST_NAME = "light.constant";
+const std::string LIGHT_ATTENUATION_LINEAR_NAME = "light.linear";
+const std::string LIGHT_ATTENUATION_QUAD_NAME = "light.quadratic";
+
+const std::string LIGHT_FLASHLIGHT_CUTOFF_NAME = "light.cutOff";
+const std::string LIGHT_FLASHLIGHT_OUTER_CUTOFF_NAME = "light.outerCutOff";

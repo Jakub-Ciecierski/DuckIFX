@@ -58,6 +58,8 @@ public:
     void use(const Program &program);
 
     const glm::vec3& getPosition();
+    const glm::vec3& getDirection();
+
     const glm::mat4& getViewMatrix();
     const glm::mat4& getProjectionMatrix();
 };

@@ -27,8 +27,7 @@ void Shader::compile() {
     GLint success;
     GLchar infoLog[512];
     glGetShaderiv(id, GL_COMPILE_STATUS, &success);
-    if(!success)
-    {
+    if(!success) {
         glGetShaderInfoLog(id, 512, NULL, infoLog);
         std::string infoLogStr = infoLog;
         std::cout << infoLogStr << std::endl;

@@ -1,5 +1,11 @@
 #version 330 core
 
+/*
+ * Phong illumination: Global Light.
+ * Good to represent global infinite light such as the Sun
+ * Use with combination with LightGlobal
+ */
+
 in vec3 Normal;
 in vec3 FragPos;
 in vec2 TexCoords;

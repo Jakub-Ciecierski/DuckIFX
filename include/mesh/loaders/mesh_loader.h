@@ -7,6 +7,9 @@
 
 #include "mesh.h"
 
+/*
+ * Loads specific meshes to the system
+ */
 class MeshLoader {
 private:
 

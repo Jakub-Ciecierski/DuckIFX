@@ -4,38 +4,41 @@
 
 #include <glm/detail/type_vec.hpp>
 #include <lighting/light_source.h>
-#include <iostream>
 
 LightSource::LightSource(){
-    renderObject = NULL;
+    followedRenderObject = NULL;
+    followedCamera = NULL;
 
-    setFollowObject(false);
-
-    lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
+    setFollow(true);
 }
 
 LightSource::LightSource(RenderObject *renderObject) :
-        renderObject(renderObject){
-    setFollowObject(true);
-
-    lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
+        followedRenderObject(renderObject){
+    followedCamera = NULL;
+    setFollow(true);
 }
 
 LightSource::~LightSource() {
 
 }
 
-void LightSource::setFollowObject(bool value) {
-    followObject = value;
+void LightSource::setRenderObject(RenderObject* object){
+    this->followedRenderObject = object;
+    this->followedCamera = NULL;
 }
 
-void LightSource::setColor(const glm::vec3 &color) {
-    this->lightColor = color;
+void LightSource::setCamera(Camera *camera) {
+    this->followedCamera = camera;
+    this->followedRenderObject = NULL;
 }
 
+
+void LightSource::setFollow(bool value) {
+    isFollow = value;
+}
 
 void LightSource::setPosition(const glm::vec3 &position) {
-    if(!followObject){
+    if(!isFollow){
         this->position = position;
     }
 }
@@ -45,8 +48,10 @@ void LightSource::setLight(const Light& light){
 }
 
 const glm::vec3 &LightSource::getPosition() {
-    if(followObject && renderObject != NULL){
-        return renderObject->getPosition();
+    if(isFollow && followedRenderObject != NULL){
+        return followedRenderObject->getPosition();
+    }else if(isFollow && followedCamera != NULL){
+        return followedCamera->getPosition();
     }else{
         return this->position;
     }
@@ -55,11 +60,7 @@ const glm::vec3 &LightSource::getPosition() {
 void LightSource::use(const Program& program) {
     program.use();
 
-    const glm::vec3& pos = getPosition();
-    // Light Position
-    GLint lightPosLoc = glGetUniformLocation(program.getID(),
-                                             LIGHT_POSITION_NAME.c_str());
-    glUniform3f(lightPosLoc, pos.x, pos.y, pos.z);
+    bind(program);
 
     GLint lightAmbientLoc  = glGetUniformLocation(program.getID(),
                                                   LIGHT_AMBIENT_NAME.c_str());
@@ -68,16 +69,30 @@ void LightSource::use(const Program& program) {
     GLint lightSpecularLoc = glGetUniformLocation(program.getID(),
                                                   LIGHT_SPECULAR_NAME.c_str());
 
+    GLint lightAttenConstLoc
+            = glGetUniformLocation(program.getID(),
+                                   LIGHT_ATTENUATION_CONST_NAME.c_str());
+    GLint lightAttenLinLoc
+            = glGetUniformLocation(program.getID(),
+                                   LIGHT_ATTENUATION_LINEAR_NAME.c_str());
+    GLint lightAttenQuadLoc
+            = glGetUniformLocation(program.getID(),
+                                   LIGHT_ATTENUATION_QUAD_NAME.c_str());
+
     glUniform3f(lightAmbientLoc,
                 light.ambient.x, light.ambient.y, light.ambient.z);
     glUniform3f(lightDiffuseLoc,
                 light.diffuse.x, light.diffuse.y, light.diffuse.z);
     glUniform3f(lightSpecularLoc,
                 light.specular.x, light.specular.y, light.specular.z);
+
+    glUniform1f(lightAttenConstLoc, light.constant);
+    glUniform1f(lightAttenLinLoc, light.linear);
+    glUniform1f(lightAttenQuadLoc, light.quadratic);
 }
 
 void LightSource::render(const Program &program) {
-    if(renderObject == NULL) return;
+    if(followedRenderObject == NULL) return;
 
-    renderObject->render(program);
+    followedRenderObject->render(program);
 }

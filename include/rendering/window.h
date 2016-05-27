@@ -7,7 +7,12 @@
 
 #include <string>
 #include <GLFW/glfw3.h>
+
+
 namespace ifc {
+    /*
+     * Windows Context, encapsulating the GLFW handle
+     */
     class Window {
     private:
         GLFWwindow *glfwWindow;

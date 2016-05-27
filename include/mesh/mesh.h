@@ -14,6 +14,13 @@
 #include <GL/gl.h>
 #include <vector>
 
+/*
+ * Contains the geometry of an object.
+ * Vertices, indices, textures and material is defined.
+ *
+ * One instance of the same Mesh should be present in the system.
+ * Use Multiple RenderObjects to bind the same Mesh
+ */
 class Mesh {
 private:
     std::vector<GLfloat> vertices;

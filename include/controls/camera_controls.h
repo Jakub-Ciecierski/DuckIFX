@@ -8,6 +8,9 @@
 
 #include <camera.h>
 
+/*
+ * Controls the Mouse and Keyboard input
+ */
 class CameraControls {
 private:
     Camera* camera;
