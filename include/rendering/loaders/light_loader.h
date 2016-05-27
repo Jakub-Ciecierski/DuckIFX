@@ -22,8 +22,8 @@ public:
 
     ~LightLoader();
 
-    LightPoint* loadLightGlobal();
-    LightDirectional* loadLightDirectional();
+    LightPoint*loadPointLight();
+    LightDirectional*loadDirLight();
     LightSpotlight* loadSpotlight();
 };
 

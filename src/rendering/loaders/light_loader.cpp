@@ -12,7 +12,7 @@ LightLoader::~LightLoader() {
 
 }
 
-LightPoint *LightLoader::loadLightGlobal() {
+LightPoint *LightLoader::loadPointLight() {
     LightPoint* lightSource = new LightPoint();
 
     Light light;
@@ -29,7 +29,7 @@ LightPoint *LightLoader::loadLightGlobal() {
     return lightSource;
 }
 
-LightDirectional* LightLoader::loadLightDirectional() {
+LightDirectional* LightLoader::loadDirLight() {
     LightDirectional* lightSource = new LightDirectional();
 
     Light light;
@@ -46,6 +46,7 @@ LightDirectional* LightLoader::loadLightDirectional() {
 
     lightSource->setLight(light);
 
+    lightSource->setPosition(glm::vec3(0.0f, 10.0f, 0.0f));
     lightSource->setLookAt(glm::vec3(0.0f, 0.0f, 0.0f));
     return lightSource;
 }

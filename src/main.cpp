@@ -13,6 +13,7 @@
 #include <camera.h>
 #include <lighting/light_source.h>
 #include <light_loader.h>
+#include <lighting/light_group.h>
 #include "camera_controls.h"
 #include "window.h"
 #include "shaders/loaders/program_loader.h"
@@ -30,17 +31,25 @@ Camera* camera;
 CameraControls * controls;
 
 RenderObjectLoader* renderObjectLoader;
-RenderObject* squareObjectLight;
+RenderObject* squareObjectLight1;
+RenderObject* squareObjectLight2;
+RenderObject* squareObjectLight3;
 
 const int BOXES_COUNT = 10;
 RenderObject* boxes[BOXES_COUNT];
 
 LightLoader lightLoader;
-LightPoint* lightGlobal;
-LightDirectional* lightDir;
+
+LightGroup lightGroup;
+
+LightPoint* lightPoint1;
+LightPoint* lightPoint2;
+LightPoint* lightPoint3;
+LightDirectional* lightDirectional;
 LightSpotlight* lightSpotlight;
 
 ProgramLoader programLoader;
+Program* programAllLight;
 Program* programDirLight;
 Program* programFlashlight;
 Program* programGlobalLight;
@@ -131,21 +140,37 @@ void initScene(){
 void initExampleMeshes(){
     renderObjectLoader = new RenderObjectLoader();
 
-    squareObjectLight = renderObjectLoader->loadLampObject();
+    squareObjectLight1 = renderObjectLoader->loadLampObject();
+    squareObjectLight2 = renderObjectLoader->loadLampObject();
+    squareObjectLight3 = renderObjectLoader->loadLampObject();
 
-    lightGlobal = lightLoader.loadLightGlobal();
-    lightGlobal->setRenderObject(squareObjectLight);
+    // ------
 
-    lightDir = lightLoader.loadLightDirectional();
-    lightDir->setRenderObject(squareObjectLight);
-    lightDir->setCamera(camera);
-
+    lightPoint1 = lightLoader.loadPointLight();
+    lightPoint2 = lightLoader.loadPointLight();
+    lightPoint3 = lightLoader.loadPointLight();
+    lightDirectional = lightLoader.loadDirLight();
     lightSpotlight = lightLoader.loadSpotlight();
-    lightSpotlight->setCamera(camera);
 
-    squareObjectLight->scale(glm::vec3(0.3f, 0.3f, 0.3f));
-    squareObjectLight->moveTo(glm::vec3(2.0f, 2.0f, 2.0f));
-    squareObjectLight->moveTo(glm::vec3(0.0f, 5.0f, 0.0f));
+    lightPoint1->setRenderObject(squareObjectLight1);
+    lightPoint2->setRenderObject(squareObjectLight2);
+    lightPoint3->setRenderObject(squareObjectLight3);
+
+    lightSpotlight->setCamera(camera);
+    // -------
+
+    //lightGroup.addLightDirectional(lightDirectional);
+    lightGroup.addLightSpotlight(lightSpotlight);
+    lightGroup.addLightPoint(lightPoint1);
+    lightGroup.addLightPoint(lightPoint2);
+    lightGroup.addLightPoint(lightPoint3);
+
+    squareObjectLight1->scale(glm::vec3(0.3f, 0.3f, 0.3f));
+    squareObjectLight2->scale(glm::vec3(0.3f, 0.3f, 0.3f));
+    squareObjectLight3->scale(glm::vec3(0.3f, 0.3f, 0.3f));
+
+    squareObjectLight1->moveTo(glm::vec3(2.0f, 2.0f, 2.0f));
+    squareObjectLight1->moveTo(glm::vec3(0.0f, 5.0f, 0.0f));
 
     int MAX = 5;
     float min = 2.5f;
@@ -163,6 +188,8 @@ void initExampleMeshes(){
 }
 
 void initShaders(){
+    programAllLight = programLoader.loadAllLightProgram();
+
     programGlobalLight = programLoader.loadGlobalLightProgram();
     programGlobalAttenuationLight
             = programLoader.loadGlobalAttenuationLightProgram();
@@ -176,6 +203,7 @@ void initShaders(){
 void releaseResources(){
     delete window;
 
+    delete programAllLight;
     delete programGlobalLight;
     delete programGlobalAttenuationLight;
     delete programDirLight;
@@ -183,11 +211,9 @@ void releaseResources(){
     delete programLamp;
 
     delete renderObjectLoader;
-    delete squareObjectLight;
-
-    delete lightDir;
-    delete lightGlobal;
-    delete lightSpotlight;
+    delete squareObjectLight1;
+    delete squareObjectLight2;
+    delete squareObjectLight3;
 
     for(int i = 0; i < BOXES_COUNT; i++){
         delete boxes[i];
@@ -231,33 +257,38 @@ void update(){
     for(int i = 0; i < BOXES_COUNT; i++){
         boxes[i]->update();
     }
-    squareObjectLight->update();
+    squareObjectLight1->update();
+    squareObjectLight2->update();
+    squareObjectLight3->update();
 
     // ------------------
     static float a = 0;
     float radius = 4.0f;
-    squareObjectLight->moveTo(glm::vec3(cos(a)*radius ,
-                                        sin(a)*radius , 0.0f));
+    squareObjectLight1->moveTo(glm::vec3(cos(a)*radius,
+                                         sin(a)*radius, 0.0f));
+    squareObjectLight2->moveTo(glm::vec3(cos(a)*radius,
+                                         0.0f, sin(a)*radius));
+    squareObjectLight3->moveTo(glm::vec3(0.0f, cos(a)*radius,
+                                         sin(a)*radius));
     a+=0.005f;
     if(a > 360) a = 0;
     // ------------------
-    //squareObjectLight->moveTo(camera->getPosition());
 }
 void render(){
     glClearColor(0.1f, 0.2f, 0.2f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    camera->use(*programFlashlight);
-    //lightGlobal->use(*programGlobalAttenuationLight);
-    lightSpotlight->use(*programFlashlight);
-
+    camera->use(*programAllLight);
+    lightGroup.use(*programAllLight);
 
     for(int i = 0; i < BOXES_COUNT; i++){
-        boxes[i]->render(*programFlashlight);
+        boxes[i]->render(*programAllLight);
     }
 
     camera->use(*programLamp);
-    squareObjectLight->render(*programLamp);
+    squareObjectLight1->render(*programLamp);
+    squareObjectLight2->render(*programLamp);
+    squareObjectLight3->render(*programLamp);
 }
 
 void mainLoop(){

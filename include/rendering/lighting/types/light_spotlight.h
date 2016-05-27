@@ -13,7 +13,7 @@
  */
 class LightSpotlight : public LightDirectional  {
 protected:
-    virtual void bind(const Program& program) override;
+    virtual void bind(const Program& program, int id = -1) override;
 
 public:
 

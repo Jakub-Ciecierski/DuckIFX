@@ -2,7 +2,7 @@
 
 /*
  * Phong illumination: Global Light with Attenuation.
- * Use with combination with LightGlobal
+ * Use with com
  */
 
 in vec3 Normal;

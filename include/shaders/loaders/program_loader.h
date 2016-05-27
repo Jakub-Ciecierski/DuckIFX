@@ -20,6 +20,7 @@ public:
 
     ~ProgramLoader();
 
+    Program* loadAllLightProgram();
     Program* loadGlobalLightProgram();
     Program* loadGlobalAttenuationLightProgram();
 

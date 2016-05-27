@@ -5,6 +5,8 @@
 #include <glm/detail/type_vec.hpp>
 #include <lighting/light_source.h>
 
+using namespace ifx;
+
 LightSource::LightSource(){
     followedRenderObject = NULL;
     followedCamera = NULL;
@@ -57,38 +59,10 @@ const glm::vec3 &LightSource::getPosition() {
     }
 }
 
-void LightSource::use(const Program& program) {
+void LightSource::use(const Program& program, int id) {
     program.use();
 
-    bind(program);
-
-    GLint lightAmbientLoc  = glGetUniformLocation(program.getID(),
-                                                  LIGHT_AMBIENT_NAME.c_str());
-    GLint lightDiffuseLoc  = glGetUniformLocation(program.getID(),
-                                                  LIGHT_DIFFUSE_NAME.c_str());
-    GLint lightSpecularLoc = glGetUniformLocation(program.getID(),
-                                                  LIGHT_SPECULAR_NAME.c_str());
-
-    GLint lightAttenConstLoc
-            = glGetUniformLocation(program.getID(),
-                                   LIGHT_ATTENUATION_CONST_NAME.c_str());
-    GLint lightAttenLinLoc
-            = glGetUniformLocation(program.getID(),
-                                   LIGHT_ATTENUATION_LINEAR_NAME.c_str());
-    GLint lightAttenQuadLoc
-            = glGetUniformLocation(program.getID(),
-                                   LIGHT_ATTENUATION_QUAD_NAME.c_str());
-
-    glUniform3f(lightAmbientLoc,
-                light.ambient.x, light.ambient.y, light.ambient.z);
-    glUniform3f(lightDiffuseLoc,
-                light.diffuse.x, light.diffuse.y, light.diffuse.z);
-    glUniform3f(lightSpecularLoc,
-                light.specular.x, light.specular.y, light.specular.z);
-
-    glUniform1f(lightAttenConstLoc, light.constant);
-    glUniform1f(lightAttenLinLoc, light.linear);
-    glUniform1f(lightAttenQuadLoc, light.quadratic);
+    bind(program, id);
 }
 
 void LightSource::render(const Program &program) {

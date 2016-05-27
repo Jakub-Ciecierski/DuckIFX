@@ -12,6 +12,21 @@ ProgramLoader::~ProgramLoader() {
 
 }
 
+Program* ProgramLoader::loadAllLightProgram(){
+    VertexShader vertexShader =
+            shaderLoader.loadVertexShader
+                    ("res/shaders/lighting/light_all_vert.glsl");
+    FragmentShader fragmentShader =
+            shaderLoader.loadFragmentShader
+                    ("res/shaders/lighting/light_all_frag.glsl");
+
+    vertexShader.compile();
+    fragmentShader.compile();
+
+    Program* programGlobalLight = new Program(vertexShader, fragmentShader);
+    return programGlobalLight;
+}
+
 Program *ProgramLoader::loadGlobalLightProgram() {
     VertexShader vertexShader =
             shaderLoader.loadVertexShader

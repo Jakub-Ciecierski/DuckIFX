@@ -20,7 +20,7 @@ protected:
     // Will be used if light is not set on follow with camera
     glm::vec3 lookAt;
 
-    virtual void bind(const Program& program) override;
+    virtual void bind(const Program& program, int id = -1) override;
 
 public:
 

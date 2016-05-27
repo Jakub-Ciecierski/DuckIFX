@@ -7,6 +7,7 @@
 
 #include <render_object.h>
 #include <controls/camera.h>
+#include <light_shader_common_data.h>
 
 /*
  * Light source. Can be rendered if mesh was provided.
@@ -30,7 +31,7 @@ protected:
      * Derived classes should implement special binding mechanism.
      * Such as binding direction for directional light.
      */
-    virtual void bind(const Program& program) = 0;
+    virtual void bind(const Program& program, int id = -1) = 0;
 
 public:
 
@@ -61,7 +62,10 @@ public:
 
     const glm::vec3& getPosition();
 
-    void use(const Program& program);
+    /*
+     * The id is used to separated lights of the same type in the shaders.
+     */
+    void use(const Program& program, int id = -1);
     void render(const Program& program);
 };
 
