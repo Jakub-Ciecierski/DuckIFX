@@ -1,6 +1,7 @@
 #version 330 core
 /*
  * Phong illumination: Directional Light.
+ * Can be used to represent the Sun
  * Use with combination with LightDirectional.
  */
 

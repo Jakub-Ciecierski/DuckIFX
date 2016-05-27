@@ -2,7 +2,7 @@
 
 /*
  * Phong illumination: Global Light.
- * Good to represent global infinite light such as the Sun
+ * Good to represent global infinite light
  * Use with combination with LightGlobal
  */
 

@@ -11,17 +11,17 @@
 /*
  * Global Light simply binds the position with the shader.
  */
-class LightGlobal : public LightSource{
+class LightPoint : public LightSource{
 protected:
     virtual void bind(const Program& program) override ;
 
 public:
 
-    LightGlobal();
+    LightPoint();
 
-    LightGlobal(RenderObject *renderObject);
+    LightPoint(RenderObject *renderObject);
 
-    ~LightGlobal();
+    ~LightPoint();
 
 
 

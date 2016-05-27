@@ -6,8 +6,9 @@
 #define DUCK_LIGHT_LOADER_H
 
 
-#include <lighting/light_global.h>
-#include <lighting/light_directional.h>
+#include <lighting/types/light_directional.h>
+#include <lighting/types/light_point.h>
+#include <lighting/types/light_spotlight.h>
 
 /*
  * Loads specific lights to the system
@@ -21,8 +22,9 @@ public:
 
     ~LightLoader();
 
-    LightGlobal* loadLightGlobal();
+    LightPoint* loadLightGlobal();
     LightDirectional* loadLightDirectional();
+    LightSpotlight* loadSpotlight();
 };
 
 

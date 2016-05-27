@@ -45,13 +45,4 @@ void LightDirectional::bind(const Program &program) {
                                              LIGHT_POSITION_NAME.c_str());
     glUniform3f(lightPosLoc, pos.x, pos.y, pos.z);
 
-    // Light Cutoff
-    GLint lightCutoffLoc = glGetUniformLocation(program.getID(),
-                                                LIGHT_FLASHLIGHT_CUTOFF_NAME.c_str());
-    glUniform1f(lightCutoffLoc, glm::cos(glm::radians(light.cutOff)));
-
-
-    GLint lightOuterCutoffLoc = glGetUniformLocation(program.getID(),
-                                                LIGHT_FLASHLIGHT_OUTER_CUTOFF_NAME.c_str());
-    glUniform1f(lightOuterCutoffLoc, glm::cos(glm::radians(light.outerCutOff)));
 }

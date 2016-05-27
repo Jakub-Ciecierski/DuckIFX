@@ -12,15 +12,14 @@
  * Directional Light has a lookAt position which is used
  * to compute a direction.
  *
- * It binds the direction with the shader
+ * It binds the position and the direction with the shader.
  */
 class LightDirectional : public LightSource{
-private:
+protected:
     // Defines the direction of the light.
     // Will be used if light is not set on follow with camera
     glm::vec3 lookAt;
 
-protected:
     virtual void bind(const Program& program) override;
 
 public:

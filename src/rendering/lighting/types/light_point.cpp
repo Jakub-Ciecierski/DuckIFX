@@ -2,22 +2,22 @@
 // Created by jakub on 5/27/16.
 //
 
-#include "light_global.h"
+#include <lighting/types/light_point.h>
 
-LightGlobal::LightGlobal() : LightSource(){
+LightPoint::LightPoint() : LightSource(){
 
 }
 
-LightGlobal::LightGlobal(RenderObject *renderObject) :
+LightPoint::LightPoint(RenderObject *renderObject) :
         LightSource(renderObject){
 
 }
 
-LightGlobal::~LightGlobal() {
+LightPoint::~LightPoint() {
 
 }
 
-void LightGlobal::bind(const Program &program) {
+void LightPoint::bind(const Program &program) {
     const glm::vec3& pos = getPosition();
     // Light Position
     GLint lightPosLoc = glGetUniformLocation(program.getID(),

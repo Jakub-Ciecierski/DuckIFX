@@ -12,7 +12,6 @@
 #include <render_object_loader.h>
 #include <camera.h>
 #include <lighting/light_source.h>
-#include <lighting/light_global.h>
 #include <light_loader.h>
 #include "camera_controls.h"
 #include "window.h"
@@ -37,8 +36,9 @@ const int BOXES_COUNT = 10;
 RenderObject* boxes[BOXES_COUNT];
 
 LightLoader lightLoader;
-LightGlobal*lightGlobal;
+LightPoint* lightGlobal;
 LightDirectional* lightDir;
+LightSpotlight* lightSpotlight;
 
 ProgramLoader programLoader;
 Program* programDirLight;
@@ -140,6 +140,9 @@ void initExampleMeshes(){
     lightDir->setRenderObject(squareObjectLight);
     lightDir->setCamera(camera);
 
+    lightSpotlight = lightLoader.loadSpotlight();
+    lightSpotlight->setCamera(camera);
+
     squareObjectLight->scale(glm::vec3(0.3f, 0.3f, 0.3f));
     squareObjectLight->moveTo(glm::vec3(2.0f, 2.0f, 2.0f));
     squareObjectLight->moveTo(glm::vec3(0.0f, 5.0f, 0.0f));
@@ -184,6 +187,7 @@ void releaseResources(){
 
     delete lightDir;
     delete lightGlobal;
+    delete lightSpotlight;
 
     for(int i = 0; i < BOXES_COUNT; i++){
         delete boxes[i];
@@ -245,7 +249,8 @@ void render(){
 
     camera->use(*programFlashlight);
     //lightGlobal->use(*programGlobalAttenuationLight);
-    lightDir->use(*programFlashlight);
+    lightSpotlight->use(*programFlashlight);
+
 
     for(int i = 0; i < BOXES_COUNT; i++){
         boxes[i]->render(*programFlashlight);
