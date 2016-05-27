@@ -48,6 +48,8 @@ LightDirectional* LightLoader::loadDirLight() {
 
     lightSource->setPosition(glm::vec3(0.0f, 10.0f, 0.0f));
     lightSource->setLookAt(glm::vec3(0.0f, 0.0f, 0.0f));
+    lightSource->setFollow(false);
+
     return lightSource;
 }
 

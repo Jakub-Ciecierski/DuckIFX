@@ -40,9 +40,7 @@ void LightSource::setFollow(bool value) {
 }
 
 void LightSource::setPosition(const glm::vec3 &position) {
-    if(!isFollow){
-        this->position = position;
-    }
+    this->position = position;
 }
 
 void LightSource::setLight(const Light& light){

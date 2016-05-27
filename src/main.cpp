@@ -41,7 +41,6 @@ RenderObject* boxes[BOXES_COUNT];
 LightLoader lightLoader;
 
 LightGroup lightGroup;
-
 LightPoint* lightPoint1;
 LightPoint* lightPoint2;
 LightPoint* lightPoint3;
@@ -159,7 +158,7 @@ void initExampleMeshes(){
     lightSpotlight->setCamera(camera);
     // -------
 
-    //lightGroup.addLightDirectional(lightDirectional);
+    lightGroup.addLightDirectional(lightDirectional);
     lightGroup.addLightSpotlight(lightSpotlight);
     lightGroup.addLightPoint(lightPoint1);
     lightGroup.addLightPoint(lightPoint2);
@@ -286,9 +285,7 @@ void render(){
     }
 
     camera->use(*programLamp);
-    squareObjectLight1->render(*programLamp);
-    squareObjectLight2->render(*programLamp);
-    squareObjectLight3->render(*programLamp);
+    lightGroup.render(*programLamp);
 }
 
 void mainLoop(){
