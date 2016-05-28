@@ -4,11 +4,13 @@
 
 #include <GL/glew.h>
 #include <iostream>
+#include <mesh/mesh_data.h>
 #include "vbo.h"
 
 using namespace std;
 
-VBO::VBO(const std::vector<GLfloat>* vertices) : vertices(vertices){
+VBO::VBO(const std::vector<Vertex>* vertices) :
+        vertices(vertices){
     glGenBuffers(1, &vboID);
 }
 
@@ -17,11 +19,11 @@ VBO::~VBO() {
 }
 
 void VBO::bind(GLenum usage) {
-    const GLfloat* rawData = vertices->data();
-    GLuint bytesCount = sizeof(GLfloat) * vertices->size();
+    GLuint bytesCount = sizeof(Vertex) * vertices->size();
 
     glBindBuffer(GL_ARRAY_BUFFER, vboID);
-    glBufferData(GL_ARRAY_BUFFER, bytesCount, rawData, usage);
+    glBufferData(GL_ARRAY_BUFFER, bytesCount,
+                 vertices->data(), usage);
 }
 
 void VBO::unbind() {

@@ -13,14 +13,14 @@ Mesh::Mesh(){
 
 }
 
-Mesh::Mesh(vector <GLfloat>& vertices,
+Mesh::Mesh(std::vector<Vertex> vertices,
            vector <GLuint>& indices) :
-    vertices(vertices), indices(indices){
+        vertices(vertices), indices(indices){
     checkError();
     initBuffers();
 }
 
-Mesh::Mesh(vector<GLfloat>& vertices,
+Mesh::Mesh(std::vector<Vertex> vertices,
            vector <GLuint>& indices,
            vector<Texture>& textures) :
         vertices(vertices), indices(indices), textures(textures){
@@ -28,7 +28,7 @@ Mesh::Mesh(vector<GLfloat>& vertices,
     initBuffers();
 }
 
-Mesh::Mesh(vector<GLfloat>& vertices,
+Mesh::Mesh(std::vector<Vertex> vertices,
            vector <GLuint>& indices,
            vector<Texture>& textures,
            Material material) :

@@ -23,9 +23,8 @@
  */
 class Mesh {
 private:
-    std::vector<GLfloat> vertices;
+    std::vector<Vertex> vertices;
     std::vector<GLuint> indices;
-
     std::vector<Texture> textures;
 
     Material material;
@@ -54,14 +53,14 @@ private:
 public:
 
     Mesh();
-    Mesh(std::vector<GLfloat>& vertices,
+    Mesh(std::vector<Vertex> vertices,
          std::vector <GLuint>& indices);
 
-    Mesh(std::vector<GLfloat>& vertices,
+    Mesh(std::vector<Vertex> vertices,
          std::vector <GLuint>& indices,
          std::vector<Texture>& textures);
 
-    Mesh(std::vector<GLfloat>& vertices,
+    Mesh(std::vector<Vertex> vertices,
          std::vector <GLuint>& indices,
          std::vector<Texture>& textures,
          Material material);

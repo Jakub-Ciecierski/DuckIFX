@@ -7,15 +7,16 @@
 
 #include <GL/gl.h>
 #include <vector>
+#include <mesh/mesh_data.h>
 
 class VBO {
 private:
     GLuint vboID;
-    const std::vector<GLfloat>* vertices;
+    const std::vector<Vertex>* vertices;
 
 public:
 
-    VBO(const std::vector<GLfloat>* vertices);
+    VBO(const std::vector<Vertex>* vertices);
     ~VBO();
 
     /*

@@ -7,6 +7,7 @@
 #include <textures/texture_loader.h>
 
 using namespace std;
+using namespace glm;
 
 MeshLoader::MeshLoader(){
 
@@ -15,7 +16,7 @@ MeshLoader::MeshLoader(){
 MeshLoader::~MeshLoader() {
 
 }
-
+/*
 Mesh MeshLoader::LoadTriangle() {
     vector<GLfloat> vertices = {
             -0.5f, -0.5f, 0.0f,     1.0f, 0.0f, 0.0f,   0.0f, 0.0f,
@@ -51,9 +52,73 @@ Mesh MeshLoader::LoadSqaure(){
 
     return Mesh(vertices, indices, textures);
 }
+*/
 
 Mesh MeshLoader::LoadCube(){
-    // Position, Normal, Color, TexCoord
+    // Position, Normal, TexCoord
+    vector<Vertex> vertices = {
+            // Front
+            Vertex{vec3(1.0f,  1.0f, 0.0f),
+                   vec3(0.0f, 0.0f, -1.0f), vec2(1.0f, 1.0f)},
+            Vertex{vec3(1.0f,  0.0f, 0.0f),
+                   vec3(0.0f, 0.0f, -1.0f), vec2(1.0f, 0.0f)},
+            Vertex{vec3(0.0f,  0.0f, 0.0f),
+                   vec3(0.0f, 0.0f, -1.0f), vec2(0.0f, 0.0f)},
+            Vertex{vec3(0.0f,  1.0f, 0.0f),
+                   vec3(0.0f, 0.0f, -1.0f), vec2(0.0f, 1.0f)},
+
+            // Back
+            Vertex{vec3(1.0f, 1.0f, 1.0f),
+                   vec3(0.0f, 0.0f, 1.0f), vec2(1.0f, 1.0f)},
+            Vertex{vec3(1.0f, 0.0f, 1.0f),
+                   vec3(0.0f, 0.0f, 1.0f), vec2(1.0f, 0.0f)},
+            Vertex{vec3(0.0f, 0.0f, 1.0f),
+                   vec3(0.0f, 0.0f, 1.0f), vec2(0.0f, 0.0f)},
+            Vertex{vec3(0.0f, 1.0f, 1.0f),
+                   vec3(0.0f, 0.0f, 1.0f), vec2(0.0f, 1.0f)},
+
+            // Left
+            Vertex{vec3(0.0f, 1.0f, 1.0f),
+                   vec3(-1.0f, 0.0f, 0.0f), vec2(1.0f, 1.0f)},
+            Vertex{vec3(0.0f, 0.0f, 1.0f),
+                   vec3(-1.0f, 0.0f, 0.0f), vec2(1.0f, 0.0f)},
+            Vertex{vec3(0.0f, 0.0f, 0.0f),
+                   vec3(-1.0f, 0.0f, 0.0f), vec2(0.0f, 0.0f)},
+            Vertex{vec3(0.0f, 1.0f, 0.0f),
+                   vec3(-1.0f, 0.0f, 0.0f), vec2(0.0f, 1.0f)},
+
+            // Right
+            Vertex{vec3(1.0f, 1.0f, 1.0f),
+                   vec3(1.0f, 0.0f, 0.0f), vec2(1.0f, 1.0f)},
+            Vertex{vec3(1.0f, 0.0f, 1.0f),
+                   vec3(1.0f, 0.0f, 0.0f), vec2(1.0f, 0.0f)},
+            Vertex{vec3(1.0f, 0.0f, 0.0f),
+                   vec3(1.0f, 0.0f, 0.0f), vec2(0.0f, 0.0f)},
+            Vertex{vec3(1.0f, 1.0f, 0.0f),
+                   vec3(1.0f, 0.0f, 0.0f), vec2(0.0f, 1.0f)},
+
+            // Bottom
+            Vertex{vec3(1.0f, 0.0f, 1.0f),
+                   vec3(0.0f, -1.0f, 0.0f), vec2(1.0f, 1.0f)},
+            Vertex{vec3(1.0f, 0.0f, 0.0f),
+                   vec3(0.0f, -1.0f, 0.0f), vec2(1.0f, 0.0f)},
+            Vertex{vec3(0.0f, 0.0f, 0.0f),
+                   vec3(0.0f, -1.0f, 0.0f), vec2(0.0f, 0.0f)},
+            Vertex{vec3(0.0f, 0.0f, 1.0f),
+                   vec3(0.0f, -1.0f, 0.0f), vec2(0.0f, 1.0f)},
+
+            // Top
+            Vertex{vec3(1.0f, 1.0f, 1.0f),
+                   vec3(0.0f, 1.0f, 0.0f), vec2(1.0f, 1.0f)},
+            Vertex{vec3(1.0f, 1.0f, 0.0f),
+                   vec3(0.0f, 1.0f, 0.0f), vec2(1.0f, 0.0f)},
+            Vertex{vec3(0.0f, 1.0f, 0.0f),
+                   vec3(0.0f, 1.0f, 0.0f), vec2(0.0f, 0.0f)},
+            Vertex{vec3(0.0f, 1.0f, 1.0f),
+                   vec3(0.0f, 1.0f, 0.0f), vec2(0.0f, 1.0f)},
+    };
+
+    /*
     vector<GLfloat> vertices = {
             // Front
             1.0f,  1.0f, 0.0f,  0.0f, 0.0f, -1.0f,
@@ -132,7 +197,7 @@ Mesh MeshLoader::LoadCube(){
 
             0.0f, 1.0f, 1.0f,   0.0f, 1.0f, 0.0f,
             0.0f, 1.0f, 0.0f,   0.0f, 1.0f, // 23
-    };
+    };*/
     vector<GLuint> indices = {
             0, 1, 3,    1, 2, 3,            // front
             7, 5, 4,    5, 6, 7,            // back
@@ -158,84 +223,66 @@ Mesh MeshLoader::LoadCube(){
 
 
 Mesh MeshLoader::LoadLamp(){
-    vector<GLfloat> vertices = {
+    vector<Vertex> vertices = {
             // Front
-            1.0f,  1.0f, 0.0f,  0.0f, 0.0f, -1.0f,
-            1.0f, 0.0f, 0.0f,   1.0f, 1.0f,
-
-            1.0f,  0.0f, 0.0f,  0.0f, 0.0f, -1.0f,
-            0.0f, 1.0f, 0.0f,   1.0f, 0.0f,
-
-            0.0f,  0.0f, 0.0f,  0.0f, 0.0f, -1.0f,
-            0.0f, 1.0f, 0.0f,   0.0f, 0.0f,
-
-            0.0f,  1.0f, 0.0f,  0.0f, 0.0f, -1.0f,
-            0.0f, 1.0f, 0.0f,   0.0f, 1.0f,
+            Vertex{vec3(1.0f,  1.0f, 0.0f),
+                   vec3(0.0f, 0.0f, -1.0f), vec2(1.0f, 1.0f)},
+            Vertex{vec3(1.0f,  0.0f, 0.0f),
+                   vec3(0.0f, 0.0f, -1.0f), vec2(1.0f, 0.0f)},
+            Vertex{vec3(0.0f,  0.0f, 0.0f),
+                   vec3(0.0f, 0.0f, -1.0f), vec2(0.0f, 0.0f)},
+            Vertex{vec3(0.0f,  1.0f, 0.0f),
+                   vec3(0.0f, 0.0f, -1.0f), vec2(0.0f, 1.0f)},
 
             // Back
-            1.0f,  1.0f, 1.0f,  0.0f, 0.0f, 1.0f,
-            1.0f, 0.0f, 0.0f,   1.0f, 1.0f,
-
-            1.0f,  0.0f, 1.0f,  0.0f, 0.0f, 1.0f,
-            0.0f, 1.0f, 0.0f,   1.0f, 0.0f,
-
-            0.0f,  0.0f, 1.0f,  0.0f, 0.0f, 1.0f,
-            0.0f, 1.0f, 0.0f,   0.0f, 0.0f,
-
-            0.0f,  1.0f, 1.0f,  0.0f, 0.0f, 1.0f,
-            0.0f, 1.0f, 0.0f,   0.0f, 1.0f,
+            Vertex{vec3(1.0f, 1.0f, 1.0f),
+                   vec3(0.0f, 0.0f, 1.0f), vec2(1.0f, 1.0f)},
+            Vertex{vec3(1.0f, 0.0f, 1.0f),
+                   vec3(0.0f, 0.0f, 1.0f), vec2(1.0f, 0.0f)},
+            Vertex{vec3(0.0f, 0.0f, 1.0f),
+                   vec3(0.0f, 0.0f, 1.0f), vec2(0.0f, 0.0f)},
+            Vertex{vec3(0.0f, 1.0f, 1.0f),
+                   vec3(0.0f, 0.0f, 1.0f), vec2(0.0f, 1.0f)},
 
             // Left
-            0.0f, 1.0f, 1.0f,   -1.0f, 0.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,   1.0f, 1.0f, // 8
-
-            0.0f, 0.0f, 1.0f,   -1.0f, 0.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // 9
-
-            0.0f, 0.0f, 0.0f,   -1.0f, 0.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,   0.0f, 0.0f, // 10
-
-            0.0f, 1.0f, 0.0f,   -1.0f, 0.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,   0.0f, 1.0f, // 11
+            Vertex{vec3(0.0f, 1.0f, 1.0f),
+                   vec3(-1.0f, 0.0f, 0.0f), vec2(1.0f, 1.0f)},
+            Vertex{vec3(0.0f, 0.0f, 1.0f),
+                   vec3(-1.0f, 0.0f, 0.0f), vec2(1.0f, 0.0f)},
+            Vertex{vec3(0.0f, 0.0f, 0.0f),
+                   vec3(-1.0f, 0.0f, 0.0f), vec2(0.0f, 0.0f)},
+            Vertex{vec3(0.0f, 1.0f, 0.0f),
+                   vec3(-1.0f, 0.0f, 0.0f), vec2(0.0f, 1.0f)},
 
             // Right
-            1.0f, 1.0f, 1.0f,   1.0f, 0.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,   1.0f, 1.0f, // 12
-
-            1.0f, 0.0f, 1.0f,   1.0f, 0.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // 13
-
-            1.0f, 0.0f, 0.0f,   1.0f, 0.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,   0.0f, 0.0f, // 14
-
-            1.0f, 1.0f, 0.0f,   1.0f, 0.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,   0.0f, 1.0f, // 15
+            Vertex{vec3(1.0f, 1.0f, 1.0f),
+                   vec3(1.0f, 0.0f, 0.0f), vec2(1.0f, 1.0f)},
+            Vertex{vec3(1.0f, 0.0f, 1.0f),
+                   vec3(1.0f, 0.0f, 0.0f), vec2(1.0f, 0.0f)},
+            Vertex{vec3(1.0f, 0.0f, 0.0f),
+                   vec3(1.0f, 0.0f, 0.0f), vec2(0.0f, 0.0f)},
+            Vertex{vec3(1.0f, 1.0f, 0.0f),
+                   vec3(1.0f, 0.0f, 0.0f), vec2(0.0f, 1.0f)},
 
             // Bottom
-            1.0f, 0.0f, 1.0f,   0.0f, -1.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,   1.0f, 1.0f, // 16
-
-            1.0f, 0.0f, 0.0f,   0.0f, -1.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // 17
-
-            0.0f, 0.0f, 0.0f,   0.0f, -1.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,   0.0f, 0.0f, // 18
-
-            0.0f, 0.0f, 1.0f,   0.0f, -1.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,   0.0f, 1.0f, // 19
+            Vertex{vec3(1.0f, 0.0f, 1.0f),
+                   vec3(0.0f, -1.0f, 0.0f), vec2(1.0f, 1.0f)},
+            Vertex{vec3(1.0f, 0.0f, 0.0f),
+                   vec3(0.0f, -1.0f, 0.0f), vec2(1.0f, 0.0f)},
+            Vertex{vec3(0.0f, 0.0f, 0.0f),
+                   vec3(0.0f, -1.0f, 0.0f), vec2(0.0f, 0.0f)},
+            Vertex{vec3(1.0f, 0.0f, 1.0f),
+                   vec3(0.0f, -1.0f, 0.0f), vec2(0.0f, 1.0f)},
 
             // Top
-            1.0f, 1.0f, 1.0f,   0.0f, 1.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,   1.0f, 1.0f, // 20
-
-            1.0f, 1.0f, 0.0f,   0.0f, 1.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // 21
-
-            0.0f, 1.0f, 0.0f,   0.0f, 1.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,   0.0f, 0.0f, // 22
-
-            0.0f, 1.0f, 1.0f,   0.0f, 1.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,   0.0f, 1.0f, // 23
+            Vertex{vec3(1.0f, 1.0f, 1.0f),
+                   vec3(0.0f, 1.0f, 0.0f), vec2(1.0f, 1.0f)},
+            Vertex{vec3(1.0f, 1.0f, 0.0f),
+                   vec3(0.0f, 1.0f, 0.0f), vec2(1.0f, 0.0f)},
+            Vertex{vec3(0.0f, 1.0f, 0.0f),
+                   vec3(0.0f, 1.0f, 0.0f), vec2(0.0f, 0.0f)},
+            Vertex{vec3(0.0f, 1.0f, 1.0f),
+                   vec3(0.0f, 1.0f, 0.0f), vec2(0.0f, 1.0f)},
     };
     vector<GLuint> indices = {
             0, 1, 3,    1, 2, 3,            // front
