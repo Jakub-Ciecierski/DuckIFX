@@ -49,19 +49,21 @@ add_custom_command(
 # EXTERNALS LOCAL
 #---------------------------------
 
+add_subdirectory(dependencies/assimp-3.1.1)
 add_subdirectory(
         dependencies/glfw-3.1.2
         dependencies/glm)
-add_subdirectory(
-        dependencies/SOIL)
+add_subdirectory(dependencies/SOIL)
+
 
 link_directories(dependencies/soil/lib)
 include_directories(
         dependencies/glfw-3.1.2/include
         dependencies/glm/include
-        dependencies/SOIL/src)
+        dependencies/SOIL/src
+        dependencies/assimp-3.1.1/include)
 
-target_link_libraries(duck glfw SOIL
+target_link_libraries(duck glfw SOIL assimp
         ${GLFW_LIBRARIES})
 
 #---------------------------------
