@@ -99,7 +99,6 @@ void main()
     }
 
     color = vec4(result, 1.0f);
-    //color = vec4(texture(material.specular, TexCoords));
 }
 
 vec3 computePointLight(PointLight light, vec3 norm, vec3 fragPos,
@@ -131,7 +130,6 @@ vec3 computePointLight(PointLight light, vec3 norm, vec3 fragPos,
     specular *= attenuation;
 
     vec3 result = (ambient + diffuse + specular);
-
     return result;
 }
 

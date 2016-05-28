@@ -31,6 +31,7 @@ Camera* camera;
 CameraControls * controls;
 
 RenderObjectLoader* renderObjectLoader;
+RenderObject* nanoSuitObject;
 RenderObject* squareObjectLight1;
 RenderObject* squareObjectLight2;
 RenderObject* squareObjectLight3;
@@ -139,6 +140,7 @@ void initScene(){
 void initExampleMeshes(){
     renderObjectLoader = new RenderObjectLoader();
 
+    nanoSuitObject = renderObjectLoader->loadnanosuitObject();
     squareObjectLight1 = renderObjectLoader->loadLampObject();
     squareObjectLight2 = renderObjectLoader->loadLampObject();
     squareObjectLight3 = renderObjectLoader->loadLampObject();
@@ -158,12 +160,15 @@ void initExampleMeshes(){
     lightSpotlight->setCamera(camera);
     // -------
 
-    lightGroup.addLightDirectional(lightDirectional);
     lightGroup.addLightSpotlight(lightSpotlight);
+
+    lightGroup.addLightDirectional(lightDirectional);
+
     lightGroup.addLightPoint(lightPoint1);
     lightGroup.addLightPoint(lightPoint2);
     lightGroup.addLightPoint(lightPoint3);
 
+    nanoSuitObject->scale(glm::vec3(0.2f, 0.2f, 0.2f));
     squareObjectLight1->scale(glm::vec3(0.3f, 0.3f, 0.3f));
     squareObjectLight2->scale(glm::vec3(0.3f, 0.3f, 0.3f));
     squareObjectLight3->scale(glm::vec3(0.3f, 0.3f, 0.3f));
@@ -256,6 +261,7 @@ void update(){
     for(int i = 0; i < BOXES_COUNT; i++){
         boxes[i]->update();
     }
+    nanoSuitObject->update();
     squareObjectLight1->update();
     squareObjectLight2->update();
     squareObjectLight3->update();
@@ -271,6 +277,7 @@ void update(){
                                          sin(a)*radius));
     a+=0.005f;
     if(a > 360) a = 0;
+    nanoSuitObject->rotate(glm::vec3(0.0, 0.01, 0.0f));
     // ------------------
 }
 void render(){
@@ -280,6 +287,7 @@ void render(){
     camera->use(*programAllLight);
     lightGroup.use(*programAllLight);
 
+    nanoSuitObject->render(*programAllLight);
     for(int i = 0; i < BOXES_COUNT; i++){
         boxes[i]->render(*programAllLight);
     }

@@ -30,6 +30,8 @@ struct Texture{
     TextureTypes texType;
     GLenum type;
 
+    std::string path; // physical path on the disk of the texture
+
     Texture(){}
     Texture(GLuint id,
             GLenum type) : id(id), type(type){}

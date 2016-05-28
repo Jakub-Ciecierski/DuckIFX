@@ -22,6 +22,10 @@ public:
 
     ~TextureLoader();
 
+    Texture loadTexture(std::string filepath,
+                        TextureTypes type,
+                        GLenum glType = GL_TEXTURE_2D);
+
     Texture LoadContainer();
     Texture LoadContainerDiffuse();
     Texture LoadContainerSpecular();

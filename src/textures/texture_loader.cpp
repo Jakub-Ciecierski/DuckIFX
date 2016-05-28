@@ -51,6 +51,17 @@ Texture TextureLoader::contructTexture(GLuint id, GLenum type){
     return Texture(id, type);
 }
 
+Texture TextureLoader::loadTexture(std::string filepath,
+                                   TextureTypes type,
+                                   GLenum glType){
+    GLuint id = loadFromFile(filepath);
+
+    Texture texture = contructTexture(id, glType);
+    texture.texType = type;
+
+    return texture;
+}
+
 Texture TextureLoader::LoadContainer() {
     GLuint id = loadFromFile("res/textures/container.jpg");
     Texture texture = contructTexture(id, GL_TEXTURE_2D);

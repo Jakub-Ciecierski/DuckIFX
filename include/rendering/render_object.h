@@ -8,6 +8,7 @@
 #include <object.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <mesh/mesh.h>
+#include <mesh/model.h>
 
 /*
  * RenderObject is used to render Meshes.
@@ -20,13 +21,13 @@ private:
 
     glm::mat4 ModelMatrix;
 
-    Mesh* mesh;
+    Model* model;
 
     void initVectors();
 public:
 
     RenderObject(ObjectID id, std::string name,
-                 Mesh* mesh);
+                 Model* model);
 
     ~RenderObject();
 
@@ -56,7 +57,7 @@ public:
 
     const glm::vec3& getPosition();
 
-    Mesh* getMesh();
+    Model* getModel();
 
     /*
      * Binds the Model matrix and draws Mesh

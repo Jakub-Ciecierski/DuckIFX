@@ -14,6 +14,8 @@
 #include <GL/gl.h>
 #include <vector>
 
+#include <iostream>
+
 /*
  * Contains the geometry of an object.
  * Vertices, indices, textures and material is defined.
@@ -74,7 +76,8 @@ public:
     void draw(const Program& program);
 
     Mesh& operator=(const Mesh& other);
-};
 
+    std::string toString() const;
+};
 
 #endif //DUCK_MESH_H

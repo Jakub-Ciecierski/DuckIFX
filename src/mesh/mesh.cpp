@@ -121,3 +121,21 @@ Mesh& Mesh::operator=(const Mesh& other){
 
     return *this;
 }
+
+std::string Mesh::toString() const{
+    string str = "";
+    int diffuseTexCount = 0;
+    int specularTexCount = 0;
+    for(unsigned int i = 0; i < textures.size(); i++){
+        if(textures[i].texType == TextureTypes::DIFFUSE)
+            diffuseTexCount++;
+        if(textures[i].texType == TextureTypes::SPECULAR)
+            specularTexCount++;
+    }
+
+    str += "Vertices Count:          " + to_string(vertices.size()) + "\n";
+    str += "Texture Diffuse Count:   " + to_string(diffuseTexCount) + "\n";
+    str += "Texture Specular Count:  " + to_string(specularTexCount) + "\n";
+
+    return str;
+}

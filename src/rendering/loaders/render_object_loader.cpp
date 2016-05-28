@@ -2,46 +2,42 @@
 // Created by jakub on 5/26/16.
 //
 
+#include <mesh/loaders/model_demo_loader.h>
 #include "render_object_loader.h"
 
 RenderObjectLoader::RenderObjectLoader(){
-    initMeshes();
+    initModels();
 }
 
 RenderObjectLoader::~RenderObjectLoader() {
-
+    delete nanosuitModel;
+    delete cubeModel;
+    delete lampModel;
 }
 
-void RenderObjectLoader::initMeshes() {
-    cubeMesh = meshLoader.LoadCube();
-    lampMesh = meshLoader.LoadLamp();
-}
-
-
-RenderObject* RenderObjectLoader::loadSqaureObject() {
-    RenderObject* renderObject =
-            new RenderObject(ObjectID(0), "Sqaure", &sqaureMesh);
-
-    return renderObject;
-}
-
-RenderObject* RenderObjectLoader::loadTriangleObject() {
-    RenderObject* renderObject
-            = new RenderObject(ObjectID(0), "Triangle", &triangleMesh);
-
-    return renderObject;
+void RenderObjectLoader::initModels() {
+    nanosuitModel = new Model(ModelDemoLoader::LoadNanoSuitModel());
+    cubeModel = new Model(ModelDemoLoader::LoadCubeModel());
+    lampModel = new Model(ModelDemoLoader::LoadLampModel());
 }
 
 RenderObject *RenderObjectLoader::loadCubeObject() {
     RenderObject* renderObject
-            = new RenderObject(ObjectID(0), "Cube", &cubeMesh);
+            = new RenderObject(ObjectID(0), "Cube", cubeModel);
 
     return renderObject;
 }
 
 RenderObject *RenderObjectLoader::loadLampObject() {
     RenderObject* renderObject
-            = new RenderObject(ObjectID(0), "Lamp", &lampMesh);
+            = new RenderObject(ObjectID(0), "Lamp", lampModel);
+
+    return renderObject;
+}
+
+RenderObject* RenderObjectLoader::loadnanosuitObject(){
+    RenderObject* renderObject
+            = new RenderObject(ObjectID(0), "NanoSuit", nanosuitModel);
 
     return renderObject;
 }

@@ -8,8 +8,8 @@
 using namespace glm;
 
 RenderObject::RenderObject(ObjectID id, std::string name,
-                           Mesh* mesh) :
-        Object(id, name), mesh(mesh){
+                           Model* model) :
+        Object(id, name), model(model){
     initVectors();
 }
 
@@ -29,7 +29,7 @@ void RenderObject::render(const Program& program){
                                               MODEL_MATRIX_NAME.c_str());
     glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(ModelMatrix));
 
-    mesh->draw(program);
+    model->draw(program);
 }
 
 void RenderObject::update(){
@@ -60,8 +60,8 @@ void RenderObject::rotate(const glm::vec3 &rotate) {
     this->rotation += rotate;
 }
 
-Mesh *RenderObject::getMesh() {
-    return mesh;
+Model *RenderObject::getModel() {
+    return model;
 }
 
 void RenderObject::scale(const glm::vec3 &scale) {

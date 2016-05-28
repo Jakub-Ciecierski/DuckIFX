@@ -8,6 +8,7 @@
 
 #include <mesh/loaders/mesh_loader.h>
 #include <render_object.h>
+#include <mesh/model.h>
 
 /*
  * Loads meshes using MeshLoader and creates render objects.
@@ -15,14 +16,12 @@
  */
 class RenderObjectLoader {
 private:
-    MeshLoader meshLoader;
 
-    Mesh sqaureMesh;
-    Mesh triangleMesh;
-    Mesh cubeMesh;
-    Mesh lampMesh;
+    Model* nanosuitModel;
+    Model* cubeModel;
+    Model* lampModel;
 
-    void initMeshes();
+    void initModels();
 
 public:
 
@@ -30,10 +29,9 @@ public:
 
     ~RenderObjectLoader();
 
-    RenderObject* loadSqaureObject();
-    RenderObject* loadTriangleObject();
     RenderObject* loadCubeObject();
     RenderObject* loadLampObject();
+    RenderObject* loadnanosuitObject();
 };
 
 
