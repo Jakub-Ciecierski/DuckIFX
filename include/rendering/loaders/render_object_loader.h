@@ -19,6 +19,7 @@ private:
 
     Model* nanosuitModel;
     Model* cubeModel;
+    Model* cubeMapModel;
     Model* lampModel;
 
     void initModels();
@@ -30,6 +31,7 @@ public:
     ~RenderObjectLoader();
 
     RenderObject* loadCubeObject();
+    RenderObject* loadCubemapObject();
     RenderObject* loadLampObject();
     RenderObject* loadnanosuitObject();
 };

@@ -7,6 +7,8 @@
 #include <stdexcept>
 #include "texture_loader.h"
 
+using namespace std;
+
 TextureLoader::TextureLoader(){
 
 }
@@ -60,6 +62,54 @@ Texture TextureLoader::loadTexture(std::string filepath,
     texture.texType = type;
 
     return texture;
+}
+
+Texture TextureLoader::loadCubemap(vector<string> filepathFaces){
+    GLuint textureID;
+    glGenTextures(1, &textureID);
+    glActiveTexture(GL_TEXTURE0);
+
+    int width,height;
+    unsigned char* image;
+
+    glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
+    for(GLuint i = 0; i < filepathFaces.size(); i++)
+    {
+        image = SOIL_load_image(filepathFaces[i].c_str(),
+                                &width, &height, 0, SOIL_LOAD_RGB);
+        if(image == NULL){
+            std::string info = "NULL returned";
+            throw new std::invalid_argument(info);
+        }
+        glTexImage2D(
+                GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0,
+                GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image
+        );
+    }
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+
+    Texture tex = contructTexture(textureID, GL_TEXTURE_CUBE_MAP);
+    tex.texType = TextureTypes::CUBEMAP;
+    return tex;
+}
+
+Texture TextureLoader::LoadExampleCubemap(){
+
+    string filepathBase = "res/textures/cubemap/sor_sea/sea_";
+    std::vector<std::string> filepathFaces = {
+            filepathBase+"rt.JPG",
+            filepathBase+"lf.JPG",
+            filepathBase+"up.JPG",
+            filepathBase+"dn.JPG",
+            filepathBase+"bk.JPG",
+            filepathBase+"ft.JPG"
+    };
+    return loadCubemap(filepathFaces);
 }
 
 Texture TextureLoader::LoadContainer() {

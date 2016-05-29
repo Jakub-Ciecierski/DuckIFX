@@ -32,6 +32,7 @@ CameraControls * controls;
 
 RenderObjectLoader* renderObjectLoader;
 RenderObject* nanoSuitObject;
+RenderObject* cubeMapObject;
 RenderObject* squareObjectLight1;
 RenderObject* squareObjectLight2;
 RenderObject* squareObjectLight3;
@@ -49,6 +50,7 @@ LightDirectional* lightDirectional;
 LightSpotlight* lightSpotlight;
 
 ProgramLoader programLoader;
+Program* programCubemap;
 Program* programAllLight;
 Program* programDirLight;
 Program* programFlashlight;
@@ -140,6 +142,8 @@ void initScene(){
 void initExampleMeshes(){
     renderObjectLoader = new RenderObjectLoader();
 
+    cubeMapObject = renderObjectLoader->loadCubemapObject();
+
     nanoSuitObject = renderObjectLoader->loadnanosuitObject();
     squareObjectLight1 = renderObjectLoader->loadLampObject();
     squareObjectLight2 = renderObjectLoader->loadLampObject();
@@ -165,10 +169,12 @@ void initExampleMeshes(){
     lightGroup.addLightDirectional(lightDirectional);
 
     lightGroup.addLightPoint(lightPoint1);
-    lightGroup.addLightPoint(lightPoint2);
-    lightGroup.addLightPoint(lightPoint3);
+    //lightGroup.addLightPoint(lightPoint2);
+    //lightGroup.addLightPoint(lightPoint3);
 
     nanoSuitObject->scale(glm::vec3(0.2f, 0.2f, 0.2f));
+    nanoSuitObject->moveTo(glm::vec3(0.0, -1.0f, 0.0f));
+
     squareObjectLight1->scale(glm::vec3(0.3f, 0.3f, 0.3f));
     squareObjectLight2->scale(glm::vec3(0.3f, 0.3f, 0.3f));
     squareObjectLight3->scale(glm::vec3(0.3f, 0.3f, 0.3f));
@@ -192,6 +198,8 @@ void initExampleMeshes(){
 }
 
 void initShaders(){
+    programCubemap = programLoader.loadCubemapProgram();
+
     programAllLight = programLoader.loadAllLightProgram();
 
     programGlobalLight = programLoader.loadGlobalLightProgram();
@@ -207,6 +215,7 @@ void initShaders(){
 void releaseResources(){
     delete window;
 
+    delete programCubemap;
     delete programAllLight;
     delete programGlobalLight;
     delete programGlobalAttenuationLight;
@@ -218,6 +227,7 @@ void releaseResources(){
     delete squareObjectLight1;
     delete squareObjectLight2;
     delete squareObjectLight3;
+    delete cubeMapObject;
 
     for(int i = 0; i < BOXES_COUNT; i++){
         delete boxes[i];
@@ -251,13 +261,14 @@ void mouse_button_callback(GLFWwindow* window,
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     }
 }
-
+/*
 void update(){
     window->update();
 
     controls->doMovement();
     camera->update();
 
+    cubeMapObject->update();
     for(int i = 0; i < BOXES_COUNT; i++){
         boxes[i]->update();
     }
@@ -277,23 +288,54 @@ void update(){
                                          sin(a)*radius));
     a+=0.005f;
     if(a > 360) a = 0;
-    nanoSuitObject->rotate(glm::vec3(0.0, 0.01, 0.0f));
+    //nanoSuitObject->rotate(glm::vec3(0.0, 0.01, 0.0f));
     // ------------------
 }
+*/
+
+void update(){
+    window->update();
+
+    controls->doMovement();
+    camera->update();
+
+    nanoSuitObject->update();
+
+    squareObjectLight1->update();
+    squareObjectLight2->update();
+    squareObjectLight3->update();
+
+    cubeMapObject->update();
+
+    // ------------------
+    static float a = 0;
+    float radius = 4.0f;
+    squareObjectLight1->moveTo(glm::vec3(cos(a)*radius,
+                                         sin(a)*radius, 0.0f));
+    squareObjectLight2->moveTo(glm::vec3(cos(a)*radius,
+                                         0.0f, sin(a)*radius));
+    squareObjectLight3->moveTo(glm::vec3(0.0f, cos(a)*radius,
+                                         sin(a)*radius));
+    a+=0.005f;
+    if(a > 360) a = 0;
+    // ------------------
+}
+
 void render(){
     glClearColor(0.1f, 0.2f, 0.2f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     camera->use(*programAllLight);
     lightGroup.use(*programAllLight);
-
     nanoSuitObject->render(*programAllLight);
-    for(int i = 0; i < BOXES_COUNT; i++){
-        boxes[i]->render(*programAllLight);
-    }
 
     camera->use(*programLamp);
     lightGroup.render(*programLamp);
+
+    glEnable(GL_CULL_FACE);
+    camera->use(*programCubemap);
+    cubeMapObject->render(*programCubemap);
+    glDisable(GL_CULL_FACE);
 }
 
 void mainLoop(){

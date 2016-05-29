@@ -45,6 +45,16 @@ private:
      */
     void copy(const Mesh& other);
 
+    /*
+     * Computes the Tanget Basis for all faces
+     */
+    void computeTangetBasis();
+
+    /*
+     * Computes Tanget Basis for the face represented by the vertices
+     */
+    void computeAndStoreTangetBasis(Vertex& v1, Vertex& v2, Vertex& v3);
+
     void initBuffers();
 
     /*

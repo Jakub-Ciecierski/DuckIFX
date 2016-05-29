@@ -20,6 +20,7 @@ public:
 
     ~ProgramLoader();
 
+    Program* loadCubemapProgram();
     Program* loadAllLightProgram();
     Program* loadGlobalLightProgram();
     Program* loadGlobalAttenuationLightProgram();

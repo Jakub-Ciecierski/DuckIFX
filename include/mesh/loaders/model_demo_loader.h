@@ -21,6 +21,7 @@ public:
 
     static Model LoadNanoSuitModel();
     static Model LoadCubeModel();
+    static Model LoadCubemapModel();
     static Model LoadLampModel();
 };
 

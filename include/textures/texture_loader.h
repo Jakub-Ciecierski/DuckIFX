@@ -7,7 +7,7 @@
 
 
 #include <mesh/mesh_data.h>
-
+#include <vector>
 /*
  * Class loads textures saved in resource files
  */
@@ -25,7 +25,9 @@ public:
     Texture loadTexture(std::string filepath,
                         TextureTypes type,
                         GLenum glType = GL_TEXTURE_2D);
+    Texture loadCubemap(std::vector<std::string> filepath);
 
+    Texture LoadExampleCubemap();
     Texture LoadContainer();
     Texture LoadContainerDiffuse();
     Texture LoadContainerSpecular();

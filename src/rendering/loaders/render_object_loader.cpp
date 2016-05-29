@@ -12,11 +12,13 @@ RenderObjectLoader::RenderObjectLoader(){
 RenderObjectLoader::~RenderObjectLoader() {
     delete nanosuitModel;
     delete cubeModel;
+    delete cubeMapModel;
     delete lampModel;
 }
 
 void RenderObjectLoader::initModels() {
     nanosuitModel = new Model(ModelDemoLoader::LoadNanoSuitModel());
+    cubeMapModel = new Model(ModelDemoLoader::LoadCubemapModel());
     cubeModel = new Model(ModelDemoLoader::LoadCubeModel());
     lampModel = new Model(ModelDemoLoader::LoadLampModel());
 }
@@ -25,6 +27,13 @@ RenderObject *RenderObjectLoader::loadCubeObject() {
     RenderObject* renderObject
             = new RenderObject(ObjectID(0), "Cube", cubeModel);
 
+    return renderObject;
+}
+
+RenderObject *RenderObjectLoader::loadCubemapObject() {
+    RenderObject* renderObject
+            = new RenderObject(ObjectID(0), "Cube", cubeMapModel);
+    renderObject->scale(glm::vec3(2.0f, 2.0f, 2.0f));
     return renderObject;
 }
 

@@ -30,6 +30,14 @@ Model ModelDemoLoader::LoadCubeModel() {
     return Model(meshes);
 }
 
+Model ModelDemoLoader::LoadCubemapModel(){
+    MeshLoader meshLoader;
+    Mesh mesh = meshLoader.LoadCubemap();
+    std::vector<Mesh> meshes = {mesh};
+
+    return Model(meshes);
+}
+
 Model ModelDemoLoader::LoadLampModel() {
     MeshLoader meshLoader;
     Mesh mesh = meshLoader.LoadLamp();

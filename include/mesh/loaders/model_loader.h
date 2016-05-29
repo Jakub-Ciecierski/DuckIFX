@@ -10,6 +10,10 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
+/*
+ * Loads Models using Assimp.
+ * The Mesh Material shininess is not provided !
+ */
 class ModelLoader {
 private:
     std::string filepath;
