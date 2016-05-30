@@ -23,60 +23,6 @@
 
 using namespace std;
 
-const int textureDataWidth = 128;
-const int textureDataHeight = 128;
-Texture normalTexture;
-unsigned char* textureDataChar;
-
-void initTextureData();
-void deleteTextureData();
-void updataTextureData(Texture& texture, GLubyte value);
-
-void initTextureData(){
-    int count = textureDataWidth*textureDataHeight*3;
-    int pixelCount = count / 3;
-    textureDataChar = new unsigned char[count];
-
-    int index = 0;
-    for(int i = 0; i < pixelCount; i++){
-        textureDataChar[index]      = 0;
-        textureDataChar[index + 1]  = 255;
-        textureDataChar[index + 2]  = 0;
-        index += 3;
-    }
-
-    TextureLoader loader;
-    normalTexture = loader.loadFromData(TextureTypes::NORMAL, textureDataChar,
-                                        textureDataWidth, textureDataHeight);
-
-    std::cout << normalTexture.id << std::endl;
-}
-
-void deleteTextureData(){
-    delete textureDataChar;
-}
-
-void updataTextureData(Texture& texture, GLubyte value){
-
-    int count = textureDataWidth*textureDataHeight*3;
-    int pixelCount = count / 3;
-
-    static unsigned char v = 0;
-    v++;
-    if(v > 255) v = 0;
-    int index = 0;
-    for(int i = 0; i < pixelCount; i++){
-        textureDataChar[index ]     = 0;
-        textureDataChar[index + 1]  = v;
-        textureDataChar[index + 2]  = 0;
-
-        index += 3;
-    }
-
-
-    texture.updateData(textureDataChar, textureDataWidth,
-                       textureDataHeight, 3);
-}
 
 // ------------------------------
 
@@ -122,9 +68,19 @@ Program* programLamp;
 
 const int x = 400;
 const int y = 400;
-const int unit = 0.01f;
+const float unit = 0.01f;
 
 Water* water;
+
+const int textureDataWidth = x;
+const int textureDataHeight = y;
+Texture normalTexture;
+unsigned char* textureDataChar;
+
+void initTextureData();
+void deleteTextureData();
+void updataTextureData(Texture& texture, GLubyte value);
+
 
 // ------------------------------
 
@@ -215,13 +171,13 @@ void initExampleMeshes(){
     renderObjectLoader = new RenderObjectLoader();
 
     planeObject = renderObjectLoader->loadPlaneObject();
+    Mesh* mesh = planeObject->getModel()->getMesh(0);
+    mesh->addTexture(normalTexture);
+
     water = new Water(x, y, unit, planeObject);
+    //water->NewRipple(100, 100);
 
     cubeMapObject = renderObjectLoader->loadCubemapObject();
-
-    box = renderObjectLoader->loadCubeObject();
-    Mesh* mesh = box->getModel()->getMesh(0);
-    mesh->addTexture(normalTexture);
 
     nanoSuitObject = renderObjectLoader->loadnanosuitObject();
     squareObjectLight1 = renderObjectLoader->loadLampObject();
@@ -302,7 +258,6 @@ void releaseResources(){
     delete planeObject;
     delete water;
     delete duckObject;
-    delete box;
     delete squareObjectLight1;
     delete squareObjectLight2;
     delete squareObjectLight3;
@@ -379,13 +334,11 @@ void render(){
     camera->use(*programBumpMap);
     lightGroup.use(*programBumpMap);
     duckObject->render(*programBumpMap);
-    box->render(*programBumpMap);
 */
     // Draw Scene
     camera->use(*programLight);
     lightGroup.use(*programLight);
     duckObject->render(*programLight);
-    water->Render(*programLight);
 
     // Draw Lamp
     camera->use(*programLamp);
@@ -396,10 +349,16 @@ void render(){
     camera->use(*programCubemap);
     cubeMapObject->render(*programCubemap);
     glDisable(GL_CULL_FACE);
+
+    camera->use(*programBumpMap);
+    lightGroup.use(*programBumpMap);
+    water->Render(*programBumpMap);
 }
 
 void mainLoop(){
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     while(!window->shouldClose())
     {
@@ -409,4 +368,69 @@ void mainLoop(){
         glfwSwapBuffers(window->getHandle());
     }
     glfwTerminate();
+}
+
+// Texture ---------------------------
+
+void initTextureData(){
+    int count = textureDataWidth*textureDataHeight*3;
+    int pixelCount = count / 3;
+    textureDataChar = new unsigned char[count];
+
+    int index = 0;
+    for(int i = 0; i < pixelCount; i++){
+        textureDataChar[index]      = 0;
+        textureDataChar[index + 1]  = 255;
+        textureDataChar[index + 2]  = 0;
+        index += 3;
+    }
+
+    TextureLoader loader;
+    normalTexture = loader.loadFromData(TextureTypes::NORMAL, textureDataChar,
+                                        textureDataWidth, textureDataHeight);
+}
+
+void deleteTextureData(){
+    delete textureDataChar;
+}
+
+void updataTextureData(Texture& texture, GLubyte value){
+    int count = textureDataWidth*textureDataHeight*3;
+    int pixelCount = count / 3;
+    int pixelIndex = 0;
+
+    float min = -1;
+    float max = 1;
+
+    int maxByte = 255;
+    int minByte = 0;
+
+    const vector<vector<glm::vec3>>&normals = water->getNormals();
+    static int a = 0;
+    a++;
+    if(a > 255) a = 0;
+    int WHAT = 0;
+    for(unsigned int i = 0; i < normals.size(); i++){
+        vector<glm::vec3> vec = normals[i];
+        for(unsigned int j = 0; j < vec.size(); j++){
+            WHAT++;
+            float xNorm = (vec[j].x - min) / (max - min);
+            float yNorm = (vec[j].y - min) / (max - min);
+            float zNorm = (vec[j].z - min) / (max - min);
+
+            unsigned char xByte = maxByte * xNorm;
+            unsigned char yByte = maxByte * yNorm;
+            unsigned char zByte = maxByte * zNorm;
+
+            textureDataChar[pixelIndex]      = xByte;
+            textureDataChar[pixelIndex + 1]  = yByte;
+            textureDataChar[pixelIndex + 2]  = zByte;
+
+
+            pixelIndex += 3;
+        }
+    }
+
+    texture.updateData(textureDataChar, textureDataWidth,
+                       textureDataHeight, 3);
 }

@@ -61,7 +61,8 @@ RenderObject* RenderObjectLoader::loadnanosuitObject(){
 RenderObject* RenderObjectLoader::loadPlaneObject() {
     RenderObject *renderObject
             = new RenderObject(ObjectID(0), "Plane", plane);
-    renderObject->scale(glm::vec3(2.0f, 2.0f, 2.0f));
+    float scaleFactor = 6.0f;
+    renderObject->scale(glm::vec3(scaleFactor, scaleFactor, scaleFactor));
     return renderObject;
 }
 
