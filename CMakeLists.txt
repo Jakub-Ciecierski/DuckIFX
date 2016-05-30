@@ -41,7 +41,7 @@ add_executable(duck ${SOURCE_FILES} ${SRC_FILES} res)
 add_custom_command(
         TARGET duck PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E remove_directory
-        $<TARGET_FILE_DIR:duck>/res/shaders
+        $<TARGET_FILE_DIR:duck>/res/shaders/
 )
 
 # COPY RESOURCES

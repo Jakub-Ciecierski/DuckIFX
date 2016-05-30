@@ -111,7 +111,7 @@ void main()
 
     //color = vec4(Tangent, 1.0f);
     //color = vec4(Binormal, 1.0f);
-    color = vec4(result, 0.4f);
+    color = vec4(result, 1.0f);
 }
 
 vec3 computePointLight(PointLight light, vec3 norm, vec3 fragPos,

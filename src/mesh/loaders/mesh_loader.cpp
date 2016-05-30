@@ -346,5 +346,32 @@ Mesh MeshLoader::LoadPlane(int x, int y, float unit) {
         }
     }
 
-    return Mesh(vertices, indices, GL_TRIANGLE_STRIP);
+    int textureDataWidth = 128;
+    int textureDataHeight = 128;
+    int count = textureDataWidth*textureDataHeight*3;
+    int pixelCount = count / 3;
+    unsigned char * textureDataChar = new unsigned char[count];
+
+    int index = 0;
+    for(int i = 0; i < pixelCount; i++){
+        textureDataChar[index]      = 64;
+        textureDataChar[index + 1]  = 164;
+        textureDataChar[index + 2]  = 223;
+        index += 3;
+    }
+
+    TextureLoader loader;
+    Texture texDff = loader.loadFromData(TextureTypes::DIFFUSE,
+                                         textureDataChar,
+                                         textureDataWidth, textureDataHeight);
+    Texture texSpec = loader.loadFromData(TextureTypes::SPECULAR,
+                                         textureDataChar,
+                                         textureDataWidth, textureDataHeight);
+    Mesh mesh(vertices, indices, GL_TRIANGLE_STRIP);
+    Material material;
+    material.shininess = 32.0f;
+    mesh.addTexture(texDff);
+    mesh.addTexture(texSpec);
+    mesh.setMaterial(material);
+    return mesh;
 }
