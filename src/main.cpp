@@ -16,6 +16,7 @@
 #include <lighting/light_group.h>
 #include <textures/texture_loader.h>
 #include <duck/duck_path.h>
+#include <mesh/Water.h>
 #include "camera_controls.h"
 #include "window.h"
 #include "shaders/loaders/program_loader.h"
@@ -92,6 +93,7 @@ CameraControls * controls;
 DuckPath* duckPath;
 
 RenderObjectLoader* renderObjectLoader;
+RenderObject* planeObject;
 RenderObject* duckObject;
 RenderObject* nanoSuitObject;
 RenderObject* cubeMapObject;
@@ -117,6 +119,12 @@ Program* programCubemap;
 Program* programBumpMap;
 Program* programLight;
 Program* programLamp;
+
+const int x = 1000;
+const int y = 1000;
+const int unit = 0.01f;
+
+Water* water;
 
 // ------------------------------
 
@@ -206,6 +214,9 @@ void initScene(){
 void initExampleMeshes(){
     renderObjectLoader = new RenderObjectLoader();
 
+    planeObject = renderObjectLoader->loadPlaneObject();
+    water = new Water(x, y, unit, planeObject);
+
     cubeMapObject = renderObjectLoader->loadCubemapObject();
 
     box = renderObjectLoader->loadCubeObject();
@@ -236,7 +247,7 @@ void initExampleMeshes(){
     // -------
 
     lightGroup.addLightSpotlight(lightSpotlight);
-    //lightGroup.addLightDirectional(lightDirectional);
+    lightGroup.addLightDirectional(lightDirectional);
     lightGroup.addLightPoint(lightPoint1);
     //lightGroup.addLightPoint(lightPoint2);
     //lightGroup.addLightPoint(lightPoint3);
@@ -279,6 +290,7 @@ void initShaders(){
 void releaseResources(){
     delete window;
 
+
     delete programCubemap;
     delete programBumpMap;
     delete programLight;
@@ -287,6 +299,8 @@ void releaseResources(){
     delete duckPath;
 
     delete renderObjectLoader;
+    delete planeObject;
+    delete water;
     delete duckObject;
     delete box;
     delete squareObjectLight1;
@@ -336,6 +350,7 @@ void update(){
     squareObjectLight1->update();
     cubeMapObject->update();
     duckObject->update();
+    water->Update();
 
     //  MOVE DUCK ------------------
     float tick = glfwGetTime();
@@ -370,6 +385,7 @@ void render(){
     camera->use(*programLight);
     lightGroup.use(*programLight);
     duckObject->render(*programLight);
+    water->Render(*programLight);
 
     // Draw Lamp
     camera->use(*programLamp);

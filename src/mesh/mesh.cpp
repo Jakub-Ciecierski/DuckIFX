@@ -63,23 +63,20 @@ void Mesh::computeTangetBasis(){
     const int DATA_PER_FACE = 3;
     int faceCount = indices.size() / DATA_PER_FACE;
     int vertexIndex = 0;
-    std::cout << "Index count: " << indices.size() << std::endl;
+
 
     for(int i = 0; i < faceCount; i++){
-        if(i ==2 ){
-            std::cout << "Index count: " << indices.size() << std::endl;
-        }
         if(vertexIndex >= indices.size()){
             throw new std::invalid_argument("computeTangetBasis out of bounds");
         }
         computeAndStoreTangetBasis(vertices[indices[vertexIndex+0]],
                                    vertices[indices[vertexIndex+1]],
                                    vertices[indices[vertexIndex+2]]);
-
+/*
         std::cout << "Face[" << i << "]" << std::endl;
         std::cout << "V0: " << vertexIndex+0 << std::endl;
         std::cout << "V1: " << vertexIndex+1 << std::endl;
-        std::cout << "V2: " << vertexIndex+2 << std::endl << std::endl;
+        std::cout << "V2: " << vertexIndex+2 << std::endl << std::endl;*/
         vertexIndex += DATA_PER_FACE;
 
     }

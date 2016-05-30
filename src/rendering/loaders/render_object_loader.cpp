@@ -24,7 +24,7 @@ void RenderObjectLoader::initModels() {
     cubeMapModel = new Model(ModelDemoLoader::LoadCubemapModel());
     cubeModel = new Model(ModelDemoLoader::LoadCubeModel());
     lampModel = new Model(ModelDemoLoader::LoadLampModel());
-    plane = new Model(ModelDemoLoader::LoadPlaneModel(100, 100, 0.01f));
+    plane = new Model(ModelDemoLoader::LoadPlaneModel(1000, 1000, 0.01f));
 }
 
 RenderObject *RenderObjectLoader::loadCubeObject() {
@@ -58,9 +58,11 @@ RenderObject* RenderObjectLoader::loadnanosuitObject(){
     return renderObject;
 }
 
-RenderObject* RenderObjectLoader::loadPlane(int x, int y, float unit) {
+RenderObject* RenderObjectLoader::loadPlaneObject() {
     RenderObject *renderObject
             = new RenderObject(ObjectID(0), "Plane", plane);
+    renderObject->scale(glm::vec3(2.0f, 2.0f, 2.0f));
+    return renderObject;
 }
 
 RenderObject* RenderObjectLoader::loadDuckObject(){

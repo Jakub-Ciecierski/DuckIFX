@@ -2,6 +2,7 @@
 // Created by anna on 29.05.2016.
 //
 
+#include <render_object.h>
 #include "Water.h"
 
 Water::Water() {
@@ -13,10 +14,9 @@ Water::~Water() {
 }
 
 
-Water::Water(int x, int y, float unit) : x(x), y(y), unit(unit) {
-    MeshLoader meshLoader;
-    mesh = meshLoader.LoadPlane(x, y, unit);
-
+Water::Water(int x, int y,
+             float unit, RenderObject* renderObject)
+        : x(x), y(y), unit(unit), renderObject(renderObject) {
     //initialize normals : X x Y
     for (int i = 0; i < y; i++) {
         std::vector<glm::vec3> row;
@@ -28,6 +28,8 @@ Water::Water(int x, int y, float unit) : x(x), y(y), unit(unit) {
 }
 
 void Water::Update() {
+    renderObject->update();
+
     //here update A and B if dt/c/h will be changed during program execution
     //clear normals
     for (int i = 0; i < y; i++) {
@@ -54,11 +56,12 @@ void Water::Update() {
 }
 
 void Water::Render(const Program& program){
-    mesh.draw(program);
+    renderObject->render(program);
 }
 
 void Water::NewRipple(int vertexX, int vertexY) {
-    ripples.push_back(WaterRipple(vertexX, vertexY, &mesh, x, y));
+    Mesh* mesh = renderObject->getModel()->getMesh(0);
+    ripples.push_back(WaterRipple(vertexX, vertexY, mesh, x, y));
 }
 
 const std::vector<std::vector<glm::vec3>>& Water::getNormals(){

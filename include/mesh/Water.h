@@ -9,17 +9,17 @@
 #include "WaterRipple.h"
 
 class Water {
-    Mesh mesh;
+    RenderObject* renderObject;
+
     int x;
     int y;
     float unit;
-
 
     std::vector<WaterRipple> ripples;
     std::vector<std::vector<glm::vec3>> normals;
 public:
     Water();
-    Water(int x, int y, float unit);
+    Water(int x, int y, float unit, RenderObject* renderObject);
     ~Water();
 
     void NewRipple(int vertexX, int vertexY);

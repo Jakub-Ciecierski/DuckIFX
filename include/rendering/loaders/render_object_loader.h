@@ -36,7 +36,7 @@ public:
     RenderObject* loadCubemapObject();
     RenderObject* loadLampObject();
     RenderObject* loadnanosuitObject();
-    RenderObject* loadPlane(int x, int y, float unit);
+    RenderObject* loadPlaneObject();
     RenderObject* loadDuckObject();
 };
 

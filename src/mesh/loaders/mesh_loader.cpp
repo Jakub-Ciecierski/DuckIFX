@@ -308,10 +308,18 @@ Mesh MeshLoader::LoadLamp(){
 }
 
 Mesh MeshLoader::LoadPlane(int x, int y, float unit) {
+    float offsetX;
+    float offsetZ;
+    offsetX = (unit * x) / 2;
+    offsetZ = (unit * y) / 2;
+
     vector<Vertex> vertices;
     for (int j = 0; j<y; j++) {
         for (int i = 0; i < x; i++) {
-            vertices.push_back(Vertex{vec3(i*unit, 0.0f, j*unit), vec3(0.0f, 1.0f, 0.0f), vec2(1-((j*unit)/((y-1)*unit)), (i*unit)/(unit*(x-1)) )});
+            vertices.push_back(Vertex{vec3(i*unit - offsetX,
+                                           0.0f, j*unit - offsetZ),
+                                      vec3(0.0f, 1.0f, 0.0f),
+                                      vec2(1-((j*unit)/((y-1)*unit)), (i*unit)/(unit*(x-1)) )});
         }
     }
     vector<GLuint> indices;

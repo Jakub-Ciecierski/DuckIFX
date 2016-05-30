@@ -60,4 +60,3 @@ Model ModelDemoLoader::LoadDuckModel(){
 
     return duckLoader.loadDuckModel();
 }
-
