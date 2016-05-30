@@ -120,8 +120,8 @@ Program* programBumpMap;
 Program* programLight;
 Program* programLamp;
 
-const int x = 1000;
-const int y = 1000;
+const int x = 400;
+const int y = 400;
 const int unit = 0.01f;
 
 Water* water;

@@ -34,7 +34,7 @@ void Water::Update() {
     //clear normals
     for (int i = 0; i < y; i++) {
         for (int j = 0; j < x; j++) {
-            normals[i][j] = glm::vec3(0,0,1); //TODO: check if 0.0.1 can be later normalized
+            normals[i][j] = glm::vec3(0,1,0); //TODO: check if 0.0.1 can be later normalized
         }
     }
     //update ripples
@@ -49,9 +49,16 @@ void Water::Update() {
 
         for (int i = 0 ; i<RIPPLE_SIZE; i++)
             for (int j = 0; j<RIPPLE_SIZE; j++) {
-                if (startYindex + i>=0 && startXindex + j>=0 && startYindex + i<y && startXindex + j<x)
+                if (startYindex + i>=0 && startXindex + j>=0 && startYindex +
+                                                                        i<y && startXindex + j<x){
                     normals[startYindex + i][startXindex + j] += r.normals[i][j];
+                }
             }
+    }
+    for (int i = 0; i < y; i++) {
+        for (int j = 0; j < x; j++) {
+            normals[i][j] = glm::normalize(normals[i][j]);
+        }
     }
 }
 

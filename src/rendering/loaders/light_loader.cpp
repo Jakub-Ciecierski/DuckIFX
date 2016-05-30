@@ -57,8 +57,10 @@ LightSpotlight* LightLoader::loadSpotlight() {
     LightSpotlight* lightSource = new LightSpotlight();
 
     Light light;
-    light.ambient = glm::vec3(0.2f, 0.2f, 0.2f);
-    light.diffuse = glm::vec3(0.5f, 0.5f, 0.5f);
+    //light.ambient = glm::vec3(0.2f, 0.2f, 0.2f);
+    //light.diffuse = glm::vec3(0.5f, 0.5f, 0.5f);
+    light.ambient = glm::vec3(0.9f, 0.9f, 0.9f);
+    light.diffuse = glm::vec3(0.9f, 0.9f, 0.9f);
     light.specular= glm::vec3(1.0f, 1.0f, 1.0f);
 
     light.constant = 1.0f;

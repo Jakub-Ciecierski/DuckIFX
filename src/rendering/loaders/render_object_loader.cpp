@@ -24,7 +24,7 @@ void RenderObjectLoader::initModels() {
     cubeMapModel = new Model(ModelDemoLoader::LoadCubemapModel());
     cubeModel = new Model(ModelDemoLoader::LoadCubeModel());
     lampModel = new Model(ModelDemoLoader::LoadLampModel());
-    plane = new Model(ModelDemoLoader::LoadPlaneModel(1000, 1000, 0.01f));
+    plane = new Model(ModelDemoLoader::LoadPlaneModel(400, 400, 0.01f));
 }
 
 RenderObject *RenderObjectLoader::loadCubeObject() {
