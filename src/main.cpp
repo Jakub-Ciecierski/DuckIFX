@@ -426,7 +426,10 @@ void updataTextureData(Texture& texture, GLubyte value){
             textureDataChar[pixelIndex + 1]  = yByte;
             textureDataChar[pixelIndex + 2]  = zByte;
 
-
+/*
+            if(yNorm  != 1.0f)
+                std::cout << vec[j].x << ", " << vec[j].y << ", " << vec[j].z << std::endl;
+*/
             pixelIndex += 3;
         }
     }

@@ -115,19 +115,21 @@ void main()
         result += computeSpotLight(spotLights[i], norm, FragPos, viewDir, TBN);
     }
 
-    //color = vec4(result, 0.4f);
-
     float ratio = 1.00f / 1.33f;
     vec3 I = -viewDir;
-    vec3 R = reflect(I, normalize(Normal));
 
-    //R  = mat3(ProjectionMatrix_ps* ViewMatrix_ps) * R;
-    vec4 waterColor = vec4(result, 0.4f);
-    vec4 refr = vec4(vec3(texture(cubemap, R)), 0.8f);
+    vec3 Rreflect = reflect(I, norm);
+    vec3 Rrefract = refract(I, norm, ratio);
 
-    //color = mix(waterColor, refr, 0.5f);
-    //color = waterColor;
-    color = refr;
+    vec4 refl = texture(cubemap, Rreflect);
+    vec4 refr = texture(cubemap, Rrefract);
+
+    // Constants !
+    float rzero = pow((1.33 - 1.0)/(1.33 + 1.0), 2.0);
+    float cosfi = abs(normalize(viewDir).y);
+    float frasnel = rzero + (1.0-rzero) * pow(1.0-cosfi, 5.0);
+
+    color = vec4(vec3(mix(refr, refl, frasnel)), 0.5f);
 }
 
 vec3 computePointLight(PointLight light, vec3 norm, vec3 fragPos,

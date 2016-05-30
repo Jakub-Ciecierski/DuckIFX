@@ -16,6 +16,7 @@ void main()
 {
     vec4 pos4 = vec4(position, 1.0f);
     mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+
     gl_Position = MVP * pos4;
 
     TexCoords = position;
