@@ -15,6 +15,7 @@
 #include <light_loader.h>
 #include <lighting/light_group.h>
 #include <textures/texture_loader.h>
+#include <duck/duck_path.h>
 #include "camera_controls.h"
 #include "window.h"
 #include "shaders/loaders/program_loader.h"
@@ -78,6 +79,8 @@ void updataTextureData(Texture& texture, GLubyte value){
 
 // ------------------------------
 
+float lastTick;
+
 int width;
 int height;
 
@@ -85,6 +88,8 @@ ifc::Window* window;
 
 Camera* camera;
 CameraControls * controls;
+
+DuckPath* duckPath;
 
 RenderObjectLoader* renderObjectLoader;
 RenderObject* duckObject;
@@ -194,6 +199,8 @@ void initScene(){
 
     initShaders();
     initExampleMeshes();
+
+    lastTick = glfwGetTime();
 }
 
 void initExampleMeshes(){
@@ -211,6 +218,8 @@ void initExampleMeshes(){
     squareObjectLight3 = renderObjectLoader->loadLampObject();
 
     duckObject = renderObjectLoader->loadDuckObject();
+    duckPath = new DuckPath(duckObject, -10, 10, -10, 10, 0);
+
     // ------
 
     lightPoint1 = lightLoader.loadPointLight();
@@ -275,6 +284,8 @@ void releaseResources(){
     delete programLight;
     delete programLamp;
 
+    delete duckPath;
+
     delete renderObjectLoader;
     delete duckObject;
     delete box;
@@ -326,7 +337,14 @@ void update(){
     cubeMapObject->update();
     duckObject->update();
 
+    //  MOVE DUCK ------------------
+    float tick = glfwGetTime();
+    float dt = tick - lastTick;
+    lastTick = tick;
+    duckObject->moveTo(duckPath->computePosition(dt));
     // ------------------
+
+    // MOVE LIGHT ------------------
     static float a = 0;
     float radius = 4.0f;
     squareObjectLight1->moveTo(glm::vec3(cos(a)*radius,
