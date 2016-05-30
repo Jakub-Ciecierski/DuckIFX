@@ -53,6 +53,10 @@ void Water::Update() {
     }
 }
 
+void Water::Render(const Program& program){
+    mesh.draw(program);
+}
+
 void Water::NewRipple(int vertexX, int vertexY) {
     ripples.push_back(WaterRipple(vertexX, vertexY, &mesh, x, y));
 }
