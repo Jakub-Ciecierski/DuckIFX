@@ -21,6 +21,8 @@ public:
     TextureLoader();
 
     ~TextureLoader();
+    Texture loadFromData(TextureTypes type, unsigned char* data,
+                         int width, int height);
 
     Texture loadTexture(std::string filepath,
                         TextureTypes type,

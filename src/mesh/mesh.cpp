@@ -6,7 +6,6 @@
 #include <stdexcept>
 #include "mesh.h"
 
-
 using namespace std;
 
 Mesh::Mesh(){
@@ -27,7 +26,6 @@ Mesh::Mesh(std::vector<Vertex> vertices,
            vector<Texture>& textures) :
         vertices(vertices), indices(indices), textures(textures){
     checkError();
-
 
     computeTangetBasis();
     initBuffers();
@@ -180,6 +178,20 @@ void Mesh::bindColor(const Program& program){
 
 void Mesh::setMaterial(const Material& material){
     this->material = material;
+}
+
+void Mesh::addTexture(Texture texture){
+    this->textures.push_back(texture);
+}
+
+std::vector<Texture*> Mesh::getTextures(TextureTypes type){
+    std::vector<Texture*> texturesType;
+    for(unsigned int i = 0; i < textures.size(); i++){
+        if(textures[i].texType == type) {
+            texturesType.push_back(&textures[i]);
+        }
+    }
+    return texturesType;
 }
 
 void Mesh::draw(const Program& program){

@@ -11,7 +11,7 @@ ProgramLoader::ProgramLoader(){
 ProgramLoader::~ProgramLoader() {
 
 }
-/*
+
 Program* ProgramLoader::loadAllLightProgram(){
     VertexShader vertexShader =
             shaderLoader.loadVertexShader
@@ -26,7 +26,7 @@ Program* ProgramLoader::loadAllLightProgram(){
     Program* programGlobalLight = new Program(vertexShader, fragmentShader);
     return programGlobalLight;
 }
-*/
+
 
 Program* ProgramLoader::loadCubemapProgram(){
     VertexShader vertexShader =
@@ -43,7 +43,7 @@ Program* ProgramLoader::loadCubemapProgram(){
     return programGlobalLight;
 }
 
-Program* ProgramLoader::loadAllLightProgram(){
+Program* ProgramLoader::loadBumpMappingProgram(){
     VertexShader vertexShader =
             shaderLoader.loadVertexShader
                     ("res/shaders/lighting/bump_vert.glsl");

@@ -19,6 +19,10 @@ Model::~Model() {
 
 }
 
+Mesh* Model::getMesh(int i){
+    return &meshes[i];
+}
+
 void Model::draw(const Program &program) {
     for(unsigned int i = 0; i < meshes.size(); i++){
         meshes[i].draw(program);

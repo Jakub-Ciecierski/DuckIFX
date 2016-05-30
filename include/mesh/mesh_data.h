@@ -38,6 +38,14 @@ struct Texture{
     Texture(){}
     Texture(GLuint id,
             GLenum type) : id(id), type(type){}
+
+    void updateData(unsigned char* data, int width, int height, int dim){
+        glBindTexture(GL_TEXTURE_2D, id);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+                     width, height, 0, GL_RGB,
+                     GL_UNSIGNED_BYTE, data);
+        glBindTexture(GL_TEXTURE_2D, 0);
+    }
 };
 
 struct Material{

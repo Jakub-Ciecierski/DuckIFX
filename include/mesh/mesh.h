@@ -83,6 +83,9 @@ public:
 
     void setMaterial(const Material& material);
 
+    void addTexture(Texture texture);
+    std::vector<Texture*> getTextures(TextureTypes type);
+
     void draw(const Program& program);
 
     Mesh& operator=(const Mesh& other);

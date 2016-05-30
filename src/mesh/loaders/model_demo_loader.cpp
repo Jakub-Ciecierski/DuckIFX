@@ -4,6 +4,7 @@
 
 #include <mesh/loaders/model_loader.h>
 #include <mesh/loaders/mesh_loader.h>
+#include <mesh/loaders/duck/duck_loader.h>
 #include "model_demo_loader.h"
 
 ModelDemoLoader::ModelDemoLoader(){
@@ -44,4 +45,10 @@ Model ModelDemoLoader::LoadLampModel() {
     std::vector<Mesh> meshes = {mesh};
 
     return Model(meshes);
+}
+
+Model ModelDemoLoader::LoadDuckModel(){
+    DuckLoader duckLoader;
+
+    return duckLoader.loadDuckModel();
 }

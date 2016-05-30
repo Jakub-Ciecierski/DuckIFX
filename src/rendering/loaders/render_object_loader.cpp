@@ -14,9 +14,11 @@ RenderObjectLoader::~RenderObjectLoader() {
     delete cubeModel;
     delete cubeMapModel;
     delete lampModel;
+    delete duckModel;
 }
 
 void RenderObjectLoader::initModels() {
+    duckModel = new Model(ModelDemoLoader::LoadDuckModel());
     nanosuitModel = new Model(ModelDemoLoader::LoadNanoSuitModel());
     cubeMapModel = new Model(ModelDemoLoader::LoadCubemapModel());
     cubeModel = new Model(ModelDemoLoader::LoadCubeModel());
@@ -33,7 +35,10 @@ RenderObject *RenderObjectLoader::loadCubeObject() {
 RenderObject *RenderObjectLoader::loadCubemapObject() {
     RenderObject* renderObject
             = new RenderObject(ObjectID(0), "Cube", cubeMapModel);
-    renderObject->scale(glm::vec3(2.0f, 2.0f, 2.0f));
+    float scaleFactor = 10.0f;
+    renderObject->scale(glm::vec3(scaleFactor,
+                                  scaleFactor,
+                                  scaleFactor));
     return renderObject;
 }
 
@@ -48,5 +53,12 @@ RenderObject* RenderObjectLoader::loadnanosuitObject(){
     RenderObject* renderObject
             = new RenderObject(ObjectID(0), "NanoSuit", nanosuitModel);
 
+    return renderObject;
+}
+
+RenderObject* RenderObjectLoader::loadDuckObject(){
+    RenderObject* renderObject
+            = new RenderObject(ObjectID(0), "Duck", duckModel);
+    renderObject->scale(glm::vec3(0.01f, 0.01f, 0.01f));
     return renderObject;
 }

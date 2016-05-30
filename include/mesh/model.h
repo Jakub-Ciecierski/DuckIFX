@@ -21,6 +21,7 @@ public:
     Model(const Model& other);
 
     ~Model();
+    Mesh* getMesh(int i);
 
     void draw(const Program& program);
 

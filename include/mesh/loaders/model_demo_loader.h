@@ -23,6 +23,7 @@ public:
     static Model LoadCubeModel();
     static Model LoadCubemapModel();
     static Model LoadLampModel();
+    static Model LoadDuckModel();
 };
 
 
