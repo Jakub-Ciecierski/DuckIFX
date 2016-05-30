@@ -21,6 +21,7 @@ private:
     Model* cubeModel;
     Model* cubeMapModel;
     Model* lampModel;
+    Model* plane;
     Model* duckModel;
 
     void initModels();
@@ -35,6 +36,7 @@ public:
     RenderObject* loadCubemapObject();
     RenderObject* loadLampObject();
     RenderObject* loadnanosuitObject();
+    RenderObject* loadPlane(int x, int y, float unit);
     RenderObject* loadDuckObject();
 };
 

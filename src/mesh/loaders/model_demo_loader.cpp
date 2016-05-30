@@ -47,8 +47,17 @@ Model ModelDemoLoader::LoadLampModel() {
     return Model(meshes);
 }
 
+Model ModelDemoLoader::LoadPlaneModel(int x, int y, float unit) {
+    MeshLoader meshLoader;
+    Mesh mesh = meshLoader.LoadPlane(x, y, unit);
+    std::vector<Mesh> meshes = {mesh};
+
+    return Model(meshes);
+}
+
 Model ModelDemoLoader::LoadDuckModel(){
     DuckLoader duckLoader;
 
     return duckLoader.loadDuckModel();
 }
+

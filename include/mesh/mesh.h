@@ -28,6 +28,7 @@ private:
     std::vector<Vertex> vertices;
     std::vector<GLuint> indices;
     std::vector<Texture> textures;
+    GLenum drawingMode;
 
     Material material;
 
@@ -66,16 +67,19 @@ public:
 
     Mesh();
     Mesh(std::vector<Vertex> vertices,
-         std::vector <GLuint>& indices);
-
-    Mesh(std::vector<Vertex> vertices,
          std::vector <GLuint>& indices,
-         std::vector<Texture>& textures);
+         GLenum drawingMode);
 
     Mesh(std::vector<Vertex> vertices,
          std::vector <GLuint>& indices,
          std::vector<Texture>& textures,
-         Material material);
+         GLenum drawingMode);
+
+    Mesh(std::vector<Vertex> vertices,
+         std::vector <GLuint>& indices,
+         std::vector<Texture>& textures,
+         Material material,
+         GLenum drawingMode);
 
     Mesh(const Mesh& mesh);
 
@@ -91,6 +95,8 @@ public:
     Mesh& operator=(const Mesh& other);
 
     std::string toString() const;
+
+    std::vector<Vertex> getVertices();
 };
 
 #endif //DUCK_MESH_H
