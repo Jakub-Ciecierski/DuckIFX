@@ -58,10 +58,10 @@ RenderObject* RenderObjectLoader::loadnanosuitObject(){
     return renderObject;
 }
 
-RenderObject* RenderObjectLoader::loadPlane(int x, int y, float unit){
-    RenderObject* renderObject
+RenderObject* RenderObjectLoader::loadPlane(int x, int y, float unit) {
+    RenderObject *renderObject
             = new RenderObject(ObjectID(0), "Plane", plane);
-
+}
 
 RenderObject* RenderObjectLoader::loadDuckObject(){
     RenderObject* renderObject

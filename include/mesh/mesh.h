@@ -68,18 +68,18 @@ public:
     Mesh();
     Mesh(std::vector<Vertex> vertices,
          std::vector <GLuint>& indices,
-         GLenum drawingMode);
+         GLenum drawingMode = GL_TRIANGLES);
 
     Mesh(std::vector<Vertex> vertices,
          std::vector <GLuint>& indices,
          std::vector<Texture>& textures,
-         GLenum drawingMode);
+         GLenum drawingMode = GL_TRIANGLES);
 
     Mesh(std::vector<Vertex> vertices,
          std::vector <GLuint>& indices,
          std::vector<Texture>& textures,
          Material material,
-         GLenum drawingMode);
+         GLenum drawingMode  = GL_TRIANGLES);
 
     Mesh(const Mesh& mesh);
 

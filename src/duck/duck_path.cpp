@@ -33,7 +33,7 @@ DuckPath::~DuckPath() {
 
 glm::vec3 DuckPath::computePosition(float dt) {
     glm::vec3 pos = bspline->computeBSpline(dt);
-
+    duck->rotate(glm::vec3(0.0f, dt, 0.0f));
     if(bspline->t >= bspline->t_max){
         cout << "Generating new BSpline" << endl;
         generateNextBSpline();
