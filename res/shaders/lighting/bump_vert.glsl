@@ -12,6 +12,9 @@ out vec3 Binormal;
 out vec3 FragPos;
 out vec2 TexCoords;
 
+out mat4 ViewMatrix_ps;
+out mat4 ProjectionMatrix_ps;
+
 uniform mat4 ModelMatrix;
 uniform mat4 ViewMatrix;
 uniform mat4 ProjectionMatrix;
@@ -32,6 +35,8 @@ void main()
     Tangent = mat3(transpose(inverse(ModelMatrix))) * tangent;
     Binormal = mat3(transpose(inverse(ModelMatrix))) * binormal;
 
-
     TexCoords = texCoords;
+
+    ProjectionMatrix_ps = ProjectionMatrix;
+    ViewMatrix_ps = ViewMatrix;
 }

@@ -14,6 +14,9 @@ in vec3 Binormal;
 in vec3 FragPos;
 in vec2 TexCoords;
 
+in mat4 ViewMatrix_ps;
+in mat4 ProjectionMatrix_ps;
+
 out vec4 color;
 
 // ---------- VARIABLES  ---------- //
@@ -77,6 +80,9 @@ uniform int spotlightCount;
 uniform Material material;
 uniform vec3 viewPos;
 
+// Big leap of faith, assumes that Cubemap object has bound the uniform texture
+uniform samplerCube cubemap;
+
 // ---------- HEADERS ---------- //
 
 vec3 computePointLight(PointLight light, vec3 norm, vec3 fragPos,
@@ -109,9 +115,19 @@ void main()
         result += computeSpotLight(spotLights[i], norm, FragPos, viewDir, TBN);
     }
 
-    //color = vec4(Tangent, 1.0f);
-    //color = vec4(Binormal, 1.0f);
-    color = vec4(result, 0.4f);
+    //color = vec4(result, 0.4f);
+
+    float ratio = 1.00f / 1.33f;
+    vec3 I = -viewDir;
+    vec3 R = reflect(I, normalize(Normal));
+
+    //R  = mat3(ProjectionMatrix_ps* ViewMatrix_ps) * R;
+    vec4 waterColor = vec4(result, 0.4f);
+    vec4 refr = vec4(vec3(texture(cubemap, R)), 0.8f);
+
+    //color = mix(waterColor, refr, 0.5f);
+    //color = waterColor;
+    color = refr;
 }
 
 vec3 computePointLight(PointLight light, vec3 norm, vec3 fragPos,
