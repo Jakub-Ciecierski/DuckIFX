@@ -19,10 +19,13 @@ struct Vertex{
     glm::vec3 Position;
     glm::vec3 Normal;
     glm::vec2 TexCoords;
+
+    glm::vec3 Tangent;
+    glm::vec3 Binormal;
 };
 
 enum TextureTypes{
-    DIFFUSE, SPECULAR
+    DIFFUSE, SPECULAR, NORMAL, CUBEMAP
 };
 
 struct Texture{
@@ -35,6 +38,14 @@ struct Texture{
     Texture(){}
     Texture(GLuint id,
             GLenum type) : id(id), type(type){}
+
+    void updateData(unsigned char* data, int width, int height, int dim){
+        glBindTexture(GL_TEXTURE_2D, id);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+                     width, height, 0, GL_RGB,
+                     GL_UNSIGNED_BYTE, data);
+        glBindTexture(GL_TEXTURE_2D, 0);
+    }
 };
 
 struct Material{
@@ -73,6 +84,9 @@ extern const std::string VIEW_POSITION_NAME;
 extern const std::string MATERIAL_AMBIENT_NAME;
 extern const std::string MATERIAL_DIFFUSE_NAME;
 extern const std::string MATERIAL_SPECULAR_NAME;
+extern const std::string MATERIAL_NORMAL_NAME;
 extern const std::string MATERIAL_SHININESS_NAME;
+
+extern const std::string TEXTURE_CUBEMAP_NAME;
 
 #endif //DUCK_MESH_DATA_H

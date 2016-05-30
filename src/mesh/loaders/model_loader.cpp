@@ -55,6 +55,8 @@ void ModelLoader::processNode(aiNode* node, const aiScene* scene,
     {
         aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
         Mesh ifxMesh = this->processMesh(mesh, scene);
+
+        // TODO Find better solution for shininess !
         Material material;
         material.shininess = 32.0f;
         ifxMesh.setMaterial(material);
@@ -136,9 +138,15 @@ vector<Texture> ModelLoader::processTextures(aiMesh* mesh,
         vector<Texture> specularMaps
                 = loadMaterialTextures(material, aiTextureType_SPECULAR,
                                        TextureTypes::SPECULAR);
+        // WARNING aiTextureType_HEIGHT hide the Normal maps !!
+        vector<Texture> normalMaps
+                = loadMaterialTextures(material, aiTextureType_HEIGHT,
+                                       TextureTypes::NORMAL);
+
 
         textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
         textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+        textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
     }
     return textures;
 }

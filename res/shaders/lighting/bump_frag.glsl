@@ -1,13 +1,16 @@
 #version 330 core
 
 /*
- * Phong illumination: Flashlight with Attenuation.
- * Use with combination with LightDirectional
+ * Bump mapping
+ * http://www.nvidia.com/object/real-time-normal-map-dxt-compression.html
+ * http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-13-normal-mapping/
  */
 
 // ---------- IN/OUT ---------- //
 
 in vec3 Normal;
+in vec3 Tangent;
+in vec3 Binormal;
 in vec3 FragPos;
 in vec2 TexCoords;
 
@@ -18,6 +21,7 @@ out vec4 color;
 struct Material {
     sampler2D diffuse; // ambient == diffuse
     sampler2D specular;
+    sampler2D normal;
 
     float shininess;
 };
@@ -76,34 +80,47 @@ uniform vec3 viewPos;
 // ---------- HEADERS ---------- //
 
 vec3 computePointLight(PointLight light, vec3 norm, vec3 fragPos,
-                        vec3 viewDir);
-vec3 computeDirLight(DirLight light, vec3 norm, vec3 viewDir);
+                        vec3 viewDir, mat3 TBN);
+vec3 computeDirLight(DirLight light, vec3 norm, vec3 viewDir, mat3 TBN);
 vec3 computeSpotLight(SpotLight light, vec3 norm, vec3 fragPos,
-                        vec3 viewDir);
+                        vec3 viewDir, mat3 TBN);
 
 void main()
 {
-    vec3 norm = normalize(Normal);
+    // Load normal from normal map and normalize to [-1. 1].
+    vec3 norm = normalize(texture(material.normal, TexCoords).rgb * 2.0 - 1.0);
+    //norm = normalize(Normal);
+
     vec3 viewDir = normalize(viewPos - FragPos);
+
+    // The Tangent Basis
+    mat3 TBN = transpose(mat3(Tangent, Binormal, Normal));
 
     vec3 result = vec3(0.0f, 0.0f, 0.0f);
 
     for(int i = 0; i < pointlightCount; i++){
-        result += computePointLight(pointLights[i], norm, FragPos, viewDir);
+        result += computePointLight(pointLights[i], norm, FragPos, viewDir,
+                                    TBN);
     }
     for(int i = 0; i < dirlightCount; i++){
-        result += computeDirLight(dirLights[i], norm, viewDir);
+        result += computeDirLight(dirLights[i], norm, viewDir, TBN);
     }
     for(int i = 0; i < spotlightCount; i++){
-        result += computeSpotLight(spotLights[i], norm, FragPos, viewDir);
+        result += computeSpotLight(spotLights[i], norm, FragPos, viewDir, TBN);
     }
 
+    //color = vec4(Tangent, 1.0f);
+    //color = vec4(Binormal, 1.0f);
     color = vec4(result, 1.0f);
 }
 
 vec3 computePointLight(PointLight light, vec3 norm, vec3 fragPos,
-                        vec3 viewDir){
+                        vec3 viewDir, mat3 TBN){
     vec3 lightDir = normalize(light.position - fragPos);
+
+    // ---- Transform to TBN basis ----- //
+    //viewDir = TBN * viewDir;
+    //lightDir = TBN * lightDir;
 
     // ---- Ambient ----- //
     vec3 ambient = vec3(texture(material.diffuse, TexCoords)) * light.ambient;
@@ -134,8 +151,12 @@ vec3 computePointLight(PointLight light, vec3 norm, vec3 fragPos,
     return result;
 }
 
-vec3 computeDirLight(DirLight light, vec3 norm, vec3 viewDir){
+vec3 computeDirLight(DirLight light, vec3 norm, vec3 viewDir, mat3 TBN){
     vec3 lightDir = normalize(-light.direction);
+
+    // ---- Transform to TBN basis ----- //
+    //viewDir = TBN * viewDir;
+    //lightDir = TBN * lightDir;
 
     // ---- Ambient ----- //
     vec3 ambient = vec3(texture(material.diffuse, TexCoords)) * light.ambient;
@@ -155,8 +176,13 @@ vec3 computeDirLight(DirLight light, vec3 norm, vec3 viewDir){
     return result;
 }
 
-vec3 computeSpotLight(SpotLight light, vec3 norm, vec3 fragPos, vec3 viewDir){
+vec3 computeSpotLight(SpotLight light, vec3 norm, vec3 fragPos, vec3 viewDir,
+                        mat3 TBN){
     vec3 lightDir = normalize(light.position - fragPos);
+
+    // ---- Transform to TBN basis ----- //
+    //viewDir = TBN * viewDir;
+    //lightDir = TBN * lightDir;
 
     // ---- Spotlight ----- //
     // Check the flashlight condition.

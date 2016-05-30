@@ -54,6 +54,95 @@ Mesh MeshLoader::LoadSqaure(){
 }
 */
 
+
+Mesh MeshLoader::LoadCubemap(){
+    // Position, Normal, TexCoord
+    vector<Vertex> vertices = {
+            // Front
+            Vertex{vec3(1.0f,  1.0f, -1.0f),
+                   vec3(0.0f, 0.0f, -1.0f), vec2(1.0f, 1.0f)},
+            Vertex{vec3(1.0f,  -1.0f, -1.0f),
+                   vec3(0.0f, 0.0f, -1.0f), vec2(1.0f, 0.0f)},
+            Vertex{vec3(-1.0f,  -1.0f, -1.0f),
+                   vec3(0.0f, 0.0f, -1.0f), vec2(0.0f, 0.0f)},
+            Vertex{vec3(-1.0f,  1.0f, -1.0f),
+                   vec3(0.0f, 0.0f, -1.0f), vec2(0.0f, 1.0f)},
+
+            // Back
+            Vertex{vec3(1.0f, 1.0f, 1.0f),
+                   vec3(0.0f, 0.0f, 1.0f), vec2(1.0f, 1.0f)},
+            Vertex{vec3(1.0f, -1.0f, 1.0f),
+                   vec3(0.0f, 0.0f, 1.0f), vec2(1.0f, 0.0f)},
+            Vertex{vec3(-1.0f, -1.0f, 1.0f),
+                   vec3(0.0f, 0.0f, 1.0f), vec2(0.0f, 0.0f)},
+            Vertex{vec3(-1.0f, 1.0f, 1.0f),
+                   vec3(0.0f, 0.0f, 1.0f), vec2(0.0f, 1.0f)},
+
+            // Left
+            Vertex{vec3(-1.0f, 1.0f, 1.0f),
+                   vec3(-1.0f, 0.0f, 0.0f), vec2(1.0f, 1.0f)},
+            Vertex{vec3(-1.0f, -1.0f, 1.0f),
+                   vec3(-1.0f, 0.0f, 0.0f), vec2(1.0f, 0.0f)},
+            Vertex{vec3(-1.0f, -1.0f, -1.0f),
+                   vec3(-1.0f, 0.0f, 0.0f), vec2(0.0f, 0.0f)},
+            Vertex{vec3(-1.0f, 1.0f, -1.0f),
+                   vec3(-1.0f, 0.0f, 0.0f), vec2(0.0f, 1.0f)},
+
+            // Right
+            Vertex{vec3(1.0f, 1.0f, 1.0f),
+                   vec3(1.0f, 0.0f, 0.0f), vec2(1.0f, 1.0f)},
+            Vertex{vec3(1.0f, -1.0f, 1.0f),
+                   vec3(1.0f, 0.0f, 0.0f), vec2(1.0f, 0.0f)},
+            Vertex{vec3(1.0f, -1.0f, -1.0f),
+                   vec3(1.0f, 0.0f, 0.0f), vec2(0.0f, 0.0f)},
+            Vertex{vec3(1.0f, 1.0f, -1.0f),
+                   vec3(1.0f, 0.0f, 0.0f), vec2(0.0f, 1.0f)},
+
+            // Bottom
+            Vertex{vec3(1.0f, -1.0f, 1.0f),
+                   vec3(0.0f, -1.0f, 0.0f), vec2(1.0f, 1.0f)},
+            Vertex{vec3(1.0f, -1.0f, -1.0f),
+                   vec3(0.0f, -1.0f, 0.0f), vec2(1.0f, 0.0f)},
+            Vertex{vec3(-1.0f, -1.0f, -1.0f),
+                   vec3(0.0f, -1.0f, 0.0f), vec2(0.0f, 0.0f)},
+            Vertex{vec3(-1.0f, -1.0f, 1.0f),
+                   vec3(0.0f, -1.0f, 0.0f), vec2(0.0f, 1.0f)},
+
+            // Top
+            Vertex{vec3(1.0f, 1.0f, 1.0f),
+                   vec3(0.0f, 1.0f, 0.0f), vec2(1.0f, 1.0f)},
+            Vertex{vec3(1.0f, 1.0f, -1.0f),
+                   vec3(0.0f, 1.0f, 0.0f), vec2(1.0f, 0.0f)},
+            Vertex{vec3(-1.0f, 1.0f, -1.0f),
+                   vec3(0.0f, 1.0f, 0.0f), vec2(0.0f, 0.0f)},
+            Vertex{vec3(-1.0f, 1.0f, 1.0f),
+                   vec3(0.0f, 1.0f, 0.0f), vec2(0.0f, 1.0f)},
+    };
+
+    vector<GLuint> indices = {
+            3, 1, 0,    3, 2, 1,            // front
+            4, 5, 7,    5, 6, 7,            // back
+
+            8, 9, 11,    9, 10, 11,           // left
+            15, 13, 12,    15, 14, 13,        // right
+
+            16, 17, 19,    17, 18, 19,        // bottom
+            23, 21, 20,    23, 22, 21,        // top
+    };
+    TextureLoader textureLoader;
+    Texture textureDiffuse = textureLoader.LoadExampleCubemap();
+
+    std::vector<Texture> textures = {textureDiffuse};
+
+    Mesh mesh(vertices, indices, textures);
+
+    Material material;
+    material.shininess = 32.0f;
+    mesh.setMaterial(material);
+
+    return mesh;
+}
+
 Mesh MeshLoader::LoadCube(){
     // Position, Normal, TexCoord
     vector<Vertex> vertices = {
@@ -118,86 +207,6 @@ Mesh MeshLoader::LoadCube(){
                    vec3(0.0f, 1.0f, 0.0f), vec2(0.0f, 1.0f)},
     };
 
-    /*
-    vector<GLfloat> vertices = {
-            // Front
-            1.0f,  1.0f, 0.0f,  0.0f, 0.0f, -1.0f,
-            1.0f, 0.0f, 0.0f,   1.0f, 1.0f,
-
-            1.0f,  0.0f, 0.0f,  0.0f, 0.0f, -1.0f,
-            0.0f, 1.0f, 0.0f,   1.0f, 0.0f,
-
-            0.0f,  0.0f, 0.0f,  0.0f, 0.0f, -1.0f,
-            0.0f, 1.0f, 0.0f,   0.0f, 0.0f,
-
-            0.0f,  1.0f, 0.0f,  0.0f, 0.0f, -1.0f,
-            0.0f, 1.0f, 0.0f,   0.0f, 1.0f,
-
-            // Back
-            1.0f,  1.0f, 1.0f,  0.0f, 0.0f, 1.0f,
-            1.0f, 0.0f, 0.0f,   1.0f, 1.0f,
-
-            1.0f,  0.0f, 1.0f,  0.0f, 0.0f, 1.0f,
-            0.0f, 1.0f, 0.0f,   1.0f, 0.0f,
-
-            0.0f,  0.0f, 1.0f,  0.0f, 0.0f, 1.0f,
-            0.0f, 1.0f, 0.0f,   0.0f, 0.0f,
-
-            0.0f,  1.0f, 1.0f,  0.0f, 0.0f, 1.0f,
-            0.0f, 1.0f, 0.0f,   0.0f, 1.0f,
-
-            // Left
-            0.0f, 1.0f, 1.0f,   -1.0f, 0.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,   1.0f, 1.0f, // 8
-
-            0.0f, 0.0f, 1.0f,   -1.0f, 0.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // 9
-
-            0.0f, 0.0f, 0.0f,   -1.0f, 0.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,   0.0f, 0.0f, // 10
-
-            0.0f, 1.0f, 0.0f,   -1.0f, 0.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,   0.0f, 1.0f, // 11
-
-            // Right
-            1.0f, 1.0f, 1.0f,   1.0f, 0.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,   1.0f, 1.0f, // 12
-
-            1.0f, 0.0f, 1.0f,   1.0f, 0.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // 13
-
-            1.0f, 0.0f, 0.0f,   1.0f, 0.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,   0.0f, 0.0f, // 14
-
-            1.0f, 1.0f, 0.0f,   1.0f, 0.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,   0.0f, 1.0f, // 15
-
-            // Bottom
-            1.0f, 0.0f, 1.0f,   0.0f, -1.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,   1.0f, 1.0f, // 16
-
-            1.0f, 0.0f, 0.0f,   0.0f, -1.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // 17
-
-            0.0f, 0.0f, 0.0f,   0.0f, -1.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,   0.0f, 0.0f, // 18
-
-            0.0f, 0.0f, 1.0f,   0.0f, -1.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,   0.0f, 1.0f, // 19
-
-            // Top
-            1.0f, 1.0f, 1.0f,   0.0f, 1.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,   1.0f, 1.0f, // 20
-
-            1.0f, 1.0f, 0.0f,   0.0f, 1.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // 21
-
-            0.0f, 1.0f, 0.0f,   0.0f, 1.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,   0.0f, 0.0f, // 22
-
-            0.0f, 1.0f, 1.0f,   0.0f, 1.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,   0.0f, 1.0f, // 23
-    };*/
     vector<GLuint> indices = {
             0, 1, 3,    1, 2, 3,            // front
             7, 5, 4,    5, 6, 7,            // back
@@ -220,7 +229,6 @@ Mesh MeshLoader::LoadCube(){
 
     return mesh;
 }
-
 
 Mesh MeshLoader::LoadLamp(){
     vector<Vertex> vertices = {

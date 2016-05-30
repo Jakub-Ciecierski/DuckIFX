@@ -46,6 +46,16 @@ private:
      */
     void copy(const Mesh& other);
 
+    /*
+     * Computes the Tanget Basis for all faces
+     */
+    void computeTangetBasis();
+
+    /*
+     * Computes Tanget Basis for the face represented by the vertices
+     */
+    void computeAndStoreTangetBasis(Vertex& v1, Vertex& v2, Vertex& v3);
+
     void initBuffers();
 
     /*
@@ -76,6 +86,9 @@ public:
     ~Mesh();
 
     void setMaterial(const Material& material);
+
+    void addTexture(Texture texture);
+    std::vector<Texture*> getTextures(TextureTypes type);
 
     void draw(const Program& program);
 

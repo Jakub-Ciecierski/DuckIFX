@@ -21,8 +21,10 @@ public:
 
     static Model LoadNanoSuitModel();
     static Model LoadCubeModel();
+    static Model LoadCubemapModel();
     static Model LoadLampModel();
     static Model LoadPlaneModel(int x, int y, float unit);
+    static Model LoadDuckModel();
 };
 
 

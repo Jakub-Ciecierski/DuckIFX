@@ -12,13 +12,14 @@
  */
 class MeshLoader {
 private:
-
+    //static void Calculate
 public:
 
     MeshLoader();
 
     ~MeshLoader();
 
+    static Mesh LoadCubemap();
     static Mesh LoadCube();
     static Mesh LoadLamp();
     static Mesh LoadPlane(int x, int y, float unit);

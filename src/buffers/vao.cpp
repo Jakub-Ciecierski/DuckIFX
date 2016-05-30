@@ -12,47 +12,6 @@ VAO::VAO(){
 VAO::~VAO() {
     glDeleteVertexArrays(1, &id);
 }
-/*
-void VAO::bindBuffers(VBO &vbo, EBO &ebo){
-    this->bind();
-
-    vbo.bind();
-    ebo.bind();
-
-    const GLuint DATA_PER_POSITION = 3;
-    const GLuint DATA_PER_NORMAL = 3;
-    const GLuint DATA_PER_COLOR = 3;
-    const GLuint DATA_PER_TEXTURE = 2;
-    const GLuint STRIDE =
-            (DATA_PER_POSITION + DATA_PER_NORMAL +
-                    DATA_PER_COLOR + DATA_PER_TEXTURE) *
-                    sizeof(GLfloat);
-
-    // Position
-    glVertexAttribPointer(0, DATA_PER_POSITION, GL_FLOAT, GL_FALSE,
-                          STRIDE, (GLvoid*)0);
-    glEnableVertexAttribArray(0);
-
-    // Normal
-    glVertexAttribPointer(1, DATA_PER_NORMAL, GL_FLOAT, GL_FALSE,
-                          STRIDE, (GLvoid*)(3*sizeof(GLfloat)));
-    glEnableVertexAttribArray(1);
-
-    // Color
-    glVertexAttribPointer(2, DATA_PER_COLOR, GL_FLOAT, GL_FALSE,
-                          STRIDE, (GLvoid*)(6*sizeof(GLfloat)));
-    glEnableVertexAttribArray(2);
-
-    // Texture
-    glVertexAttribPointer(3, DATA_PER_TEXTURE, GL_FLOAT, GL_FALSE,
-                          STRIDE, (GLvoid*)(9*sizeof(GLfloat)));
-    glEnableVertexAttribArray(3);
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-    this->unbind();
-}
-*/
 
 void VAO::bindBuffers(VBO &vbo, EBO &ebo){
     this->bind();
@@ -63,9 +22,8 @@ void VAO::bindBuffers(VBO &vbo, EBO &ebo){
     const GLuint DATA_PER_POSITION = 3;
     const GLuint DATA_PER_NORMAL = 3;
     const GLuint DATA_PER_TEXTURE = 2;
-    const GLuint STRIDE =
-            (DATA_PER_POSITION + DATA_PER_NORMAL + DATA_PER_TEXTURE) *
-            sizeof(GLfloat);
+    const GLuint DATA_PER_TANGET = 3;
+    const GLuint DATA_PER_BINORMAL = 3;
 
     // Position
     glVertexAttribPointer(0, DATA_PER_POSITION, GL_FLOAT, GL_FALSE,
@@ -83,6 +41,18 @@ void VAO::bindBuffers(VBO &vbo, EBO &ebo){
                           sizeof(Vertex),
                           (GLvoid*)offsetof(Vertex, TexCoords));
     glEnableVertexAttribArray(2);
+
+    // Tangent
+    glVertexAttribPointer(3, DATA_PER_TANGET, GL_FLOAT, GL_FALSE,
+                          sizeof(Vertex),
+                          (GLvoid*)offsetof(Vertex, Tangent));
+    glEnableVertexAttribArray(3);
+
+    // Binormal
+    glVertexAttribPointer(4, DATA_PER_BINORMAL, GL_FLOAT, GL_FALSE,
+                          sizeof(Vertex),
+                          (GLvoid*)offsetof(Vertex, Binormal));
+    glEnableVertexAttribArray(4);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 

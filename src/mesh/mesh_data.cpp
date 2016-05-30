@@ -25,4 +25,7 @@ const std::string VIEW_POSITION_NAME = "viewPos";
 
 const std::string MATERIAL_DIFFUSE_NAME = "material.diffuse";
 const std::string MATERIAL_SPECULAR_NAME = "material.specular";
+const std::string MATERIAL_NORMAL_NAME = "material.normal";
 const std::string MATERIAL_SHININESS_NAME = "material.shininess";
+
+const std::string TEXTURE_CUBEMAP_NAME = "cubemap";

@@ -4,6 +4,7 @@
 
 #include <mesh/loaders/model_loader.h>
 #include <mesh/loaders/mesh_loader.h>
+#include <mesh/loaders/duck/duck_loader.h>
 #include "model_demo_loader.h"
 
 ModelDemoLoader::ModelDemoLoader(){
@@ -30,6 +31,14 @@ Model ModelDemoLoader::LoadCubeModel() {
     return Model(meshes);
 }
 
+Model ModelDemoLoader::LoadCubemapModel(){
+    MeshLoader meshLoader;
+    Mesh mesh = meshLoader.LoadCubemap();
+    std::vector<Mesh> meshes = {mesh};
+
+    return Model(meshes);
+}
+
 Model ModelDemoLoader::LoadLampModel() {
     MeshLoader meshLoader;
     Mesh mesh = meshLoader.LoadLamp();
@@ -45,3 +54,10 @@ Model ModelDemoLoader::LoadPlaneModel(int x, int y, float unit) {
 
     return Model(meshes);
 }
+
+Model ModelDemoLoader::LoadDuckModel(){
+    DuckLoader duckLoader;
+
+    return duckLoader.loadDuckModel();
+}
+

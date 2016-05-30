@@ -27,6 +27,37 @@ Program* ProgramLoader::loadAllLightProgram(){
     return programGlobalLight;
 }
 
+
+Program* ProgramLoader::loadCubemapProgram(){
+    VertexShader vertexShader =
+            shaderLoader.loadVertexShader
+                    ("res/shaders/lighting/cubemap_vert.glsl");
+    FragmentShader fragmentShader =
+            shaderLoader.loadFragmentShader
+                    ("res/shaders/lighting/cubemap_frag.glsl");
+
+    vertexShader.compile();
+    fragmentShader.compile();
+
+    Program* programGlobalLight = new Program(vertexShader, fragmentShader);
+    return programGlobalLight;
+}
+
+Program* ProgramLoader::loadBumpMappingProgram(){
+    VertexShader vertexShader =
+            shaderLoader.loadVertexShader
+                    ("res/shaders/lighting/bump_vert.glsl");
+    FragmentShader fragmentShader =
+            shaderLoader.loadFragmentShader
+                    ("res/shaders/lighting/bump_frag.glsl");
+
+    vertexShader.compile();
+    fragmentShader.compile();
+
+    Program* programGlobalLight = new Program(vertexShader, fragmentShader);
+    return programGlobalLight;
+}
+
 Program *ProgramLoader::loadGlobalLightProgram() {
     VertexShader vertexShader =
             shaderLoader.loadVertexShader

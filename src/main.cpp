@@ -14,11 +14,67 @@
 #include <lighting/light_source.h>
 #include <light_loader.h>
 #include <lighting/light_group.h>
+#include <textures/texture_loader.h>
 #include "camera_controls.h"
 #include "window.h"
 #include "shaders/loaders/program_loader.h"
 
 using namespace std;
+
+const int textureDataWidth = 128;
+const int textureDataHeight = 128;
+Texture normalTexture;
+unsigned char* textureDataChar;
+
+void initTextureData();
+void deleteTextureData();
+void updataTextureData(Texture& texture, GLubyte value);
+
+void initTextureData(){
+    int count = textureDataWidth*textureDataHeight*3;
+    int pixelCount = count / 3;
+    textureDataChar = new unsigned char[count];
+
+    int index = 0;
+    for(int i = 0; i < pixelCount; i++){
+        textureDataChar[index]      = 0;
+        textureDataChar[index + 1]  = 255;
+        textureDataChar[index + 2]  = 0;
+        index += 3;
+    }
+
+    TextureLoader loader;
+    normalTexture = loader.loadFromData(TextureTypes::NORMAL, textureDataChar,
+                                        textureDataWidth, textureDataHeight);
+
+    std::cout << normalTexture.id << std::endl;
+}
+
+void deleteTextureData(){
+    delete textureDataChar;
+}
+
+void updataTextureData(Texture& texture, GLubyte value){
+
+    int count = textureDataWidth*textureDataHeight*3;
+    int pixelCount = count / 3;
+
+    static unsigned char v = 0;
+    v++;
+    if(v > 255) v = 0;
+    int index = 0;
+    for(int i = 0; i < pixelCount; i++){
+        textureDataChar[index ]     = 0;
+        textureDataChar[index + 1]  = v;
+        textureDataChar[index + 2]  = 0;
+
+        index += 3;
+    }
+
+
+    texture.updateData(textureDataChar, textureDataWidth,
+                       textureDataHeight, 3);
+}
 
 // ------------------------------
 
@@ -31,11 +87,13 @@ Camera* camera;
 CameraControls * controls;
 
 RenderObjectLoader* renderObjectLoader;
+RenderObject* duckObject;
 RenderObject* nanoSuitObject;
+RenderObject* cubeMapObject;
+RenderObject* box;
 RenderObject* squareObjectLight1;
 RenderObject* squareObjectLight2;
 RenderObject* squareObjectLight3;
-RenderObject* planeObject;
 
 const int BOXES_COUNT = 10;
 RenderObject* boxes[BOXES_COUNT];
@@ -50,11 +108,9 @@ LightDirectional* lightDirectional;
 LightSpotlight* lightSpotlight;
 
 ProgramLoader programLoader;
-Program* programAllLight;
-Program* programDirLight;
-Program* programFlashlight;
-Program* programGlobalLight;
-Program* programGlobalAttenuationLight;
+Program* programCubemap;
+Program* programBumpMap;
+Program* programLight;
 Program* programLamp;
 
 // ------------------------------
@@ -85,11 +141,13 @@ void render();
 
 int main() {
     initContext();
+    initTextureData();
     initScene();
 
     mainLoop();
 
     releaseResources();
+    deleteTextureData();
 
     return 0;
 }
@@ -141,11 +199,18 @@ void initScene(){
 void initExampleMeshes(){
     renderObjectLoader = new RenderObjectLoader();
 
+    cubeMapObject = renderObjectLoader->loadCubemapObject();
+
+    box = renderObjectLoader->loadCubeObject();
+    Mesh* mesh = box->getModel()->getMesh(0);
+    mesh->addTexture(normalTexture);
+
     nanoSuitObject = renderObjectLoader->loadnanosuitObject();
     squareObjectLight1 = renderObjectLoader->loadLampObject();
     squareObjectLight2 = renderObjectLoader->loadLampObject();
     squareObjectLight3 = renderObjectLoader->loadLampObject();
 
+    duckObject = renderObjectLoader->loadDuckObject();
     // ------
 
     lightPoint1 = lightLoader.loadPointLight();
@@ -162,14 +227,15 @@ void initExampleMeshes(){
     // -------
 
     lightGroup.addLightSpotlight(lightSpotlight);
-
-    lightGroup.addLightDirectional(lightDirectional);
-
+    //lightGroup.addLightDirectional(lightDirectional);
     lightGroup.addLightPoint(lightPoint1);
-    lightGroup.addLightPoint(lightPoint2);
-    lightGroup.addLightPoint(lightPoint3);
+    //lightGroup.addLightPoint(lightPoint2);
+    //lightGroup.addLightPoint(lightPoint3);
+    // -------
 
     nanoSuitObject->scale(glm::vec3(0.2f, 0.2f, 0.2f));
+    nanoSuitObject->moveTo(glm::vec3(0.0, -1.0f, 0.0f));
+
     squareObjectLight1->scale(glm::vec3(0.3f, 0.3f, 0.3f));
     squareObjectLight2->scale(glm::vec3(0.3f, 0.3f, 0.3f));
     squareObjectLight3->scale(glm::vec3(0.3f, 0.3f, 0.3f));
@@ -190,19 +256,13 @@ void initExampleMeshes(){
         boxes[i] = renderObjectLoader->loadCubeObject();
         boxes[i]->moveTo(glm::vec3(x - min, y - min, z - min));
     }
-
-    planeObject = renderObjectLoader->loadPlane(10,10,2);
 }
 
 void initShaders(){
-    programAllLight = programLoader.loadAllLightProgram();
+    programCubemap = programLoader.loadCubemapProgram();
 
-    programGlobalLight = programLoader.loadGlobalLightProgram();
-    programGlobalAttenuationLight
-            = programLoader.loadGlobalAttenuationLightProgram();
-
-    programDirLight = programLoader.loadDirectionalLightProgram();
-    programFlashlight = programLoader.loadFlashlightProgram();
+    programBumpMap = programLoader.loadBumpMappingProgram();
+    programLight = programLoader.loadAllLightProgram();
 
     programLamp = programLoader.loadLampProgram();
 }
@@ -210,22 +270,22 @@ void initShaders(){
 void releaseResources(){
     delete window;
 
-    delete programAllLight;
-    delete programGlobalLight;
-    delete programGlobalAttenuationLight;
-    delete programDirLight;
-    delete programFlashlight;
+    delete programCubemap;
+    delete programBumpMap;
+    delete programLight;
     delete programLamp;
 
     delete renderObjectLoader;
+    delete duckObject;
+    delete box;
     delete squareObjectLight1;
     delete squareObjectLight2;
     delete squareObjectLight3;
+    delete cubeMapObject;
 
     for(int i = 0; i < BOXES_COUNT; i++){
         delete boxes[i];
     }
-    delete planeObject;
 }
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
@@ -262,43 +322,46 @@ void update(){
     controls->doMovement();
     camera->update();
 
-    for(int i = 0; i < BOXES_COUNT; i++){
-        boxes[i]->update();
-    }
-    planeObject->update();
-    nanoSuitObject->update();
     squareObjectLight1->update();
-    squareObjectLight2->update();
-    squareObjectLight3->update();
+    cubeMapObject->update();
+    duckObject->update();
 
     // ------------------
     static float a = 0;
     float radius = 4.0f;
     squareObjectLight1->moveTo(glm::vec3(cos(a)*radius,
                                          sin(a)*radius, 0.0f));
-    squareObjectLight2->moveTo(glm::vec3(cos(a)*radius,
-                                         0.0f, sin(a)*radius));
-    squareObjectLight3->moveTo(glm::vec3(0.0f, cos(a)*radius,
-                                         sin(a)*radius));
     a+=0.005f;
     if(a > 360) a = 0;
-    nanoSuitObject->rotate(glm::vec3(0.0, 0.01, 0.0f));
     // ------------------
+
+    updataTextureData(normalTexture, a);
 }
+
 void render(){
     glClearColor(0.1f, 0.2f, 0.2f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    camera->use(*programAllLight);
-    lightGroup.use(*programAllLight);
+    /*
+    camera->use(*programBumpMap);
+    lightGroup.use(*programBumpMap);
+    duckObject->render(*programBumpMap);
+    box->render(*programBumpMap);
+*/
+    // Draw Scene
+    camera->use(*programLight);
+    lightGroup.use(*programLight);
+    duckObject->render(*programLight);
 
-    nanoSuitObject->render(*programAllLight);
-    for(int i = 0; i < BOXES_COUNT; i++){
-        boxes[i]->render(*programAllLight);
-    }
-    planeObject->render(*programAllLight);
+    // Draw Lamp
     camera->use(*programLamp);
     lightGroup.render(*programLamp);
+
+    // Draw Cubemap
+    glEnable(GL_CULL_FACE);
+    camera->use(*programCubemap);
+    cubeMapObject->render(*programCubemap);
+    glDisable(GL_CULL_FACE);
 }
 
 void mainLoop(){
