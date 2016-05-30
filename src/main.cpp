@@ -35,6 +35,7 @@ RenderObject* nanoSuitObject;
 RenderObject* squareObjectLight1;
 RenderObject* squareObjectLight2;
 RenderObject* squareObjectLight3;
+RenderObject* planeObject;
 
 const int BOXES_COUNT = 10;
 RenderObject* boxes[BOXES_COUNT];
@@ -189,6 +190,8 @@ void initExampleMeshes(){
         boxes[i] = renderObjectLoader->loadCubeObject();
         boxes[i]->moveTo(glm::vec3(x - min, y - min, z - min));
     }
+
+    planeObject = renderObjectLoader->loadPlane(10,10,2);
 }
 
 void initShaders(){
@@ -222,6 +225,7 @@ void releaseResources(){
     for(int i = 0; i < BOXES_COUNT; i++){
         delete boxes[i];
     }
+    delete planeObject;
 }
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
@@ -261,6 +265,7 @@ void update(){
     for(int i = 0; i < BOXES_COUNT; i++){
         boxes[i]->update();
     }
+    planeObject->update();
     nanoSuitObject->update();
     squareObjectLight1->update();
     squareObjectLight2->update();
@@ -291,7 +296,7 @@ void render(){
     for(int i = 0; i < BOXES_COUNT; i++){
         boxes[i]->render(*programAllLight);
     }
-
+    planeObject->render(*programAllLight);
     camera->use(*programLamp);
     lightGroup.render(*programLamp);
 }

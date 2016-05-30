@@ -14,16 +14,10 @@ Mesh::Mesh(){
 }
 
 Mesh::Mesh(std::vector<Vertex> vertices,
-           vector <GLuint>& indices) :
-        vertices(vertices), indices(indices){
-    checkError();
-    initBuffers();
-}
-
-Mesh::Mesh(std::vector<Vertex> vertices,
            vector <GLuint>& indices,
-           vector<Texture>& textures) :
-        vertices(vertices), indices(indices), textures(textures){
+           GLenum drawingMode) :
+        vertices(vertices), indices(indices){
+    this->drawingMode = drawingMode;
     checkError();
     initBuffers();
 }
@@ -31,9 +25,21 @@ Mesh::Mesh(std::vector<Vertex> vertices,
 Mesh::Mesh(std::vector<Vertex> vertices,
            vector <GLuint>& indices,
            vector<Texture>& textures,
-           Material material) :
+           GLenum drawingMode) :
+        vertices(vertices), indices(indices), textures(textures){
+    this->drawingMode = drawingMode;
+    checkError();
+    initBuffers();
+}
+
+Mesh::Mesh(std::vector<Vertex> vertices,
+           vector <GLuint>& indices,
+           vector<Texture>& textures,
+           Material material,
+           GLenum drawingMode) :
         vertices(vertices), indices(indices), textures(textures),
         material(material){
+    this->drawingMode = drawingMode;
     checkError();
     initBuffers();
 }
@@ -61,7 +67,7 @@ void Mesh::copy(const Mesh& other){
     indices = other.indices;
     textures = other.textures;
     material = other.material;
-
+    drawingMode = other.drawingMode;
     initBuffers();
 }
 
@@ -138,4 +144,8 @@ std::string Mesh::toString() const{
     str += "Texture Specular Count:  " + to_string(specularTexCount) + "\n";
 
     return str;
+}
+
+std::vector<Vertex> Mesh::getVertices() {
+    return vertices;
 }

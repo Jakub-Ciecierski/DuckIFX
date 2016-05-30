@@ -212,7 +212,7 @@ Mesh MeshLoader::LoadCube(){
 
     std::vector<Texture> textures = {textureDiffuse, textureSpecular};
 
-    Mesh mesh(vertices, indices, textures);
+    Mesh mesh(vertices, indices, textures, GL_TRIANGLES);
 
     Material material;
     material.shininess = 32.0f;
@@ -296,5 +296,39 @@ Mesh MeshLoader::LoadLamp(){
 
     std::vector<Texture> textures;
 
-    return Mesh(vertices, indices, textures);
+    return Mesh(vertices, indices, textures, GL_TRIANGLES);
+}
+
+Mesh MeshLoader::LoadPlane(int x, int y, float unit) {
+    vector<Vertex> vertices;
+    for (int j = 0; j<y; j++) {
+        for (int i = 0; i < x; i++) {
+            vertices.push_back(Vertex{vec3(i*unit, 0.0f, j*unit), vec3(0.0f, 1.0f, 0.0f), vec2(1-((j*unit)/((y-1)*unit)), (i*unit)/(unit*(x-1)) )});
+        }
+    }
+    vector<GLuint> indices;
+    //GL TRIANGLE STRIP
+    /*for (int j = 0; j<y-1; j++) {
+        for (int i = 0; i < x; i++) {
+            indices.push_back(j * y + i);
+            indices.push_back((j+1) * y + i);
+        }
+        indices.push_back((j+1) * y + (x-1));
+        indices.push_back((j+1) * y);
+    }*/
+    //GL TRIANGLES
+    for (int j = 0; j<y-1; j++) {
+        for (int i = 0; i < x-1; i++) {
+            //upper triangle
+            indices.push_back(j * y + i);
+            indices.push_back((j + 1) * y + i);
+            indices.push_back(j * y + i+1);
+            //lowe triangle
+            indices.push_back(j * y + i+1);
+            indices.push_back((j + 1) * y + i);
+            indices.push_back((j + 1) * y + i+1);
+        }
+    }
+
+    return Mesh(vertices, indices, GL_TRIANGLE_STRIP);
 }

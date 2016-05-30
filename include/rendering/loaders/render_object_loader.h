@@ -20,6 +20,7 @@ private:
     Model* nanosuitModel;
     Model* cubeModel;
     Model* lampModel;
+    Model* plane;
 
     void initModels();
 
@@ -32,6 +33,7 @@ public:
     RenderObject* loadCubeObject();
     RenderObject* loadLampObject();
     RenderObject* loadnanosuitObject();
+    RenderObject* loadPlane(int x, int y, float unit);
 };
 
 

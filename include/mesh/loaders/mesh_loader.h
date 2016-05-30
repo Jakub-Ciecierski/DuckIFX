@@ -21,6 +21,7 @@ public:
 
     static Mesh LoadCube();
     static Mesh LoadLamp();
+    static Mesh LoadPlane(int x, int y, float unit);
 
 };
 
