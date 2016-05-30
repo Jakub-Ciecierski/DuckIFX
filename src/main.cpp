@@ -64,6 +64,7 @@ ProgramLoader programLoader;
 Program* programCubemap;
 Program* programBumpMap;
 Program* programLight;
+Program* programAnisLight;
 Program* programLamp;
 
 const int x = 400;
@@ -175,7 +176,7 @@ void initExampleMeshes(){
     mesh->addTexture(normalTexture);
 
     water = new Water(x, y, unit, planeObject);
-    //water->NewRipple(100, 100);
+    water->NewRipple(100, 100);
 
     cubeMapObject = renderObjectLoader->loadCubemapObject();
 
@@ -202,9 +203,9 @@ void initExampleMeshes(){
     lightSpotlight->setCamera(camera);
     // -------
 
-    lightGroup.addLightSpotlight(lightSpotlight);
+    //lightGroup.addLightSpotlight(lightSpotlight);
     lightGroup.addLightDirectional(lightDirectional);
-    lightGroup.addLightPoint(lightPoint1);
+    //lightGroup.addLightPoint(lightPoint1);
     //lightGroup.addLightPoint(lightPoint2);
     //lightGroup.addLightPoint(lightPoint3);
     // -------
@@ -241,6 +242,8 @@ void initShaders(){
     programLight = programLoader.loadAllLightProgram();
 
     programLamp = programLoader.loadLampProgram();
+
+    programAnisLight = programLoader.loadAnisotropicLightProgram();
 }
 
 void releaseResources(){
@@ -251,6 +254,7 @@ void releaseResources(){
     delete programBumpMap;
     delete programLight;
     delete programLamp;
+    delete programAnisLight;
 
     delete duckPath;
 
@@ -336,9 +340,13 @@ void render(){
     duckObject->render(*programBumpMap);
 */
     // Draw Scene
-    camera->use(*programLight);
-    lightGroup.use(*programLight);
-    duckObject->render(*programLight);
+
+    Program* program = programLight;
+    //Program* program = programAnisLight;
+    camera->use(*program);
+    lightGroup.use(*program);
+    duckObject->render(*program);
+
 
     // Draw Lamp
     camera->use(*programLamp);
@@ -417,19 +425,18 @@ void updataTextureData(Texture& texture, GLubyte value){
             float xNorm = (vec[j].x - min) / (max - min);
             float yNorm = (vec[j].y - min) / (max - min);
             float zNorm = (vec[j].z - min) / (max - min);
+            unsigned char xByte;
+            unsigned char yByte;
+            unsigned char zByte;
 
-            unsigned char xByte = maxByte * xNorm;
-            unsigned char yByte = maxByte * yNorm;
-            unsigned char zByte = maxByte * zNorm;
+            xByte = maxByte * xNorm;
+            yByte = maxByte * yNorm;
+            zByte = maxByte * zNorm;
 
             textureDataChar[pixelIndex]      = xByte;
             textureDataChar[pixelIndex + 1]  = yByte;
             textureDataChar[pixelIndex + 2]  = zByte;
 
-/*
-            if(yNorm  != 1.0f)
-                std::cout << vec[j].x << ", " << vec[j].y << ", " << vec[j].z << std::endl;
-*/
             pixelIndex += 3;
         }
     }

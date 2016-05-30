@@ -22,12 +22,8 @@ public:
 
     Program* loadCubemapProgram();
     Program* loadAllLightProgram();
+    Program* loadAnisotropicLightProgram();
     Program* loadBumpMappingProgram();
-    Program* loadGlobalLightProgram();
-    Program* loadGlobalAttenuationLightProgram();
-
-    Program* loadDirectionalLightProgram();
-    Program* loadFlashlightProgram();
 
     Program* loadLampProgram();
 

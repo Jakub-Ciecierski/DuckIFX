@@ -1,13 +1,14 @@
 #version 330 core
 
 /*
- * Phong illumination: Flashlight with Attenuation.
- * Use with combination with LightDirectional
+ * https://www.cs.ubc.ca/~heidrich/Papers/IMDSP.98.pdf
  */
 
 // ---------- IN/OUT ---------- //
 
 in vec3 Normal;
+in vec3 Tangent;
+in vec3 Binormal;
 in vec3 FragPos;
 in vec2 TexCoords;
 
@@ -99,6 +100,7 @@ void main()
     }
 
     color = vec4(result, 1.0f);
+    //color = vec4(Binormal, 1.0f);
 }
 
 vec3 computePointLight(PointLight light, vec3 norm, vec3 fragPos,
@@ -109,15 +111,24 @@ vec3 computePointLight(PointLight light, vec3 norm, vec3 fragPos,
     vec3 ambient = vec3(texture(material.diffuse, TexCoords)) * light.ambient;
 
     // ---- Diffuse ----- //
-    float diffuseFactor = max(dot(norm, lightDir), 0.0f);
+    //float diffuseFactor = max(dot(norm, lightDir), 0.0f);
+    float dotValue = sqrt(1 - max(pow(dot(lightDir, Tangent), 2), 0.0f));
+    float diffuseFactor = dotValue;
     vec3 diffuse =
     diffuseFactor * vec3(texture(material.diffuse, TexCoords)) * light.diffuse;
 
     // ---- Specular ----- //
     vec3 reflectDir = reflect(-lightDir, norm);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+    //float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+    float dotSpecValue = sqrt(1 - pow(dot(lightDir, Tangent),2)) *
+                            sqrt(1 - pow(dot(viewDir, Tangent),2)) -
+                            dot(lightDir, Tangent) * dot(viewDir, Tangent);
+    dotSpecValue = max(dotSpecValue, 0.0f);
+    dotSpecValue = pow(dotSpecValue, material.shininess);
+    float spec = dotSpecValue;
     vec3 specular =
     vec3(texture(material.specular, TexCoords)) * spec * light.specular;
+
 
     // ---- Attenuation ----- //
     float distance    = length(light.position - fragPos);
@@ -130,6 +141,7 @@ vec3 computePointLight(PointLight light, vec3 norm, vec3 fragPos,
     specular *= attenuation;
 
     vec3 result = (ambient + diffuse + specular);
+
     return result;
 }
 
@@ -140,13 +152,21 @@ vec3 computeDirLight(DirLight light, vec3 norm, vec3 viewDir){
     vec3 ambient = vec3(texture(material.diffuse, TexCoords)) * light.ambient;
 
     // ---- Diffuse ----- //
-    float diffuseFactor = max(dot(norm, lightDir), 0.0f);
+    //float diffuseFactor = max(dot(norm, lightDir), 0.0f);
+    float dotValue = sqrt(1 - max(pow(dot(lightDir, Tangent), 2), 0.0f));
+    float diffuseFactor = dotValue;
     vec3 diffuse =
     diffuseFactor * vec3(texture(material.diffuse, TexCoords)) * light.diffuse;
 
-    // ---- Specular----- //
+    // ---- Specular ----- //
     vec3 reflectDir = reflect(-lightDir, norm);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+    //float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+    float dotSpecValue = sqrt(1 - pow(dot(lightDir, Tangent),2)) *
+                            sqrt(1 - pow(dot(viewDir, Tangent),2)) -
+                            dot(lightDir, Tangent) * dot(viewDir, Tangent);
+    dotSpecValue = max(dotSpecValue, 0.0f);
+    dotSpecValue = pow(dotSpecValue, material.shininess);
+    float spec = dotSpecValue;
     vec3 specular =
     vec3(texture(material.specular, TexCoords)) * spec * light.specular;
 

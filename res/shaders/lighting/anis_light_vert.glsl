@@ -2,10 +2,13 @@
 
 layout (location = 0) in vec3 position;
 layout (location = 1) in vec3 normal;
-layout (location = 2) in vec3 color;
-layout (location = 3) in vec2 texCoords;
+layout (location = 2) in vec2 texCoords;
+layout (location = 3) in vec3 tangent;
+layout (location = 4) in vec3 binormal;
 
 out vec3 Normal;
+out vec3 Tangent;
+out vec3 Binormal;
 out vec3 FragPos;
 out vec2 TexCoords;
 
@@ -26,6 +29,8 @@ void main()
     // Multiply by the "Normal Matrix"
     // TODO This should be calculatd on CPU and send as uniform mat4
     Normal = mat3(transpose(inverse(ModelMatrix))) * normal;
+    Tangent = mat3(transpose(inverse(ModelMatrix))) * tangent;
+    Binormal = mat3(transpose(inverse(ModelMatrix))) * binormal;
 
     TexCoords = texCoords;
 }
