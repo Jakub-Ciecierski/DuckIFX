@@ -7,7 +7,7 @@
 
 
 #include <render_object.h>
-#include "../../src/duck/bspline.h"
+#include "bspline.h"
 
 class DuckPath {
 private:

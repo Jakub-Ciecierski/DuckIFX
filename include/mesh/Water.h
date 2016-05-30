@@ -24,6 +24,8 @@ public:
 
     void NewRipple(int vertexX, int vertexY);
     void Update();
+
+    const std::vector<std::vector<glm::vec3>>& getNormals();
 };
 
 

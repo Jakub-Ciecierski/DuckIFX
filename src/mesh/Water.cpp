@@ -54,9 +54,12 @@ void Water::Update() {
 }
 
 void Water::NewRipple(int vertexX, int vertexY) {
-    ripples.push_back(WaterRipple(vertexX, vertexX, &mesh, x, y));
+    ripples.push_back(WaterRipple(vertexX, vertexY, &mesh, x, y));
 }
 
+const std::vector<std::vector<glm::vec3>>& Water::getNormals(){
+    return normals;
+}
 
 
 
