@@ -176,7 +176,7 @@ void initExampleMeshes(){
     mesh->addTexture(normalTexture);
 
     water = new Water(x, y, unit, planeObject);
-    water->NewRipple(100, 100);
+    //water->NewRipple(100, 100);
 
     cubeMapObject = renderObjectLoader->loadCubemapObject();
 
@@ -417,11 +417,27 @@ void updataTextureData(Texture& texture, GLubyte value){
     static int a = 0;
     a++;
     if(a > 255) a = 0;
-    int WHAT = 0;
     for(unsigned int i = 0; i < normals.size(); i++){
         vector<glm::vec3> vec = normals[i];
         for(unsigned int j = 0; j < vec.size(); j++){
-            WHAT++;
+            /*
+            if(vec[j].y == 0 && vec[j].x == 0 && vec[j].z == 0){
+                vec[j].x = 0;
+                vec[j].y = 1;
+                vec[j].z = 0;
+            }
+            if(isnan(vec[j].x) || isnan(vec[j].y) || isnan(vec[j].z)){
+                vec[j].x = 0;
+                vec[j].y = 1;
+                vec[j].z = 0;
+            }*/
+            /*
+            if(vec[j].y != 1){
+                std::cout << vec[j].x << ", " <<  vec[j].y << ", " << vec[j].z
+                << std::endl;
+            }
+*/
+
             float xNorm = (vec[j].x - min) / (max - min);
             float yNorm = (vec[j].y - min) / (max - min);
             float zNorm = (vec[j].z - min) / (max - min);

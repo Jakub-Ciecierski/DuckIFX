@@ -36,7 +36,7 @@ void Water::Update() {
     renderObject->update();
 
     //simulate falling droplets
-    int probability = rand() & 99 + 1;
+    int probability = rand() & 1000 + 1;
     if (probability<=rippleFrequency) {
         int posX = rand() % (x - 1);
         int posY = rand() % (y - 1);
@@ -47,7 +47,7 @@ void Water::Update() {
     //clear normals and heights
     for (int i = 0; i < y; i++) {
         for (int j = 0; j < x; j++) {
-            //normals[i][j] = glm::vec3(0,1,0); //TODO: check if 0.0.1 can be later normalized
+            normals[i][j] = glm::vec3(0,1,0); //TODO: check if 0.0.1 can be later normalized
             heights[i][j] = 0;
         }
     }
@@ -127,6 +127,19 @@ void Water::ClculateTriangleNormal(int i, int j, glm::vec3 p1, glm::vec3 p2, glm
     normals[i][j] += normal;
     normals[i][j + 1] += normal;
     normals[i + 1][j] += normal;
+
+
+    // NORMALS HACKS
+    if(normals[i][j].y == 0 && normals[i][j].x == 0 && normals[i][j].z == 0){
+        normals[i][j].x = 0;
+        normals[i][j].y = 1;
+        normals[i][j].z = 0;
+    }
+    if(isnan(normals[i][j].x) || isnan(normals[i][j].y) || isnan(normals[i][j].z)){
+        normals[i][j].x = 0;
+        normals[i][j].y = 1;
+        normals[i][j].z = 0;
+    }
 }
 
 
