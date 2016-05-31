@@ -15,6 +15,7 @@ class WaterRipple {
     float waterX;
     float waterY;
 
+    float tmp_rippleHeights[RIPPLE_SIZE][RIPPLE_SIZE];
     float prev_rippleHeights[RIPPLE_SIZE][RIPPLE_SIZE];
 
     float d[RIPPLE_SIZE][RIPPLE_SIZE];

@@ -17,7 +17,7 @@ Water::~Water() {
 
 Water::Water(int x, int y,
              float unit, RenderObject* renderObject)
-        : x(x), y(y), unit(unit), renderObject(renderObject), rippleFrequency(5) {
+        : x(x), y(y), unit(unit), renderObject(renderObject), rippleFrequency(2) {
     //initialize normals : X x Y
     for (int i = 0; i < y; i++) {
         std::vector<glm::vec3> row_n;
@@ -36,20 +36,22 @@ void Water::Update() {
     renderObject->update();
 
     //simulate falling droplets
-    int posX = rand() % (x-1);
-    int posY = rand() % (y-1);
     int probability = rand() & 99 + 1;
-    if (probability<=rippleFrequency)
+    if (probability<=rippleFrequency) {
+        int posX = rand() % (x - 1);
+        int posY = rand() % (y - 1);
         NewRipple(posX, posY);
+    }
 
     //here update A and B if dt/c/h will be changed during program execution
     //clear normals and heights
     for (int i = 0; i < y; i++) {
         for (int j = 0; j < x; j++) {
-            normals[i][j] = glm::vec3(0,1,0); //TODO: check if 0.0.1 can be later normalized
+            //normals[i][j] = glm::vec3(0,1,0); //TODO: check if 0.0.1 can be later normalized
             heights[i][j] = 0;
         }
     }
+    //memset(&heights, 0, sizeof(float) * x * y);
     //update ripples
     for (auto &r : ripples) {
         r.UpdateRipple();
@@ -73,19 +75,14 @@ void Water::Update() {
     for (int i = 0; i<y-1; i++) {
         for (int j = 0; j<x-1; j++) {
             //vertexes in the currect square
-            glm::vec3 p1 = glm::vec3(0, 0, heights[i][j]);
-            glm::vec3 p2 = glm::vec3(0, 0, heights[i][j+1]);
-            glm::vec3 p3 = glm::vec3(0, 0, heights[i+1][j]);
-            glm::vec3 p4 = glm::vec3(0, 0, heights[i+1][j+1]);
-            //check if doesn't overextend
-            //if (startYindex + i>=0 && startXindex + j>=0 && startYindex + i<y && startXindex + j<x)
-                p1 += vertices[(x*i)+j].Position;
-            //if (startYindex + i>=0 && startXindex + j + 1>=0 && startYindex + i<y && startXindex + j<x)
-                p2 += vertices[(x*i)+j+1].Position;
-            //if (startYindex + i + 1>=0 && startXindex + j>=0 && startYindex + i<y && startXindex + j<x)
-                p3 += vertices[(x*(i+1))+j].Position;
-            //if (startYindex + i + 1>=0 && startXindex + j + 1 >=0 && startYindex + i<y && startXindex + j<x)
-                p4 += vertices[(x*(i+1))+j+1].Position;
+            glm::vec3 p1 = glm::vec3(0, heights[i][j], 0);
+            glm::vec3 p2 = glm::vec3(0, heights[i][j+1], 0);
+            glm::vec3 p3 = glm::vec3(0, heights[i+1][j], 0);
+            glm::vec3 p4 = glm::vec3(0, heights[i+1][j+1], 0);
+            p1 += vertices[(x*i)+j].Position;
+            p2 += vertices[(x*i)+j+1].Position;
+            p3 += vertices[(x*(i+1))+j].Position;
+            p4 += vertices[(x*(i+1))+j+1].Position;
 
             //upper triange normal calculations
             ClculateTriangleNormal(i, j, p1, p2, p3);
@@ -122,9 +119,10 @@ void Water::ClculateTriangleNormal(int i, int j, glm::vec3 p1, glm::vec3 p2, glm
     U= p2 - p1;
     V= p3 - p1;
     //cross product to get normal
-    normal.x += (U.y * V.z) - (U.z * V.y);
+    normal = glm::cross(U, V);
+    /*normal.x += (U.y * V.z) - (U.z * V.y);
     normal.y += (U.z * V.x) - (U.x * V.z);
-    normal.z += (U.x * V.y) - (U.y * V.x);
+    normal.z += (U.x * V.y) - (U.y * V.x);*/
     //add new normal to 3 vertexes of the triangle
     normals[i][j] += normal;
     normals[i][j + 1] += normal;

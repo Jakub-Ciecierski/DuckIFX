@@ -24,38 +24,39 @@ WaterRipple::WaterRipple(int vertexX, int vertexY, int waterX, int waterY)
 
             rippleHeights[i][j] = 0;
             prev_rippleHeights[i][j]=0;
-            //normals[i][j] = glm::vec3(0,0,1);
         }
     //heigh distortion
     rippleHeights[(RIPPLE_SIZE)/2][(RIPPLE_SIZE)/2] = 0.025f;
     A = (c*c*dt*dt)/(h*h);
-    B = 2 - 4*A;
+    B = 2 - (4*A);
 }
 
 void WaterRipple::UpdateRipple() {
     //here update A and B if dt/c/h will be changed during program execution
 
     float middleValues = 0;
-    float tmp_rippleHeights[RIPPLE_SIZE][RIPPLE_SIZE];
-
-    for (int i = 0; i < RIPPLE_SIZE; i++) {
-        for (int j = 0; j < RIPPLE_SIZE; j++) {
-            float a1 = (i == (RIPPLE_SIZE) - 1) ? 0 : rippleHeights[i + 1][j];
-            float a2 = (i == 0) ? 0 : rippleHeights[i - 1][j];
-            float a3 = (j == (RIPPLE_SIZE) - 1) ? 0 : rippleHeights[i][j + 1];
-            float a4 = (j == 0) ? 0 : rippleHeights[i][j - 1];
-            middleValues = a1 + a2 + a3 + a4;
-            tmp_rippleHeights[i][j] = d[i][j] * (A * middleValues + B * rippleHeights[i][j] - prev_rippleHeights[i][j]);
+    //float a1, a2, a3, a4;
+    for (int i = 1; i < RIPPLE_SIZE-1; i++) {
+        for (int j = 1; j < RIPPLE_SIZE-1; j++) {
+//            a1 = (i == (RIPPLE_SIZE) - 1) ? 0 : rippleHeights[i + 1][j];
+//            a2 = (i == 0) ? 0 : rippleHeights[i - 1][j];
+//            a3 = (j == (RIPPLE_SIZE) - 1) ? 0 : rippleHeights[i][j + 1];
+//            a4 = (j == 0) ? 0 : rippleHeights[i][j - 1];
+//            middleValues = a1 + a2 + a3 + a4;
+            middleValues = rippleHeights[i + 1][j] + rippleHeights[i - 1][j] + rippleHeights[i][j + 1] + rippleHeights[i][j - 1];
+            tmp_rippleHeights[i][j] = d[i][j] * ((A * middleValues) + (B * rippleHeights[i][j]) - prev_rippleHeights[i][j]);
             //std::cout << tmp_rippleHeights[i][j] << " ";
         }
         //std::cout << std::endl;
     }
     //change arrays
-    for (int i = 0; i < RIPPLE_SIZE; i++)
+    memcpy(&prev_rippleHeights, &rippleHeights, RIPPLE_SIZE * RIPPLE_SIZE * sizeof(float));
+    memcpy(&rippleHeights, &tmp_rippleHeights, RIPPLE_SIZE * RIPPLE_SIZE * sizeof(float));
+    /*for (int i = 0; i < RIPPLE_SIZE; i++)
         for (int j = 0; j < RIPPLE_SIZE; j++) {
             prev_rippleHeights[i][j] = rippleHeights[i][j];
             rippleHeights[i][j] = tmp_rippleHeights[i][j];
-        }
+        }*/
 }
 
 
