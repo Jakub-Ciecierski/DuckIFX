@@ -81,7 +81,7 @@ void Mesh::computeTangetBasis(){
 
     }
 }
-
+/*
 void Mesh::computeAndStoreTangetBasis(Vertex& v0, Vertex& v1, Vertex& v2){
     glm::vec3 P = v1.Position - v0.Position;
     glm::vec3 Q = v2.Position - v0.Position;
@@ -112,15 +112,54 @@ void Mesh::computeAndStoreTangetBasis(Vertex& v0, Vertex& v1, Vertex& v2){
     tanget = glm::normalize(tanget);
     binormal = glm::normalize(binormal);
 
-    v0.Tangent = tanget;
-    v1.Tangent = tanget;
-    v2.Tangent = tanget;
+    glm::vec3 tmpVec = P - Q;
+    v0.Tangent = glm::cross(P, v0.Normal);
+    v1.Tangent = glm::cross(P, v0.Normal);
+    v2.Tangent = glm::cross(P, v0.Normal);
+
+    glm::vec3 test(1.0f, 0.0f, 0.0f);
+    glm::mat4 rotateMatrix = glm::rotate(glm::mat4(1.0f),
+                                         glm::radians(90.0f),
+                                         glm::vec3(0.0f, 1.0f, 0.0f));
+    test = glm::vec3(rotateMatrix * glm::vec4(test, 1.0f));
+    std::cout << test.x << ", " << test.y << ", " << test.z << std::endl;
 
     v0.Binormal = binormal;
     v1.Binormal = binormal;
     v2.Binormal = binormal;
 
 }
+*/
+
+void Mesh::computeAndStoreTangetBasis(Vertex& v0, Vertex& v1, Vertex& v2){
+
+    glm::vec2 & uv0 = v0.TexCoords;
+    glm::vec2 & uv1 = v1.TexCoords;
+    glm::vec2 & uv2 = v2.TexCoords;
+
+    glm::vec3 deltaPos1 = v1.Position - v0.Position;
+    glm::vec3 deltaPos2 = v2.Position - v0.Position;
+
+    glm::vec2 deltaUV1 = uv1-uv0;
+    glm::vec2 deltaUV2 = uv2-uv0;
+
+    float r = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV1.y * deltaUV2.x);
+    glm::vec3 tangent = (deltaPos1 * deltaUV2.y   - deltaPos2 * deltaUV1.y)*r;
+    glm::vec3 bitangent = (deltaPos2 * deltaUV1.x   - deltaPos1 * deltaUV2.x)*r;
+
+    tangent = glm::normalize(tangent);
+    bitangent = glm::normalize(bitangent);
+
+    v0.Tangent = tangent;
+    v1.Tangent = tangent;
+    v2.Tangent = tangent;
+
+    v0.Binormal = bitangent;
+    v1.Binormal = bitangent;
+    v2.Binormal = bitangent;
+
+}
+
 
 void Mesh::checkError(){
     int textureCount = textures.size();

@@ -8,6 +8,8 @@
 // ---------- IN/OUT ---------- //
 
 in vec3 Normal;
+in vec3 Tangent;
+in vec3 Binormal;
 in vec3 FragPos;
 in vec2 TexCoords;
 

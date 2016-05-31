@@ -125,7 +125,7 @@ Texture TextureLoader::loadCubemap(vector<string> filepathFaces){
 }
 
 Texture TextureLoader::LoadExampleCubemap(){
-
+/*
     string filepathBase = "res/textures/cubemap/sor_sea/sea_";
     std::vector<std::string> filepathFaces = {
             filepathBase+"rt.JPG",
@@ -134,6 +134,30 @@ Texture TextureLoader::LoadExampleCubemap(){
             filepathBase+"dn.JPG",
             filepathBase+"bk.JPG",
             filepathBase+"ft.JPG"
+    };
+    return loadCubemap(filepathFaces);
+
+    */
+/*
+    string filepathBase = "res/textures/cubemap/sb_strato/stratosphere_";
+    std::vector<std::string> filepathFaces = {
+            filepathBase+"rt.jpg",
+            filepathBase+"lf.jpg",
+            filepathBase+"up.jpg",
+            filepathBase+"dn.jpg",
+            filepathBase+"bk.jpg",
+            filepathBase+"ft.jpg"
+    };
+    return loadCubemap(filepathFaces);*/
+
+    string filepathBase = "res/textures/cubemap/sb_iceflow/iceflow_";
+    std::vector<std::string> filepathFaces = {
+            filepathBase+"rt.jpg",
+            filepathBase+"lf.jpg",
+            filepathBase+"up.jpg",
+            filepathBase+"dn.jpg",
+            filepathBase+"bk.jpg",
+            filepathBase+"ft.jpg"
     };
     return loadCubemap(filepathFaces);
 }
